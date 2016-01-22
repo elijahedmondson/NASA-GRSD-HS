@@ -7,31 +7,37 @@ library(VariantAnnotation)
 library(GenomicRanges)
 library(survival)
 library(regress)
+library(HZE)
 options(stringsAsFactors = F)
-setwd("~/Desktop/R/QTL/WD")
-ncl = 4
-outdir = "~/Desktop/R/QTL/WD/hq_snps"
+setwd("~/Desktop/files/")
+outdir = "~/Desktop/files/"
+
+surv =
+
+GRSD.coxph(pheno, pheno.col = "PulMets", probs, K, addcovar,
+           markers, snp.file, outdir = "~Desktop/files/", tx = "HZE")
 
 # GENOTYPE #
 load(file = "~/Desktop/R/QTL/WD/GRSD.Rdata")
 
 # PHENOTYPE #
-HZE <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/HZE.csv")
-pheno = data.frame(row.names = HZE$row.names, sex = as.numeric(HZE$sex == "M"),  
+HZE <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/HZE-Table 1.csv")
+pheno = data.frame(row.names = HZE$row.names, sex = as.numeric(HZE$sex == "M"),
                    days = as.numeric(HZE$days),
                    cat.days = as.numeric(HZE$Cataract.2.0.Score),
                    cataract = as.numeric(HZE$Cataract.2.0.Event),
-                   LSA = as.numeric(HZE$Lymphoma))
+                   LSA = as.numeric(HZE$Lymphoma),
+                   PulMets = as.numeric(HZE$Pulmonary.Metastases))
 
 Gamma <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Gamma.csv")
-pheno = data.frame(row.names = Gamma$row.names, sex = as.numeric(Gamma$sex == "M"),  
+pheno = data.frame(row.names = Gamma$row.names, sex = as.numeric(Gamma$sex == "M"),
                    days = as.numeric(Gamma$days),
                    cataract = as.numeric(Gamma$Cataract.2.0.Event),
                    cat.days = as.numeric(Gamma$Cataract.2.0.Score),
                    LSA = as.numeric(Gamma$Lymphoma))
 
 Unirradiated <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Unirradiated.csv")
-pheno = data.frame(row.names = Unirradiated$row.names, sex = as.numeric(Unirradiated$sex == "M"),  
+pheno = data.frame(row.names = Unirradiated$row.names, sex = as.numeric(Unirradiated$sex == "M"),
                    days = as.numeric(Unirradiated$days),
                    cataract = as.numeric(Unirradiated$Cataract.2.0.Event),
                    cat.days = as.numeric(Unirradiated$Cataract.2.0.Score),
@@ -71,11 +77,11 @@ chrs = c(1:19, "X")
 data = vector("list", length(chrs))
 names(data) = chrs
 for(i in 1:length(chrs)) {
-  
+
   rng = which(markers[,2] == chrs[i])
   data[[i]] = list(probs = probs[,,rng], K = K[[i]],
                    markers = markers[rng,])
-  
+
 } # for(i)
 
 rm(probs, K, markers)
@@ -95,7 +101,7 @@ workfxn = function(obj) {
     strains = sub("/", "_", hs.colors[,2])
 
   hdr = scanVcfHeader(snp.file)
-  gr = GRanges(seqnames = chr, range = IRanges(start = 0, 
+  gr = GRanges(seqnames = chr, range = IRanges(start = 0,
        end = 200e6))
   param = ScanVcfParam(geno = c("GT", "FI"), fixed = "ALT",
           samples = strains[strains != "C57BL_6J"], which = gr)
@@ -187,7 +193,7 @@ workfxn = function(obj) {
      if(length(snp.rng) > 0) {
 
        # Take the mean of the haplotype probs at the surrounding markers.
-       pv[snp.rng] = coxph.fxn(snp.rng, (obj$probs[,,i] + 
+       pv[snp.rng] = coxph.fxn(snp.rng, (obj$probs[,,i] +
                      obj$probs[,,i+1]) * 0.5)
 
      } # if(length(snp.rng) > 0)
@@ -208,7 +214,7 @@ workfxn = function(obj) {
 
   save(pv, file = paste0(file.prefix, "_chr", chr, ".Rdata"))
 
-  png(paste0(file.prefix, "_chr", chr,".png"), width = 2000, 
+  png(paste0(file.prefix, "_chr", chr,".png"), width = 2000,
       height = 1600, res = 200)
   plot(as.numeric(pv[,3]) * 1e-6, -log10(pv[,6]), pch = 20)
   mtext(side = 3, line = 0.5, text = paste(plot.title, ": Chr", chr))
@@ -224,11 +230,11 @@ workfxn = function(obj) {
 
 # X FUNCTION #
 workfxn.xchr = function(obj) {
-  
+
   chr = obj$markers[1,2]
-  
+
   setwd(outdir)
-  
+
   # Get the Sanger SNPs.
   ###DMG
   ### You're working with the HS, so just get HS colors.
@@ -236,27 +242,27 @@ workfxn.xchr = function(obj) {
   #  if(cross == "HS") {
   strains = sub("/", "_", hs.colors[,2])
   #  } # if(cross = "HS")
-  
+
   # Read the Sanger VCF file.
   hdr = scanVcfHeader(snp.file)
-  gr = GRanges(seqnames = chr, range = IRanges(start = 0, 
+  gr = GRanges(seqnames = chr, range = IRanges(start = 0,
                                                end = 200e6))
   param = ScanVcfParam(geno = c("GT", "FI"), fixed = "ALT",
                        samples = strains[strains != "C57BL_6J"], which = gr)
   sanger = readVcf(file = snp.file, genome = "mm10", param = param)
-  
+
   # Keep high quality SNPs (quality == 1)
   sanger = sanger[rowSums(geno(sanger)$FI, na.rm = TRUE) == 7]
-  
+
   # Keep polymorphic SNPs.
   keep = which(rowSums(geno(sanger)$GT == "0/0", na.rm = TRUE) < 7)
   sanger = sanger[keep]
   rm(keep)
-  
+
   # We have to do some work to extract the alternate allele.
   alt = CharacterList(fixed(sanger)$ALT)
   alt = unstrsplit(alt, sep = ",")
-  
+
   # Extract the SNP positions and genotypes.
   ###DMG
   ### Changed 'rowData()' to 'rowRanges()' because rowData was deprecated.
@@ -264,12 +270,12 @@ workfxn.xchr = function(obj) {
                           POS = start(sanger), REF = as.character(fixed(sanger)$REF),
                           ALT = alt, stringsAsFactors = FALSE)
   rm(alt)
-  
+
   ###DMG
   ### Again, you have HS mice. Just use the HS data. You can delete the DO lines.
   # Add C57BL/6J to the Sanger SNPs.
   #  if(cross == "DO") {
-  #    sanger = cbind("A_J" = geno(sanger)$GT[,1,drop = FALSE], 
+  #    sanger = cbind("A_J" = geno(sanger)$GT[,1,drop = FALSE],
   #             "C57BL_6J" = "0/0",
   #             geno(sanger)$GT[,2:7,drop = FALSE])
   #  } else if(cross == "HS") {
@@ -277,123 +283,123 @@ workfxn.xchr = function(obj) {
                  "C57BL_6J" = "0/0",
                  geno(sanger)$GT[,5:7,drop = FALSE])
   #  } # else
-  
+
   # Convert allele calls to numeric values.
   sanger = (sanger != "0/0") * 1
-  
+
   # Make the MAF between 1/8 and 4/8.
   flip = which(rowSums(sanger) > 4)
   sanger[flip,] = 1 - sanger[flip,,drop = FALSE]
   rm(flip)
-  
+
   ###DMG
   ### I'm moving this outside of the function.
   # Create the survival object.
   #  surv = Surv(pheno$days, pheno$cataract)
-  
+
   # Null model.
   ###DMG
   ### Put the null logistic regression or linear model here.
   null.mod = coxph(surv ~ addcovar)
   null.ll = logLik(null.mod)
   pv = rep(0, nrow(sanger))
-  
+
   # Get the unique SDPs between each pair of markers and
   # calculate the COXPH LOD.
-  
+
   # CoxPH function.
   coxph.fxn = function(snp.rng, local.probs) {
-    
+
     # Get the SDPs.
     sdp.nums = sanger[snp.rng,] %*% 2^(7:0)
     sdps2keep = which(!duplicated(sdp.nums))
     cur.sdps = sanger[snp.rng,,drop = FALSE][sdps2keep,,drop = FALSE]
     unique.sdp.nums = sdp.nums[sdps2keep]
     m = match(sdp.nums, unique.sdp.nums)
-    
+
     # Multiply the SDPs by the haplotype probabilities.
     cur.alleles = tcrossprod(cur.sdps, local.probs)
     cur.ll = rep(null.ll, nrow(cur.sdps))
-    
+
     # Check for low allele frequencies and remove SDPs with too
     # few samples carrying one allele.
     sdps.to.use = which(rowSums(cur.alleles) > 2.0)
-    
+
     sex.col = which(colnames(addcovar) == "sex")
     if(length(sex.col) != 1) {
       stop("One of the columns of addcovar MUST be named 'sex'.")
     } # if(length(sex.col) != 1)
-    
+
     # Run the Cox PH model at each unique SDP.
     for(j in sdps.to.use) {
-      
+
       ###DMG
       ### Put the logistic regression or linear model here.
-      
+
       # For the X chromosome we map with sex as an interactive
       # covariate with genotype.
-      mod = coxph(surv ~ addcovar + cur.alleles[j,] + 
+      mod = coxph(surv ~ addcovar + cur.alleles[j,] +
                     addcovar[,sex.col] * cur.alleles[j,])
       cur.ll[j] = logLik(mod)
-      
+
     } # for(j)
-    
+
     # This is the LRS.
     cur.ll = cur.ll - null.ll
-    
+
     # Return the results.
     cur.ll[m]
-    
+
   } # coxph.fxn()
-  
+
   # SNPs before the first marker.
   snp.rng = which(sanger.hdr$POS <= obj$markers[1,3])
   if(length(snp.rng) > 0) {
-    
+
     pv[snp.rng] = coxph.fxn(snp.rng, obj$probs[,,1])
-    
+
   } # if(length(snp.rng) > 0)
-  
+
   # SNPs between Markers.
   for(i in 1:(nrow(obj$markers)-1)) {
-    
+
     snp.rng = which(sanger.hdr$POS > obj$markers[i,3] &
                       sanger.hdr$POS <= obj$markers[i+1,3])
-    
+
     if(length(snp.rng) > 0) {
-      
+
       # Take the mean of the haplotype probs at the surrounding markers.
-      pv[snp.rng] = coxph.fxn(snp.rng, (obj$probs[,,i] + 
+      pv[snp.rng] = coxph.fxn(snp.rng, (obj$probs[,,i] +
                                           obj$probs[,,i+1]) * 0.5)
-      
+
     } # if(length(snp.rng) > 0)
-    
+
   } # for(i)
-  
+
   # SNPs after the last marker.
   snp.rng = which(sanger.hdr$POS > obj$markers[nrow(obj$markers),3])
   if(length(snp.rng) > 0) {
-    
+
     pv[snp.rng] = coxph.fxn(snp.rng, obj$probs[,,nrow(obj$markers)])
-    
+
   } # if(length(snp.rng) > 0)
-  
+
   # Convert LRS to p-values using the chi-squared distribution.
   # Note that we have more degrees of freedom in the model.
   pv = pchisq(2 * pv, df = 1, lower.tail = FALSE)
   pv = data.frame(sanger.hdr, pv, stringsAsFactors = FALSE)
-  
+
   save(pv, file = paste0(file.prefix, "_chr", chr, ".Rdata"))
-  
-  png(paste0(file.prefix, "_chr", chr,".png"), width = 2000, 
+
+  png(paste0(file.prefix, "_chr", chr,".png"), width = 2000,
       height = 1600, res = 200)
   plot(as.numeric(pv[,3]) * 1e-6, -log10(pv[,6]), pch = 20)
   mtext(side = 3, line = 0.5, text = paste(plot.title, ": Chr", chr))
   dev.off()
-  
+
   # Return the positions and p-values.
   return(pv)
-  
+
 } # workfxn.xchr()
 
 
@@ -405,7 +411,7 @@ names(result) = names(data)
 for(i in 1:19) {
   print(i)
   result[[i]] = workfxn(data[[i]])
-  
+
 } #for(i)
 
 print("X")
@@ -474,68 +480,68 @@ males = which(pheno$sex == "1")
 perms = matrix(1, nrow = 100, ncol = 2, dimnames = list(1:100, c("A", "X")))
 
 for(p in 1:100) {
-  
+
   new.order = rep(0, length(surv))
   new.order[females] = sample(females)
   new.order[males] = sample(males)
-  
+
   surv.perm = surv[new.order]
   surv = surv.perm
-  
+
   min.a.pv = 1
-  
+
   for(i in 1:19) {
     print(i)
     result = workfxn(data[[i]])
     min.a.pv = min(min.a.pv, min(result$pv))
   } #for(i)
-  
+
   print("X")
   result = workfxn.xchr(data[["X"]])
   min.x.pv = min(result$pv)
   # Save the minimum p-values.
   perms[p,] = c(min.a.pv, min.x.pv)
-  
+
 } # for(p)
 
 #Significance Threshold Function
 get.sig.thr = function(perms, alpha = 0.05, Xchr = TRUE) {
-  
+
   sig.thr = rep(0, length(alpha))
-  
+
   if(Xchr) {
-    
+
     if(!is.matrix(perms)) {
       stop(paste("'perms' is not a matrix. 'perms' must be a matrix",
                  "with 2 columns, named 'A' and 'X'."))
     } # if(!is.matrix(perms))
-    
+
     if(!(all(colnames(perms) %in% c("A", "X")))) {
       stop(paste("The colnames of 'perms' are not equal to 'A' and",
                  "'X'. 'perms' must be a matrix, with 2 columns, named",
                  "'A' and 'X'."))
     } # if(!(all(colnames(perms) %in% c("A", "X"))))
-    
+
     chrlen = get.chr.lengths()
     len.auto = sum(chrlen[1:19])
     len.X = chrlen["X"]
     len.all = len.auto + len.X
     alpha.auto = 1.0 - (1.0 - alpha)^(len.auto / len.all)
     alpha.X    = 1.0 - (1.0 - alpha)^(len.X / len.all)
-    
+
     sig.thr = cbind("A" = quantile(perms[,"A"], probs = 1.0 - alpha.auto, na.rm = TRUE),
                     "X" = quantile(perms[,"X"], probs = 1.0 - alpha.X, na.rm = TRUE))
     rownames(sig.thr) = alpha
-    
+
   } else {
-    
+
     sig.thr = quantile(perms, probs = 1.0 - alpha, na.rm = TRUE)
     names(sig.thr) = alpha
-    
+
   } # else
-  
+
   return(sig.thr)
-  
+
 } # get.sig.thr()
 
 

@@ -3,18 +3,47 @@ library(splines)
 library(survival)
 library(KMsurv)
 library(OIsurv)
+library(rms)
+
+Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Total-Table 1.csv")
+pheno = data.frame(row.names = Total$corrected, original = Total$original,
+                   group = Total$group,
+                   sex = as.numeric(Total$sex == "M"),
+                   days = as.numeric(Total$days),
+                   OSA = as.numeric(Total$Osteosarcoma),
+                   Mets = as.numeric(Total$Metastatic.Tumors))
+
+OSA <- pheno[which(pheno$OSA == 1), ]
+head(OSA)
+OSA
+
+allele <- c(1,0,1,2,2,1,0,1,1,1,1,2,1,1,1,1,2,1,2)
+
+OSA <- cbind(OSA, allele)
+time <- OSA$days
+event <- (OSA$OSA)
+OSA$SurvObj <- with(OSA, Surv(time, event))
+OSA
+
+km.as.one <- npsurv(OSA$SurvObj ~ 1, conf.type = "log-log")
+km.by.sex <- npsurv(OSA$SurvObj ~ OSA$sex, conf.type = "log-log")
+km.by.mets <- npsurv(OSA$SurvObj ~ OSA$Mets, conf.type = "log-log")
+km.by.allele <- npsurv(OSA$SurvObj ~ OSA$allele, conf.type = "log-log")
+
+survplot(km.as.one, title = "All Osteosarcoma Cases")
+
+summary(km.by.allele)
+survplot(km.by.allele, stitle = 'Osteosarcoma by Allele', xlab = 'Time (days)', 
+         label.curves = F, conf = "bands", levels.only  = T, 
+         n.risk = F, y.n.risk = -0, cex.n.risk = 0.7)
+legend(40, .85, c("No BALB/cJ Allele", "BALB/cJ Heterozygous", "BALB/cJ Homozygous") , lty=c(1,3) )
 
 
-attach(GRSD)
-names(GRSD)
-
-time <- days
-event <- HCC
-X <- cbind(GROUP, sex, family, coat.color)
-group <- GROUP
+survplot(km.by.mets, stitle = 'Osteosarcoma by Allele', xlab = 'Time (days)', n.risk = T)
+survplot(km.by.sex)
 
 #Log-logistic parametric model coefficients
-loglogistic <- survreg(Surv(time,event) ~ X, dist="loglogistic")
+loglogistic <- survreg(Surv(time, event) ~ OSA, dist="loglogistic")
 summary(loglogistic)
 
 # Cox proportional hazard model - coefficients and hazard rates

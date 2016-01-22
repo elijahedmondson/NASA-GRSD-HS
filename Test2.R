@@ -60,3 +60,26 @@ begin <- Sys.time()
 
 end <- difftime(Sys.time(), begin, units = 'hours')
 end
+
+
+tx = "All Females"
+pheno.col = "XO"
+
+
+chr = 14
+        print("Loading file...")
+        load(file)
+        top <- max(-log10(qtl[[chr]]$p.value))
+        print(paste0("Maximum LOD score on Chr ", chr, " is ", top, ","))
+        qtl[[chr]]$POS[which(-log10(qtl[[chr]]$p.value) >= top)]
+        max.LOD.position <- result[[chr]]$POS[which(-log10(qtl[[chr]]$p.value) > LODcutoff)]
+        print(paste("QTL interval for LOD >", LODcutoff, ": CHROMOSOME", chr, ",",
+                    min(max.LOD.position), "-", max(max.LOD.position)))
+        start = min(max.LOD.position)
+        end = max(max.LOD.position)
+        print("Loading information...")
+        mgi = get.mgi.features(chr = chr, start = start, end = end, type = type, source = "MGI")
+        print(mgi$Name)
+        return(mgi)
+}
+

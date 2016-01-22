@@ -962,10 +962,16 @@ legend(.75, 3, legend = c("Unirradiated", "HZE", "Gamma"),
 
 ##Plotting 3 QTL maps for comparison##
 layout(matrix(3:1, 3, 1)) 
-DOQTL:::plot.scanone.assoc(HZE.AML, chr=15, bin.size = 100, main = "HZE Ion")
-DOQTL:::plot.scanone.assoc(Gamma.AML, chr=15, bin.size = 100, main = "Gamma ray")
-DOQTL:::plot.scanone.assoc(Unirradiate.AML, chr=15, bin.size = 100, main = "Unirradiated")
+par(mfrow = c(2,2), mar=c(1, 4, 1, 1) + 0.1)
+DOQTL:::plot.scanone.assoc(HZE.days, chr=17, bin.size = 100, main = "HZE Ion", ylim=c(0,15))
+DOQTL:::plot.scanone.assoc(Gamma.days, chr=17, bin.size = 100, main = "Gamma ray", ylim=c(0,15))
+DOQTL:::plot.scanone.assoc(Unirradiated.days, chr=17, bin.size = 100, main = "Unirradiated", ylim=c(0,15))
+DOQTL:::plot.scanone.assoc(qtl, chr=17, bin.size = 100, main = "Total Cases", ylim=c(0,15))
 
+par(mfrow = c(3,1), mar=c(1, 4, 1, 1) + 0.5)
+DOQTL:::plot.scanone.assoc(HZE.days, bin.size = 100, main = "HZE Ion", ylim=c(0,15))
+DOQTL:::plot.scanone.assoc(Gamma.days, bin.size = 100, main = "Gamma ray", ylim=c(0,15))
+DOQTL:::plot.scanone.assoc(Unirradiated.days, bin.size = 100, main = "Unirradiated", ylim=c(0,15))
 
 ##plot w perms#############################################
 
