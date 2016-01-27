@@ -1,4 +1,4 @@
-chr = 17
+chr = 4
        
 #Max LOD score
 top <- max(-log10(qtl[[chr]]$p.value))
@@ -8,7 +8,7 @@ top
 max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) == top)]
 max.LOD.position
 
-max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) > 14)]
+max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) > 9)]
 max.LOD.position
 
 start = max.LOD.position@start[1]

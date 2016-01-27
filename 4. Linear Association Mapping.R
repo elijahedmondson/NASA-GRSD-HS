@@ -9,7 +9,7 @@ library(DOQTL)
 load(file = "~/Desktop/R/Build/K.Rdata")
 load(file = "~/Desktop/R/Build/model.probs.Rdata")
 load(url("ftp://ftp.jax.org/MUGA/MM_snps.Rdata"))
-outdir = "~/Desktop/R/QTL/WD/"
+outdir = "~/Desktop/"
 setwd(outdir)
 
 sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz"
@@ -22,7 +22,14 @@ pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M
                    days = as.numeric(Total$days),
                    weight = as.numeric(Total$weight),
                    XO = as.numeric(Total$XO), 
-                   OSA = as.numeric(Total$OSA.qtl))
+                   OSA = as.numeric(Total$OSA.qtl),
+                   AML.qtl = as.numeric(Total$Myeloid.Leukemia))
+
+Alir <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Irradiated-Table 1.csv")
+pheno = data.frame(row.names = Alir$row.names, sex = as.numeric(Alir$sex == "M"),
+                   AML = as.numeric(Alir$AML.transform), 
+                   OSA = as.numeric(Alir$Osteosarcoma),
+                   Thyroid = as.numeric(Alir$Thyroid.Tumor))
 
 HZE <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/HZE-Table 1.csv")
 pheno = data.frame(row.names = HZE$row.names, sex = as.numeric(HZE$sex == "M"),  
@@ -30,25 +37,29 @@ pheno = data.frame(row.names = HZE$row.names, sex = as.numeric(HZE$sex == "M"),
                    Albino = as.numeric(HZE$albino),
                    Pulmonary.Adenocarcinoma = as.numeric(HZE$Pulmonary.Adenocarcinoma),
                    HCC = as.numeric(HZE$Hepatocellular.Carcinoma),
-                   LSA = as.numeric(HZE$Lymphoma),
+                   PreT = as.numeric(HZE$PreT.transform),
                    AML = as.numeric(HZE$Myeloid.Leukemia),
                    Harderian = as.numeric(HZE$Harderian.Tumor),
-                   OSA = as.numeric(HZE$OSA.qtl))
+                   OSA = as.numeric(HZE$OSA.transform), 
+                   Thyroid = as.numeric(HZE$Thyroid.transform),
+                   NN = as.numeric(HZE$NN.transform))
 
 Gamma <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Gamma-Table 1.csv")
+
 pheno = data.frame(row.names = Gamma$row.names, sex = as.numeric(Gamma$sex == "M"),  
                    days = as.numeric(Gamma$days),
                    Albino = as.numeric(Gamma$albino),
                    Pulmonary.Adenocarcinoma = as.numeric(Gamma$Pulmonary.Adenocarcinoma),
                    HCC = as.numeric(Gamma$Hepatocellular.Carcinoma),
                    LSA = as.numeric(Gamma$LSA),
-                   AML = as.numeric(Gamma$AML.qtl),
-                   PreT = as.numeric(Gamma$PreT),
+                   PreT = as.numeric(Gamma$PreT.transform),
                    FBL = as.numeric(Gamma$FBL))
 
 Unirradiated <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Unirradiated-Table 1.csv")
 pheno = data.frame(row.names = Unirradiated$row.names, sex = as.numeric(Unirradiated$sex == "M"),
-                   days = as.numeric(Unirradiated$days))
+                   days = as.numeric(Unirradiated$days),
+                   PreT = as.numeric(Unirradiated$PreT.transform),
+                   PulACA = as.numeric(Unirradiated$PulACA.transform))
 
 
 
@@ -60,10 +71,10 @@ addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 # 4. ASSOCIATION MAPPING #
 
-qtl = scanone.assoc(pheno = pheno, pheno.col = "days", probs = model.probs, K = K, 
+qtl = scanone.assoc(pheno = pheno, pheno.col = "AML", probs = model.probs, K = K, 
                     addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
 
-save(qtl, file = "Days_Unirradiated.Rdata")
+save(qtl, file = "AML_HZE_weighted.Rdata")
 
 DOQTL:::plot.scanone.assoc(qtl, bin.size = 100)
 
@@ -72,7 +83,7 @@ DOQTL:::plot.scanone.assoc(qtl, bin.size = 100)
 dev.off()
 
 png("_CHR_4.png", width = 2000, height = 1600, res = 128)
-DOQTL:::plot.scanone.assoc(qtl, chr = 1:19, bin.size = 100)
+DOQTL:::plot.scanone.assoc(qtl, chr = 7, bin.size = 100)
 dev.off()
 
 layout(matrix(3:1, 3, 1)) 

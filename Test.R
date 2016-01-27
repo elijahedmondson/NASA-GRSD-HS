@@ -63,3 +63,120 @@ dev.off()
 
 
 
+
+
+
+
+
+
+
+
+
+
+stack = data.frame(Gamma = c("Non-neoplastic" = sum(Gamma$non.neoplastic),
+                               "Lymphoma PreT" = sum(Gamma$PreT),
+                               "Lymphoma BLL" = sum(Gamma$BLL),
+                               "Lymphoma FBL" = sum(Gamma$FBL),
+                               "Lymphoma DLBCL" = sum(Gamma$DLBCL),
+                               "Myeloid Leukemia" = sum(Gamma$Myeloid.Leukemia),
+                               "Pulmonary Adenocarcinoma" = sum(Gamma$Pulmonary.Adenocarcinoma),
+                               "Hepatocellular Carcinoma" = sum(Gamma$Hepatocellular.Carcinoma),
+                               "Hemangiosarcoma" = sum(Gamma$Hemangiosarcoma),
+                               "Histiocytic Sarcoma" = sum(Gamma$Histiocytic.Sarcoma),
+                               "Mammary Adenocarcinoma" = sum(Gamma$Mammary.Gland.Adenocarcinoma),
+                               "Ovarian Granulosa Cell Tumor" = sum(Gamma$Granulosa.Cell.Tumor),
+                               "Thyroid Adenoma" = sum(Gamma$Thyroid.Tumor),
+                               "Soft Tissue Sarcoma" = sum(Gamma$Soft.Tissue.Sarcomas),
+                               "Harderian Gland Adenocarcinoma" = sum(Gamma$Harderian.Gland.Adenocarcinoma),
+                               "Harderian Gland Adenoma" = sum(Gamma$Harderian.Gland.Adenoma),
+                               "Osteosarcoma" = sum(Gamma$Osteosarcoma),
+                               "Pituitary Adenoma" = sum(Gamma$Pituitary.Adenoma)),
+                     HZE = c("Non-neoplastic" = sum(HZE$non.neoplastic),
+                           "Lymphoma PreT" = sum(HZE$PreT),
+                          "Lymphoma BLL" = sum(HZE$BLL),
+                          "Lymphoma FBL" = sum(HZE$FBL),
+                          "Lymphoma DLBCL" = sum(HZE$DLBCL),
+                          "Myeloid Leukemia" = sum(HZE$Myeloid.Leukemia),
+                          "Pulmonary Adenocarcinoma" = sum(HZE$Pulmonary.Adenocarcinoma),
+                          "Hepatocellular Carcinoma" = sum(HZE$Hepatocellular.Carcinoma),
+                          "Hemangiosarcoma" = sum(HZE$Hemangiosarcoma),
+                          "Histiocytic Sarcoma" = sum(HZE$Histiocytic.Sarcoma),
+                          "Mammary Adenocarcinoma" = sum(HZE$Mammary.Gland.Adenocarcinoma),
+                          "Ovarian Granulosa Cell Tumor" = sum(HZE$Granulosa.Cell.Tumor),
+                          "Thyroid Adenoma" = sum(HZE$Thyroid.Tumor),
+                          "Soft Tissue Sarcoma" = sum(HZE$Soft.Tissue.Sarcomas),
+                          "Harderian Gland Adenocarcinoma" = sum(HZE$Harderian.Gland.Adenocarcinoma),
+                          "Harderian Gland Adenoma" = sum(HZE$Harderian.Gland.Adenoma),
+                          "Osteosarcoma" = sum(HZE$Osteosarcoma),
+                          "Pituitary Adenoma" = sum(HZE$Pituitary.Adenoma)),
+                   Unirradiated = c("Non-neoplastic" = sum(Unirradiated$non.neoplastic),
+                                    "Lymphoma PreT" = sum(Unirradiated$PreT),
+                                    "Lymphoma BLL" = sum(Unirradiated$BLL),
+                                    "Lymphoma FBL" = sum(Unirradiated$FBL),
+                                    "Lymphoma DLBCL" = sum(Unirradiated$DLBCL),
+                                    "Myeloid Leukemia" = sum(Unirradiated$Myeloid.Leukemia),
+                                    "Pulmonary Adenocarcinoma" = sum(Unirradiated$Pulmonary.Adenocarcinoma),
+                                    "Hepatocellular Carcinoma" = sum(Unirradiated$Hepatocellular.Carcinoma),
+                                    "Hemangiosarcoma" = sum(Unirradiated$Hemangiosarcoma),
+                                    "Histiocytic Sarcoma" = sum(Unirradiated$Histiocytic.Sarcoma),
+                                    "Mammary Adenocarcinoma" = sum(Unirradiated$Mammary.Gland.Adenocarcinoma),
+                                    "Ovarian Granulosa Cell Tumor" = sum(Unirradiated$Granulosa.Cell.Tumor),
+                                    "Thyroid Adenoma" = sum(Unirradiated$Thyroid.Tumor),
+                                    "Soft Tissue Sarcoma" = sum(Unirradiated$Soft.Tissue.Sarcomas),
+                                    "Harderian Gland Adenocarcinoma" = sum(Unirradiated$Harderian.Gland.Adenocarcinoma),
+                                    "Harderian Gland Adenoma" = sum(Unirradiated$Harderian.Gland.Adenoma),
+                                    "Osteosarcoma" = sum(Unirradiated$Osteosarcoma),
+                                    "Pituitary Adenoma" = sum(Unirradiated$Pituitary.Adenoma)))
+
+library(RColorBrewer)
+
+
+my.col <- c("#ccf2ff", "#9CB071", "#9CB071",
+         "#9CB071", "#9CB071", "#87AFC7",
+         "#FFCBA4", "#ff9966", "#E6E600FF",
+         "#2B547E", "#E8C034FF", "#404040", 
+         "#e6e6e6", "#ff6666", "#617C58", 
+         "#87CEEB", "#C48793", "#EDC9AF")
+barplot(t(stack), col = my.col, ylab = "Number of Mice", ylim = c(0,800), xlim = c(0,12), width = 2)
+
+
+legend("bottomright", 
+       legend = c(colnames(stack)[18:1]), #in order from top to bottom
+       fill = my.col[18:1], # 6:1 reorders so legend order matches graph
+       title = "Tumor Histotype")
+
+
+
+
+
+
+
+Group <- c(rep(c("Gamma", "HZE", "Unirradiated"), each = 18))
+Histotype <- c(rep(c("Non-neoplastic", "Lymphoma PreT","Lymphoma BLL", 
+               "Lymphoma FBL", "Lymphoma DLBCL", "Myeloid Leukemia", 
+               "Pulmonary Adenocarcinoma", "Hepatocellular Carcinoma", 
+               "Hemangiosarcoma", "Histiocytic Sarcoma", 
+               "Mammary Adenocarcinoma",
+               "Ovarian Granulosa Cell Tumor", "Thyroid Adenoma", 
+               "Soft Tissue Sarcoma", "Harderian Gland Adenocarcinoma",
+               "Harderian Gland Adenoma", "Osteosarcoma", "Pituitary Adenoma"), times = 3))
+Tumor <- c(stack$Gamma, stack$HZE, stack$Unirradiated)
+
+
+Data <- data.frame(Group, Histotype, Tumor)
+Data
+qplot(factor(Group), data = Data, geom = "bar", fill = factor(Tumor))
+
+Data <- ddply(Data, .(Group), 
+              transform, pos = cumsum(Tumor) - (0.5 * Tumor)
+)
+
+
+ggplot(Data, aes(x = Group, y= Tumor, fill = Histotype), 
+       geom_bar(stat="identity"), 
+       geom_text(aes(label = Frequency, y = pos), size = 3))
+
+p + geom_text(aes(label = Frequency), size = 3, hjust = 0.5, vjust = 3, position = "stack") 
+
+
+

@@ -1,7 +1,9 @@
 library(SNPtools)
 snp.file = "/Users/elijah/Desktop/R/QTL/WD/mgp.v5.merged.snps_all.dbSNP142.vcf.gz"
-load("/Users/elijah/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Total_LSA.PreT_QTL.Rdata")
-chr = 14
+load("/Users/elijah/Desktop/R/QTL/WD/1.\ Linear\ Mapping/Weighted/AML-ratio_.Rdata")
+chr = 2
+
+DOQTL:::plot.scanone.assoc(qtl, bin.size = 100)
 
 #Max LOD score
 top <- max(-log10(qtl[[chr]]$p.value))
@@ -11,7 +13,7 @@ top
 max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) == top)]
 max.LOD.position
 
-max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) > 5.5)]
+max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) > 12)]
 max.LOD.position
 
 start = max.LOD.position@start[1]
@@ -37,7 +39,7 @@ newqtl = data.frame(Chromosome = chr,
 
 variant.plot(var.file = "http://cgd.jax.org/tools/SNPtools/Build38/sanger.snps.NCBI38.txt.gz",
         mgi.file = "http://cgd.jax.org/tools/SNPtools/MGI/MGI.20130305.sorted.txt.gz",
-        chr = 17, start = 37, end = 39, type = "snp", pattern = c("AKR/J","CBA/J"),
+        chr = chr, start = start, end = end, type = "snp", pattern = c("C57BL/6J"),
         strains = strains, 
         ref = "CBA/J", qtl = newqtl)
 
