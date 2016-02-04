@@ -1,66 +1,39 @@
 
+plot.hs = function (x, chr, bin.size = 10000, ...)
+{
 
-result[["5"]] = workfxn(data[["5"]])
+        chrlen = get.chr.lengths()
+        chrlen = chrlen[names(chrlen) %in% names(x)]
+        chrlen = cumsum(chrlen)
+        chrmid = c(0, chrlen[-length(chrlen)]) + diff(c(0, chrlen)) *
+                0.5
+        names(chrmid) = names(chrlen)
+        pos = as.list(x@unlistData@ranges@start)
+        #pos = lapply(x, FUN, start)
+        pv = lapply(x, mcols)
+        pv = lapply(pv, "[[", 1)
+        for (c in 1:length(x)) {
+                bins = seq(1, length(pv[[c]]), bin.size)
+                bins[length(bins) + 1] = length(pv[[c]])
+                pos2 = rep(0, length(bins))
+                pv2 = rep(0, length(bins))
+                for (i in 1:(length(bins) - 1)) {
+                        wh = which.min(pv[[c]][bins[i]:bins[i + 1]])
+                        wh = wh + bins[i] - 1
+                        pos2[i] = pos[[c]][wh] * 1e-06 + max(1, chrlen[c -
+                                                                               1])
+                        pv2[i] = pv[[c]][wh]
+                }
+                pos[[c]] = pos2
+                pv[[c]] = -log(pv2, 10)
+        }
+        chr = rep(names(x), sapply(pos, length))
+        un.chr = unique(chr)
+        m = match(chr, un.chr)
+        col = m%%2 + 1
+        plot(unlist(pos), unlist(pv), pch = 16, col = c("black",
+                                                        "grey60")[col], las = 1, xaxt = "n", xlab = "", ylab = "-log10(p-value)",
+             xaxs = "i")
+        mtext(text = names(chrmid), side = 1, line = 0.1, at = chrmid)
+}
 
-qtlscan = scanone.assoc(pheno = pheno, pheno.col = "Harderian", probs = probs, K = K, 
-                        addcovar = addcovar, markers = markers, sdp.file = sdp.file, ncl = 1)
-DOQTL:::plot.scanone.assoc(AM.qtl, 14, bin.size = 10)
-
-perms = scanone.perm(pheno = pheno, pheno.col = "Harderian", probs = probs, addcovar = addcovar, 
-                     snps = markers, path = "/Users/elijah/Desktop/R/QTL/WD/", 
-                     nperm = 100)
-plot(qtlscan, sig.thr = c(thr1, thr2, thr3), main = "")
-
-
-load(file = "/Users/elijah/Desktop/R/QTL/WD/Association\ Mapping\ Files/HZE/AMQTL.OSA.Rdata")
-
-#Find the max LOD score#
-
-LOD = -log10(data[[2]]$pv)
-LOD
-
-max.LOD.SNP.ID <- data$ID[which(-log10(data[[4]]$pv) > 4)]
-max.LOD.SNP.ID
-
-max.LOD.position <- result$POS[which(-log10(result[[4]]$pv) > 4)]
-max.LOD.position
-
-
-# PLOT ONE CHROMOSOME #
-load(file = "/Users/elijah/Desktop/R/QTL/WD/hq_snps/Thymic\ LSA\ HZE_plotting.Rdata")
-
-data4 <- data[[4]]
-
-png(paste0("ThyLSA_chr4",".png"), width = 2000, 
-    height = 1600, res = 200)
-plot(as.numeric(data4$POS) * 1e-6, -log10(data4$pv), pch = 20)
-mtext(side = 3, line = 0.5, text = paste(plot.title, ": Chr"))
-dev.off()
-
-
-
-
-mgi = get.mgi.features(chr = 14, start = 68772000, 
-                       end = 68774069, type = "gene", source = "MGI")
-
-png(paste0(file.prefix, "_chr", chr,".png"), width = 2000, 
-    height = 1600, res = 200)
-plot(as.numeric(pv[,3]) * 1e-6, -log10(pv[,6]), pch = 20)
-mtext(side = 3, line = 0.5, text = paste(plot.title, ": Chr", chr))
-
-
-# CONVERT TO GRANGES #
-
-load(file = "~/Desktop/albino.Rdata")
-chrs = c(1:19, "X")
-qtl = GRangesList(GRanges("list", length(result)))
-
-for(i in 1:length(chrs)) {
-  print(i)
-  qtl[[i]] <- GRanges(seqnames = Rle(result[[i]]$ID), ranges = IRanges(start = result[[i]]$POS, width = 1), p.value = result[[i]]$pv)
-} # for(i)
-
- save(result, file = "~/Desktop/albino.RData")
- 
-
- 

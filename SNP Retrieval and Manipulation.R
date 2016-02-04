@@ -1,7 +1,7 @@
 library(SNPtools)
 snp.file = "/Users/elijah/Desktop/R/QTL/WD/mgp.v5.merged.snps_all.dbSNP142.vcf.gz"
-load("/Users/elijah/Desktop/R/QTL/WD/1.\ Linear\ Mapping/Weighted/AML-ratio_.Rdata")
-chr = 2
+load("/Users/elijah/Desktop/files/completed/HZE_cataract_QTL.Rdata")
+chr = 18
 
 DOQTL:::plot.scanone.assoc(qtl, bin.size = 100)
 
@@ -13,7 +13,7 @@ top
 max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) == top)]
 max.LOD.position
 
-max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) > 12)]
+max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) > 4)]
 max.LOD.position
 
 start = max.LOD.position@start[1]
@@ -32,31 +32,31 @@ strains = available.strains[c(4:8,11,12,14)]
 strains
 
 input = qtl[[chr]]
-newqtl = data.frame(Chromosome = chr, 
-                    Position = input@ranges@start, 
+newqtl = data.frame(Chromosome = chr,
+                    Position = input@ranges@start,
                     lod = -log10(input$p.value))
 
 
 variant.plot(var.file = "http://cgd.jax.org/tools/SNPtools/Build38/sanger.snps.NCBI38.txt.gz",
         mgi.file = "http://cgd.jax.org/tools/SNPtools/MGI/MGI.20130305.sorted.txt.gz",
         chr = chr, start = start, end = end, type = "snp", pattern = c("C57BL/6J"),
-        strains = strains, 
+        strains = strains,
         ref = "CBA/J", qtl = newqtl)
 
-snps = get.variants(chr = chr, start = start, end = end, 
+snps = get.variants(chr = chr, start = start, end = end,
                     strains =  strains,
                     type = "snp")
 
 snp = convert.variants.to.numeric(snps)
 
-snp.plot(variants = snp, col = c("black", "grey50", "white"), cluster = F, 
+snp.plot(variants = snp, col = c("black", "grey50", "white"), cluster = F,
          ref = "C57BL/6J", highlight = "CBA/J", mgi, qtl = newqtl)
 
 
 
 
 
-layout(matrix(3:1, 3, 1)) 
+layout(matrix(3:1, 3, 1))
 par(mfrow = c(2,2), mar=c(1, 4, 1, 1) + 0.1)
 DOQTL:::plot.scanone.assoc(HZE.days, chr=17, bin.size = 100, main = "HZE Ion", ylim=c(0,15))
 DOQTL:::plot.scanone.assoc(Gamma.days, chr=17, bin.size = 100, main = "Gamma ray", ylim=c(0,15))

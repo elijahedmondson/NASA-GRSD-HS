@@ -8,43 +8,59 @@ library(GenomicRanges)
 library(survival)
 library(regress)
 library(HZE)
+outdir = "~/Desktop/files/"
 options(stringsAsFactors = F)
 setwd("~/Desktop/files/")
-outdir = "~/Desktop/files/"
-
-surv =
-
-GRSD.coxph(pheno, pheno.col = "PulMets", probs, K, addcovar,
-           markers, snp.file, outdir = "~Desktop/files/", tx = "HZE")
-
-# GENOTYPE #
 load(file = "~/Desktop/R/QTL/WD/GRSD.Rdata")
+file.prefix = "HZE.cataract"
+plot.title = "HZE.cataract"
+
+addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
+GRSD.coxph1(pheno, pheno.col = "cataract", probs, K, addcovar,
+           markers, snp.file, outdir = "~/Desktop/files/", tx = "HZE")
+
+
+
 
 # PHENOTYPE #
+Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Total-Table 1.csv")
+pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M"),
+                   #days = as.numeric(Total$days),
+                   days = as.numeric(Total$Cataract.2.0.Score),
+                   cataract = as.numeric(Total$Cataract.2.0.Event),
+                   LSA = as.numeric(Total$Lymphoma),
+                   PulMets = as.numeric(Total$Pulmonary.Metastases))
+
+Allirr <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Irradiated-Table 1.csv")
+pheno = data.frame(row.names = Allirr$row.names, sex = as.numeric(Allirr$sex == "M"),
+                   #days = as.numeric(Allirr$days),
+                   days = as.numeric(Allirr$Cataract.2.0.Score),
+                   cataract = as.numeric(Allirr$Cataract.2.0.Event),
+                   LSA = as.numeric(Allirr$Lymphoma),
+                   PulMets = as.numeric(Allirr$Pulmonary.Metastases))
+
 HZE <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/HZE-Table 1.csv")
 pheno = data.frame(row.names = HZE$row.names, sex = as.numeric(HZE$sex == "M"),
-                   days = as.numeric(HZE$days),
-                   cat.days = as.numeric(HZE$Cataract.2.0.Score),
+                   #days = as.numeric(HZE$days),
+                   days = as.numeric(HZE$Cataract.2.0.Score),
                    cataract = as.numeric(HZE$Cataract.2.0.Event),
                    LSA = as.numeric(HZE$Lymphoma),
                    PulMets = as.numeric(HZE$Pulmonary.Metastases))
 
-Gamma <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Gamma.csv")
+Gamma <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Gamma-Table 1.csv")
 pheno = data.frame(row.names = Gamma$row.names, sex = as.numeric(Gamma$sex == "M"),
-                   days = as.numeric(Gamma$days),
+                   #days = as.numeric(Gamma$days),
                    cataract = as.numeric(Gamma$Cataract.2.0.Event),
-                   cat.days = as.numeric(Gamma$Cataract.2.0.Score),
+                   days = as.numeric(Gamma$Cataract.2.0.Score),
                    LSA = as.numeric(Gamma$Lymphoma))
 
-Unirradiated <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Unirradiated.csv")
+Unirradiated <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Unirradiated-Table 1.csv")
 pheno = data.frame(row.names = Unirradiated$row.names, sex = as.numeric(Unirradiated$sex == "M"),
-                   days = as.numeric(Unirradiated$days),
+                   #days = as.numeric(Unirradiated$days),
                    cataract = as.numeric(Unirradiated$Cataract.2.0.Event),
-                   cat.days = as.numeric(Unirradiated$Cataract.2.0.Score),
+                   days = as.numeric(Unirradiated$Cataract.2.0.Score),
                    LSA = as.numeric(Unirradiated$Lymphoma))
 
-file.prefix = "Cataract_Latency Unirradiated CoxPH"
-plot.title = "Cataract Latency, Unirradiated, CoxPH, HQ SNPs"
 
 # COVARIATES #
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))

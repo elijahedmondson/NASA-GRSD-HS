@@ -1,5 +1,5 @@
-chr = 4
-       
+chr = 13
+
 #Max LOD score
 top <- max(-log10(qtl[[chr]]$p.value))
 top
@@ -8,7 +8,7 @@ top
 max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) == top)]
 max.LOD.position
 
-max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) > 9)]
+max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) > 8)]
 max.LOD.position
 
 start = max.LOD.position@start[1]
@@ -19,7 +19,7 @@ print(mgi$Name)
 
 
 
-layout(matrix(3:1, 3, 1)) 
+layout(matrix(3:1, 3, 1))
 par(mfrow = c(2,2), mar=c(1, 4, 1, 1) + 0.1)
 DOQTL:::plot.scanone.assoc(HZE.days, chr=17, bin.size = 100, main = "HZE Ion", ylim=c(0,15))
 DOQTL:::plot.scanone.assoc(Gamma.days, chr=17, bin.size = 100, main = "Gamma ray", ylim=c(0,15))
