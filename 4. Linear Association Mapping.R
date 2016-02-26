@@ -1,7 +1,13 @@
-
-
-install.packages("/Users/elijah/Desktop/R/R\ code/NASA-GRSD-HS/DOQTL_1.0.5.tar.gz", repos = NULL, type = "source")
 library(DOQTL)
+library(doParallel)
+library(foreach)
+library(Rsamtools)
+library(VariantAnnotation)
+library(GenomicRanges)
+library(regress)
+library(MASS)
+library(lmtest)
+library(HZE)
 
 
 # 1. GENOTYPE #
@@ -20,10 +26,10 @@ sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz"
 Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Total-Table 1.csv")
 pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M"),
                    days = as.numeric(Total$days),
-                   weight = as.numeric(Total$weight),
-                   XO = as.numeric(Total$XO), 
-                   OSA = as.numeric(Total$OSA.qtl),
-                   AML.qtl = as.numeric(Total$Myeloid.Leukemia))
+                   weight = as.numeric(Total$weight), 
+                   OSA = as.numeric(Total$OSA),
+                   AML.qtl = as.numeric(Total$Myeloid.Leukemia),
+                   HCC = as.numeric(Total$Hepatocellular.Carcinoma))
 
 Alir <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Irradiated-Table 1.csv")
 pheno = data.frame(row.names = Alir$row.names, sex = as.numeric(Alir$sex == "M"),
@@ -76,7 +82,7 @@ qtl = scanone.assoc(pheno = pheno, pheno.col = "AML", probs = model.probs, K = K
 
 save(qtl, file = "AML_HZE_weighted.Rdata")
 
-DOQTL:::plot.scanone.assoc(qtl, bin.size = 100)
+DOQTL:::plot.scanone.assoc(qtl, bin.size = 100, main = "")
 
 png("PreT.Gamma.LSA_QTL.png", width = 2400, height = 1080, res = 100)
 DOQTL:::plot.scanone.assoc(qtl, bin.size = 100)

@@ -19,8 +19,8 @@ rm(HZE, Gamma, Unirradiated, Total, addcovar)
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 
-GRSD.assoc(pheno, pheno.col = "AML", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files", tx = "HZE")
+GRSD.assoc(pheno, pheno.col = "HCC", probs, K, addcovar, markers, snp.file,
+           outdir = "~/Desktop/files", tx = "ALLIRR")
 
 GRSDassoc.perms(perms = 50, chr = 1:2, pheno = pheno, Xchr = F, addcovar = addcovar,
                 pheno.col = "Thyroid", probs = probs, K = K, markers = markers,
@@ -42,7 +42,8 @@ load(file = "~/Desktop/R/QTL/WD/GRSD.Rdata")
 
 Allirr <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Irradiated-Table 1.csv")
 pheno = data.frame(row.names = Allirr$row.names, sex = as.numeric(Allirr$sex == "M"),
-                   AML = as.numeric(Allirr),
+                   AML = as.numeric(Allirr$AML.transform),
+                   HCC = as.numeric(Allirr$Hepatocellular.Carcinoma),
                    OSA = as.numeric(Allirr$Osteosarcoma))
 
 Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Total-Table 1.csv")
