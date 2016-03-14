@@ -19,8 +19,8 @@ rm(HZE, Gamma, Unirradiated, Total, addcovar)
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 
-GRSD.assoc(pheno, pheno.col = "HCC", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files", tx = "ALLIRR")
+GRSD.assoc(pheno, pheno.col = "HCC.met", probs, K, addcovar, markers, snp.file,
+           outdir = "~/Desktop/files", tx = "Total")
 
 GRSDassoc.perms(perms = 50, chr = 1:2, pheno = pheno, Xchr = F, addcovar = addcovar,
                 pheno.col = "Thyroid", probs = probs, K = K, markers = markers,
@@ -40,16 +40,16 @@ load(file = "~/Desktop/R/QTL/WD/GRSD.Rdata")
 
 # 2. PHENOTYPE #
 
-Allirr <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Irradiated-Table 1.csv")
-pheno = data.frame(row.names = Allirr$row.names, sex = as.numeric(Allirr$sex == "M"),
-                   AML = as.numeric(Allirr$AML.transform),
-                   HCC = as.numeric(Allirr$Hepatocellular.Carcinoma),
-                   OSA = as.numeric(Allirr$Osteosarcoma))
+Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
+pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M"),
+                   AML = as.numeric(Total$AML.transform),
+                   OSA = as.numeric(Total$Osteosarcoma))
 
-Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Total-Table 1.csv")
-pheno = data.frame(row.names = Alir$row.names, sex = as.numeric(Alir$sex == "M"),
-                   AML = as.numeric(Alir$AML.transform),
-                   OSA = as.numeric(Alir$Osteosarcoma))
+HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1" & Total$HCC.Metastatic.Density>0),]
+HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1"), ]
+pheno = data.frame(row.names = HCC.met$row.names, sex = as.numeric(HCC.met$sex == "M"),
+                   HCC.met = as.numeric(HCC.met$HCC.Met),
+                   OSA = as.numeric(HCC.met$Osteosarcoma))
 
 
 HZE <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/HZE-Table 1.csv")

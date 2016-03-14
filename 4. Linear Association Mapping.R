@@ -23,7 +23,7 @@ sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz"
 
 
 # 2. PHENOTYPE #
-Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Total-Table 1.csv")
+Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
 pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M"),
                    days = as.numeric(Total$days),
                    weight = as.numeric(Total$weight), 
@@ -31,43 +31,17 @@ pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M
                    AML.qtl = as.numeric(Total$Myeloid.Leukemia),
                    HCC = as.numeric(Total$Hepatocellular.Carcinoma))
 
-Alir <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Irradiated-Table 1.csv")
-pheno = data.frame(row.names = Alir$row.names, sex = as.numeric(Alir$sex == "M"),
-                   AML = as.numeric(Alir$AML.transform), 
-                   OSA = as.numeric(Alir$Osteosarcoma),
-                   Thyroid = as.numeric(Alir$Thyroid.Tumor))
+Gamma <- Total[ which(Total$groups=='Gamma'), ]
+HZE <- Total[ which(Total$groups=='HZE'), ]
+Unirradiate <- Total[ which(Total$groups=='Unirradiated'), ]
+HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1" & Total$HCC.Metastatic.Density>0),]
 
-HZE <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/HZE-Table 1.csv")
-pheno = data.frame(row.names = HZE$row.names, sex = as.numeric(HZE$sex == "M"),  
-                   days = as.numeric(HZE$days),
-                   Albino = as.numeric(HZE$albino),
-                   Pulmonary.Adenocarcinoma = as.numeric(HZE$Pulmonary.Adenocarcinoma),
-                   HCC = as.numeric(HZE$Hepatocellular.Carcinoma),
-                   PreT = as.numeric(HZE$PreT.transform),
-                   AML = as.numeric(HZE$Myeloid.Leukemia),
-                   Harderian = as.numeric(HZE$Harderian.Tumor),
-                   OSA = as.numeric(HZE$OSA.transform), 
-                   Thyroid = as.numeric(HZE$Thyroid.transform),
-                   NN = as.numeric(HZE$NN.transform))
-
-Gamma <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Gamma-Table 1.csv")
-
-pheno = data.frame(row.names = Gamma$row.names, sex = as.numeric(Gamma$sex == "M"),  
-                   days = as.numeric(Gamma$days),
-                   Albino = as.numeric(Gamma$albino),
-                   Pulmonary.Adenocarcinoma = as.numeric(Gamma$Pulmonary.Adenocarcinoma),
-                   HCC = as.numeric(Gamma$Hepatocellular.Carcinoma),
-                   LSA = as.numeric(Gamma$LSA),
-                   PreT = as.numeric(Gamma$PreT.transform),
-                   FBL = as.numeric(Gamma$FBL))
-
-Unirradiated <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Unirradiated-Table 1.csv")
-pheno = data.frame(row.names = Unirradiated$row.names, sex = as.numeric(Unirradiated$sex == "M"),
-                   days = as.numeric(Unirradiated$days),
-                   PreT = as.numeric(Unirradiated$PreT.transform),
-                   PulACA = as.numeric(Unirradiated$PulACA.transform))
-
-
+pheno = data.frame(row.names = HCC.met$row.names, sex = as.numeric(HCC.met$sex == "M"),
+                   days = as.numeric(HCC.met$days),
+                   HCC.met = as.numeric(HCC.met$HCC.Metastatic.Density), 
+                   OSA = as.numeric(HCC.met$OSA),
+                   AML.qtl = as.numeric(HCC.met$Myeloid.Leukemia),
+                   HCC = as.numeric(HCC.met$Hepatocellular.Carcinoma))
 
 # 3. COVARIATES #
 
@@ -77,14 +51,14 @@ addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 # 4. ASSOCIATION MAPPING #
 
-qtl = scanone.assoc(pheno = pheno, pheno.col = "AML", probs = model.probs, K = K, 
+qtl = scanone.assoc(pheno = pheno, pheno.col = "HCC.met", probs = model.probs, K = K, 
                     addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
 
-save(qtl, file = "AML_HZE_weighted.Rdata")
+save(qtl, file = ".Rdata")
 
 DOQTL:::plot.scanone.assoc(qtl, bin.size = 100, main = "")
 
-png("PreT.Gamma.LSA_QTL.png", width = 2400, height = 1080, res = 100)
+png("HCC.metdensity36.png", width = 2400, height = 1080, res = 200)
 DOQTL:::plot.scanone.assoc(qtl, bin.size = 100)
 dev.off()
 

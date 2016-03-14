@@ -1,9 +1,12 @@
 library(SNPtools)
 snp.file = "/Users/elijah/Desktop/R/QTL/WD/mgp.v5.merged.snps_all.dbSNP142.vcf.gz"
 load("/Users/elijah/Desktop/files/completed/HZE_cataract_QTL.Rdata")
-chr = 1
 
 DOQTL:::plot.scanone.assoc(qtl, bin.size = 100)
+
+
+chr = 16
+
 
 #Max LOD score
 top <- max(-log10(qtl[[chr]]$p.value))
@@ -13,7 +16,7 @@ top
 max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) == top)]
 max.LOD.position
 
-max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) > 23)]
+max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) > 7)]
 max.LOD.position
 
 start = max.LOD.position@start[1]
