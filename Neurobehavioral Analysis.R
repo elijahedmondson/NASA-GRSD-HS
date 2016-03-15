@@ -8,41 +8,40 @@ library(regress)
 library(MASS)
 library(lmtest)
 library(HZE)
+
+load(file = "~/Desktop/R/Build/K.Rdata")
+load(file = "~/Desktop/R/Build/model.probs.Rdata")
+load(url("ftp://ftp.jax.org/MUGA/MM_snps.Rdata"))
+outdir = "~/Desktop/"
+setwd(outdir)
+
+sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz"
+
 ###   Neurobehavioral Analysis   ###
 
 # LOAD PHENO FILES #
-neuro.pheno600 <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/neuro.pheno600.csv")
-neuro.pheno1200 <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/neuro.pheno1200.csv")
-neuro.pheno <- rbind(neuro.pheno600, neuro.pheno1200)
-library(dplyr)
-rename(neuro.pheno, c("X"="row.names"))
-names(neuro.pheno)[names(neuro.pheno)=="X"] <- "row.names"
+GRSD.pheno <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
+pheno = data.frame(row.names = GRSD.pheno$row.names, sex = as.numeric(GRSD.pheno$sex == "M"),
+                   group = as.character(GRSD.pheno$groups),
+                   Frz.min1 = as.numeric(GRSD.pheno$context_pctfrze_minute1),
+                   Frz.min2 = as.numeric(GRSD.pheno$context_pctfrze_minute2),
+                   Frz.min3 = as.numeric(GRSD.pheno$context_pctfrze_minute3),
+                   Frz.min4 = as.numeric(GRSD.pheno$context_pctfrze_minute4),
+                   Frz.min5 = as.numeric(GRSD.pheno$context_pctfrze_minute5),
+                   Frz.total = as.numeric(GRSD.pheno$context_pctfrze_total),
+                   pig.dis = as.numeric(GRSD.pheno$pigmentdispersion),
+                   Cont.min1 = as.numeric(GRSD.pheno$context_avgmo_minute1),
+                   Cont.min2 = as.numeric(GRSD.pheno$context_avgmo_minute2),
+                   Cont.min3 = as.numeric(GRSD.pheno$context_avgmo_minute3),
+                   Cont.min4 = as.numeric(GRSD.pheno$context_avgmo_minute4),
+                   Cont.min5 = as.numeric(GRSD.pheno$context_avgmo_minute5),
+                   Cont.total = as.numeric(GRSD.pheno$context_avgmo_total),
+                   = as.numeric(GRSD.pheno$),
+                   neur1 = as.numeric(GRSD.pheno$context_avgmo_total),
+                   neur2 = as.numeric(GRSD.pheno$context_pctfrze_total),
+                   neur3 = as.numeric(GRSD.pheno$cued_tone_pctfrze_total),
+                   neur4 = as.numeric(GRSD.pheno$train_deltaavgmot_shock1_shock5))
 
-# QC ON PHENO TRAITS #
-Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Total-Table 1.csv")
-Neuro <- read.csv("~/Desktop/Neurophenotype.EFE/Total-Table 1.csv")
-Total1 <- as.data.frame(Total)
-Neuro1 <- as.data.frame(Neuro)
-
- <- merge(x = Total1, y = Neuro1, by.x = "row.names", by.y = "row.names")
-
-test <- left_join(Total, Neuro, by.x = "row.names", by.y = "row.names")
-
-write.csv(test, file = "~/Desktop/test.csv")
-save(Neuro, test, Total, file = "Neuro.files.Rdata")
-
-
-neuro <- read.csv("~/Desktop/R/GRSD.phenotype/Neurophenotype.EFE/Neuro.remove.mismatch/Neuro.Deleted.Mismatch-Table 1.csv")
-pheno = data.frame(row.names = neuro$row.names, sex = as.numeric(neuro$sex == "M"),
-                   group = as.character(neuro$groups),
-                   cohort = as.numeric(neuro$Cohort),
-                   batch = as.numeric(neuro$Batch),
-                   pig.dis = as.numeric(neuro$pigmentdispersion_bool),
-                   days = as.numeric(neuro$days),
-                   neur1 = as.numeric(neuro$context_avgmo_total),
-                   neur2 = as.numeric(neuro$context_pctfrze_total),
-                   neur3 = as.numeric(neuro$cued_tone_pctfrze_total),
-                   neur4 = as.numeric(neuro$train_deltaavgmot_shock1_shock5))
 HZE <- subset(pheno, group == "HZE")
 HZEadd = matrix(HZE$sex, ncol = 1, dimnames = list(rownames(HZE), "sex"))
 
@@ -54,7 +53,8 @@ UNadd = matrix(unirradiated$sex, ncol = 1, dimnames = list(rownames(unirradiated
 
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
-layout(matrix(3:1, 3, 1)) 
+layout(matrix(3:1, 3, 1))
+layout(matrix(1:1, 3, 1))
 boxplot(neur2~group,data=pheno, main="", notch = T, col = "green",
         xlab="", ylab="context_pctfrze_total")
 boxplot(neur1~sex,data=pheno, main="", notch = T, col = "green",
@@ -63,16 +63,6 @@ boxplot(neur1~sex,data=pheno, main="", notch = T, col = "green",
 hist(HZE$neur2, main = "Total: context_pctfrze_total", col = "green")
 lines(density(pheno$neur2), na.rm = T)
 
-
-library(DOQTL)
-
-load(file = "~/Desktop/R/Build/K.Rdata")
-load(file = "~/Desktop/R/Build/model.probs.Rdata")
-load(url("ftp://ftp.jax.org/MUGA/MM_snps.Rdata"))
-outdir = "~/Desktop/"
-setwd(outdir)
-
-sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz"
 
 
 qtl = scanone.assoc(pheno = unirradiated, pheno.col = "neur2", probs = model.probs, K = K, 
