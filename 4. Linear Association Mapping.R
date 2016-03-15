@@ -31,6 +31,14 @@ pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M
                    AML.qtl = as.numeric(Total$Myeloid.Leukemia),
                    HCC = as.numeric(Total$Hepatocellular.Carcinoma))
 
+neuro.all  <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.neuro/neuro all-Table 1.csv")
+neuro.incorrect <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.neuro/neuro incorrect-Table 1.csv")
+neuro.correct <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.neuro/neuro correct-Table 1.csv")
+
+pheno = data.frame(row.names = neuro.incorrect$row.names, sex = as.numeric(neuro.incorrect$sex == "M"),
+                   albino = as.numeric(neuro.incorrect$albino),
+                   albino.fmp = as.numeric(neuro.incorrect$albino.fmp))
+
 Gamma <- Total[ which(Total$groups=='Gamma'), ]
 HZE <- Total[ which(Total$groups=='HZE'), ]
 Unirradiate <- Total[ which(Total$groups=='Unirradiated'), ]
@@ -51,14 +59,14 @@ addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 # 4. ASSOCIATION MAPPING #
 
-qtl = scanone.assoc(pheno = pheno, pheno.col = "HCC.met", probs = model.probs, K = K, 
+qtl = scanone.assoc(pheno = pheno, pheno.col = "albino.fmp", probs = model.probs, K = K, 
                     addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
 
 save(qtl, file = ".Rdata")
 
-DOQTL:::plot.scanone.assoc(qtl, bin.size = 100, main = "")
+DOQTL:::plot.scanone.assoc(qtl, bin.size = 100, main = "Albino.fmp: Incorrect Cases")
 
-png("HCC.metdensity36.png", width = 2400, height = 1080, res = 200)
+png("CorrectNeuro.albino.png", width = 2400, height = 1080, res = 200)
 DOQTL:::plot.scanone.assoc(qtl, bin.size = 100)
 dev.off()
 
