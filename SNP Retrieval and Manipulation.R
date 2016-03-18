@@ -1,11 +1,13 @@
+
+
 library(SNPtools)
 snp.file = "/Users/elijah/Desktop/R/QTL/WD/mgp.v5.merged.snps_all.dbSNP142.vcf.gz"
 load("/Users/elijah/Desktop/files/completed/HZE_cataract_QTL.Rdata")
 
 DOQTL:::plot.scanone.assoc(qtl, bin.size = 100)
 
-
-chr = 16
+qtl<- Weight.QTL
+chr = 1
 
 
 #Max LOD score
@@ -16,7 +18,7 @@ top
 max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) == top)]
 max.LOD.position
 
-max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) > 7)]
+max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) > 30)]
 max.LOD.position
 
 start = max.LOD.position@start[1]
@@ -43,8 +45,7 @@ newqtl = data.frame(Chromosome = chr,
 variant.plot(var.file = "http://cgd.jax.org/tools/SNPtools/Build38/sanger.snps.NCBI38.txt.gz",
         mgi.file = "http://cgd.jax.org/tools/SNPtools/MGI/MGI.20130305.sorted.txt.gz",
         chr = chr, start = start, end = end, type = "snp", pattern = c("C57BL/6J"),
-        strains = strains,
-        ref = "CBA/J", qtl = newqtl)
+        strains = strains, ref = "CBA/J", qtl = newqtl)
 
 snps = get.variants(chr = chr, start = start, end = end,
                     strains =  strains,
@@ -54,6 +55,13 @@ snp = convert.variants.to.numeric(snps)
 
 snp.plot(variants = snp, col = c("black", "grey50", "white"), cluster = F,
          ref = "C57BL/6J", highlight = "CBA/J", mgi, qtl = newqtl)
+
+
+variant.plot(var.file = "http://cgd.jax.org/tools/SNPtools/Build38/sanger.snps.NCBI38.txt.gz",
+             mgi.file = "http://cgd.jax.org/tools/SNPtools/MGI/MGI.20130305.sorted.txt.gz",
+             chr = chr, start = 180000000, end = 185000000, type = "snp", pattern = c("C57BL/6J"),
+             strains = strains, qtl = newqtl)
+
 
 
 

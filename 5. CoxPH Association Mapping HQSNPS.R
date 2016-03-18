@@ -20,47 +20,21 @@ GRSD.coxph1(pheno, pheno.col = "cataract", probs, K, addcovar,
            markers, snp.file, outdir = "~/Desktop/files/", tx = "HZE")
 
 
-
-
 # PHENOTYPE #
-Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Total-Table 1.csv")
-pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M"),
-                   #days = as.numeric(Total$days),
-                   days = as.numeric(Total$Cataract.2.0.Score),
-                   cataract = as.numeric(Total$Cataract.2.0.Event),
-                   LSA = as.numeric(Total$Lymphoma),
-                   PulMets = as.numeric(Total$Pulmonary.Metastases))
-
-Allirr <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Irradiated-Table 1.csv")
-pheno = data.frame(row.names = Allirr$row.names, sex = as.numeric(Allirr$sex == "M"),
-                   #days = as.numeric(Allirr$days),
-                   days = as.numeric(Allirr$Cataract.2.0.Score),
-                   cataract = as.numeric(Allirr$Cataract.2.0.Event),
-                   LSA = as.numeric(Allirr$Lymphoma),
-                   PulMets = as.numeric(Allirr$Pulmonary.Metastases))
-
-HZE <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/HZE-Table 1.csv")
-pheno = data.frame(row.names = HZE$row.names, sex = as.numeric(HZE$sex == "M"),
-                   #days = as.numeric(HZE$days),
-                   days = as.numeric(HZE$Cataract.2.0.Score),
-                   cataract = as.numeric(HZE$Cataract.2.0.Event),
-                   LSA = as.numeric(HZE$Lymphoma),
-                   PulMets = as.numeric(HZE$Pulmonary.Metastases))
-
-Gamma <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Gamma-Table 1.csv")
-pheno = data.frame(row.names = Gamma$row.names, sex = as.numeric(Gamma$sex == "M"),
-                   #days = as.numeric(Gamma$days),
-                   cataract = as.numeric(Gamma$Cataract.2.0.Event),
-                   days = as.numeric(Gamma$Cataract.2.0.Score),
-                   LSA = as.numeric(Gamma$Lymphoma))
-
-Unirradiated <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Unirradiated-Table 1.csv")
-pheno = data.frame(row.names = Unirradiated$row.names, sex = as.numeric(Unirradiated$sex == "M"),
-                   #days = as.numeric(Unirradiated$days),
-                   cataract = as.numeric(Unirradiated$Cataract.2.0.Event),
-                   days = as.numeric(Unirradiated$Cataract.2.0.Score),
-                   LSA = as.numeric(Unirradiated$Lymphoma))
-
+GRSD.pheno <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
+pheno = data.frame(row.names = GRSD.pheno$row.names, sex = as.numeric(GRSD.pheno$sex == "M"),
+                   cohort = as.numeric(GRSD.pheno$Cohort),
+                   days = as.numeric(GRSD.pheno$days),
+                   days2 = as.numeric(GRSD.pheno$Cataract.2.0.Score.Days),
+                   cat2 = as.numeric(GRSD.pheno$Cataract.2.0.Score.Event),
+                   days3 = as.numeric(GRSD.pheno$Cataract.3.0.Score.Days),
+                   cat3 = as.numeric(GRSD.pheno$Cataract.3.0.Score.Event),
+                   days4 = as.numeric(GRSD.pheno$Cataract.4.0.Score.Days),
+                   cat4 = as.numeric(GRSD.pheno$Cataract.4.0.Score.Event),
+                   pigdisp = as.numeric(GRSD.pheno$pigmentdispersion),
+                   dilate = as.numeric(GRSD.pheno$Did.Not.Dilate))
+cohort1 = subset(pheno, cohort == 1)
+cohort2 = subset(pheno, cohort == 2)
 
 # COVARIATES #
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
@@ -76,11 +50,11 @@ probs = probs[samples,,,drop = FALSE]
 
 
 # COX PH MODEL #
-surv = Surv(pheno$cat.days, pheno$cataract)
-fit = survfit(surv ~ addcovar)
-plot(fit, col = 1:2, las = 1, main = plot.title)
+surv = Surv(cohort2$catdays, cohort2$cataract)
+fit = survfit(surv ~ cohort2$cohort)
+plot(fit, col = 1:2, las = 1, main = "plot.title")
 legend("bottomleft", col = 1:2, lty = 1, legend = c("female", "male"))
-mod = coxph(surv ~ addcovar)
+mod = coxph(surv ~ cohort2$cohort)
 text(x = 25, y = 0.15, labels = paste("p =", format(anova(mod)[2,4],
      digits = 2)), adj = 0)
 

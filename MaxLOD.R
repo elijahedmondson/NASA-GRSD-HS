@@ -1,5 +1,5 @@
 load("/Users/elijah/Desktop/files/ALLIRR_HCC_QTL.Rdata")
-chr = 7
+chr = 4
 
 #Max LOD score
 top <- max(-log10(qtl[[chr]]$p.value))
@@ -9,7 +9,7 @@ top
 max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) == top)]
 max.LOD.position
 
-max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) > 15)]
+max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) > 28)]
 max.LOD.position
 
 start = max.LOD.position@start[1]
