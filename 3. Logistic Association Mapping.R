@@ -19,7 +19,7 @@ rm(HZE, Gamma, Unirradiated, Total, addcovar)
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 
-GRSD.assoc(pheno, pheno.col = "HCC.met", probs, K, addcovar, markers, snp.file,
+GRSD.assoc1(pheno, pheno.col = "Harderian.number", probs, K, addcovar, markers, snp.file,
            outdir = "~/Desktop/files", tx = "Total")
 
 GRSDassoc.perms(perms = 50, chr = 1:2, pheno = pheno, Xchr = F, addcovar = addcovar,
@@ -42,102 +42,27 @@ load(file = "~/Desktop/R/QTL/WD/GRSD.Rdata")
 
 Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
 pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M"),
-                   AML = as.numeric(Total$AML.transform),
-                   OSA = as.numeric(Total$Osteosarcoma))
+                   Albino = as.numeric(Total$albino),
+                   PulACA = as.numeric(Total$Pulmonary.Adenocarcinoma),
+                   HCC = as.numeric(Total$Hepatocellular.Carcinoma),
+                   HSA = as.numeric(Total$Hemangiosarcoma),
+                   HS = as.numeric(Total$Histiocytic.Sarcoma),
+                   MammACA = as.numeric(Total$Mammary.Gland.Adenocarcinoma),
+                   GCT = as.numeric(Total$Granulosa.Cell.Tumor),
+                   Thyroid = as.numeric(Total$Thyroid.Tumor),
+                   ThyroidAD = as.numeric(Total$Thyroid.Adenoma),
+                   STS = as.numeric(Total$Soft.Tissue.Sarcomas),
+                   AML = as.numeric(Total$Myeloid.Leukemia),
+                   Harderian.number = as.numeric(Total$Harderian.Tumor.Number),
+                   Harderian = as.numeric(Total$Harderian.Tumor),
+                   HardACA = as.numeric(Total$Harderian.Gland.Adenocarcinoma),
+                   HardAD = as.numeric(Total$Harderian.Gland.Adenoma))
 
 HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1" & Total$HCC.Metastatic.Density>0),]
 HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1"), ]
 pheno = data.frame(row.names = HCC.met$row.names, sex = as.numeric(HCC.met$sex == "M"),
                    HCC.met = as.numeric(HCC.met$HCC.Met),
                    OSA = as.numeric(HCC.met$Osteosarcoma))
-
-
-HZE <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/HZE-Table 1.csv")
-pheno = data.frame(row.names = HZE$row.names, sex = as.numeric(HZE$sex == "M"),
-                   Albino = as.numeric(HZE$albino),
-                   PulACA = as.numeric(HZE$Pulmonary.Adenocarcinoma),
-                   HCC = as.numeric(HZE$Hepatocellular.Carcinoma),
-                   HSA = as.numeric(HZE$Hemangiosarcoma),
-                   HS = as.numeric(HZE$Histiocytic.Sarcoma),
-                   MammACA = as.numeric(HZE$Mammary.Gland.Adenocarcinoma),
-                   #GCT = as.numeric(HZE$Granulosa.Cell.Tumor),
-                   Thyroid = as.numeric(HZE$Thyroid.Tumor),
-                   ThyroidAD = as.numeric(HZE$Thyroid.Adenoma),
-                   STS = as.numeric(HZE$Soft.Tissue.Sarcomas),
-                   AML = as.numeric(HZE$AML.transform),
-                   Harderian = as.numeric(HZE$Harderian.Tumor),
-                   HardACA = as.numeric(HZE$Harderian.Gland.Adenocarcinoma),
-                   HardAD = as.numeric(HZE$Harderian.Gland.Adenoma),
-                   OSA = as.numeric(HZE$Osteosarcoma),
-                   LSA.PreT = as.numeric(HZE$PreT),
-                   LSA.BLL = as.numeric(HZE$BLL),
-                   LSA.FBL = as.numeric(HZE$FBL),
-                   LSA.DLBCL = as.numeric(HZE$DLBCL),
-                   LSA.Bmerge = as.numeric(HZE$B.merge),
-                   Pit = as.numeric(HZE$Pituitary.Adenoma),
-                   Black = as.numeric(HZE$black),
-                   LG = as.numeric(HZE$light.grey),
-                   LB = as.numeric(HZE$light.brown),
-                   Grey = as.numeric(HZE$grey),
-                   Brown = as.numeric(HZE$creme.brown),
-                   PulMets = as.numeric(HZE$Pulmonary.Metastases))
-
-Gamma <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Gamma-Table 1.csv")
-pheno = data.frame(row.names = Gamma$row.names, sex = as.numeric(Gamma$sex == "M"),
-                   Albino = as.numeric(Gamma$albino),
-                   PulACA = as.numeric(Gamma$Pulmonary.Adenocarcinoma),
-                   HCC = as.numeric(Gamma$Hepatocellular.Carcinoma),
-                   HSA = as.numeric(Gamma$Hemangiosarcoma),
-                   HS = as.numeric(Gamma$Histiocytic.Sarcoma),
-                   MammACA = as.numeric(Gamma$Mammary.Gland.Adenocarcinoma),
-                   GCT = as.numeric(Gamma$Granulosa.Cell.Tumor),
-                   Thyroid = as.numeric(Gamma$Thyroid.Tumor),
-                   ThyroidAD = as.numeric(Gamma$Thyroid.Adenoma),
-                   STS = as.numeric(Gamma$Soft.Tissue.Sarcomas),
-                   AML = as.numeric(Gamma$Myeloid.Leukemia),
-                   Harderian = as.numeric(Gamma$Harderian.Tumor),
-                   HardACA = as.numeric(Gamma$Harderian.Gland.Adenocarcinoma),
-                   HardAD = as.numeric(Gamma$Harderian.Gland.Adenoma),
-                   OSA = as.numeric(Gamma$Osteosarcoma),
-                   LSA.PreT = as.numeric(Gamma$PreT),
-                   LSA.BLL = as.numeric(Gamma$BLL),
-                   LSA.FBL = as.numeric(Gamma$FBL),
-                   LSA.DLBCL = as.numeric(Gamma$DLBCL),
-                   LSA.Bmerge = as.numeric(Gamma$B.merge),
-                   Pit = as.numeric(Gamma$Pituitary.Adenoma),
-                   LG = as.numeric(Gamma$light.grey),
-                   LB = as.numeric(Gamma$light.brown),
-                   Grey = as.numeric(Gamma$grey),
-                   Brown = as.numeric(Gamma$creme.brown))
-
-Unirradiated <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Unirradiated-Table 1.csv")
-pheno = data.frame(row.names = Unirradiated$row.names, sex = as.numeric(Unirradiated$sex == "M"),
-                   Albino = as.numeric(Unirradiated$albino),
-                   PulACA = as.numeric(Unirradiated$Pulmonary.Adenocarcinoma),
-                   HCC = as.numeric(Unirradiated$Hepatocellular.Carcinoma),
-                   HSA = as.numeric(Unirradiated$Hemangiosarcoma),
-                   HS = as.numeric(Unirradiated$Histiocytic.Sarcoma),
-                   MammACA = as.numeric(Unirradiated$Mammary.Gland.Adenocarcinoma),
-                   #GCT = as.numeric(Unirradiated$Granulosa.Cell.Tumor),
-                   Thyroid = as.numeric(Unirradiated$Thyroid.Tumor),
-                   ThyroidAD = as.numeric(Unirradiated$Thyroid.Adenoma),
-                   STS = as.numeric(Unirradiated$Soft.Tissue.Sarcomas),
-                   AML = as.numeric(Unirradiated$Myeloid.Leukemia),
-                   Harderian = as.numeric(Unirradiated$Harderian.Tumor),
-                   HardACA = as.numeric(Unirradiated$Harderian.Gland.Adenocarcinoma),
-                   HardAD = as.numeric(Unirradiated$Harderian.Gland.Adenoma),
-                   OSA = as.numeric(Unirradiated$Osteosarcoma),
-                   LSA.PreT = as.numeric(Unirradiated$PreT),
-                   LSA.BLL = as.numeric(Unirradiated$BLL),
-                   LSA.FBL = as.numeric(Unirradiated$FBL),
-                   LSA.DLBCL = as.numeric(Unirradiated$DLBCL),
-                   LSA.Bmerge = as.numeric(Unirradiated$B.merge),
-                   Black = as.numeric(Unirradiated$black),
-                   LG = as.numeric(Unirradiated$light.grey),
-                   LB = as.numeric(Unirradiated$light.brown),
-                   Grey = as.numeric(Unirradiated$grey),
-                   Brown = as.numeric(Unirradiated$creme.brown),
-                   Pit = as.numeric(Unirradiaed$Pituitary.adenoma))
 
 sapply(pheno, sum)
 rm(HZE, Gamma, Unirradiated)

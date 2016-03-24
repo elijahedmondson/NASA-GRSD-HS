@@ -12,11 +12,11 @@ outdir = "~/Desktop/files/"
 options(stringsAsFactors = F)
 setwd("~/Desktop/files/")
 load(file = "~/Desktop/R/QTL/WD/GRSD.Rdata")
-file.prefix = "HZE.cataract"
-plot.title = "HZE.cataract"
+file.prefix = "cataract"
+plot.title = "cataract"
 
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
-GRSD.coxph1(pheno, pheno.col = "cataract", probs, K, addcovar,
+GRSD.coxph1(pheno, pheno.col = "cat4", probs, K, addcovar,
            markers, snp.file, outdir = "~/Desktop/files/", tx = "HZE")
 
 
@@ -24,6 +24,8 @@ GRSD.coxph1(pheno, pheno.col = "cataract", probs, K, addcovar,
 GRSD.pheno <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
 pheno = data.frame(row.names = GRSD.pheno$row.names, sex = as.numeric(GRSD.pheno$sex == "M"),
                    cohort = as.numeric(GRSD.pheno$Cohort),
+                   family = as.numeric(GRSD.pheno$family),
+                   group = as.character(GRSD.pheno$groups),
                    days = as.numeric(GRSD.pheno$days),
                    days2 = as.numeric(GRSD.pheno$Cataract.2.0.Score.Days),
                    cat2 = as.numeric(GRSD.pheno$Cataract.2.0.Score.Event),
@@ -33,8 +35,15 @@ pheno = data.frame(row.names = GRSD.pheno$row.names, sex = as.numeric(GRSD.pheno
                    cat4 = as.numeric(GRSD.pheno$Cataract.4.0.Score.Event),
                    pigdisp = as.numeric(GRSD.pheno$pigmentdispersion),
                    dilate = as.numeric(GRSD.pheno$Did.Not.Dilate))
+pheno = pheno[complete.cases(pheno$cat2),]
 cohort1 = subset(pheno, cohort == 1)
 cohort2 = subset(pheno, cohort == 2)
+cat2 = subset(pheno, cat2==1)
+cat3 = subset(pheno, cat3==1)
+cat4 = subset(pheno, cat4==1)
+HZE = subset(pheno, group == "HZE")
+Gamma = subset(pheno, group == "Gamma")
+Unirradiated = subset(pheno, group == "Unirradiated")
 
 # COVARIATES #
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
@@ -50,14 +59,46 @@ probs = probs[samples,,,drop = FALSE]
 
 
 # COX PH MODEL #
-surv = Surv(cohort2$catdays, cohort2$cataract)
-fit = survfit(surv ~ cohort2$cohort)
-plot(fit, col = 1:2, las = 1, main = "plot.title")
-legend("bottomleft", col = 1:2, lty = 1, legend = c("female", "male"))
-mod = coxph(surv ~ cohort2$cohort)
-text(x = 25, y = 0.15, labels = paste("p =", format(anova(mod)[2,4],
+surv = Surv(pheno$days2, pheno$cat2)
+fit = survfit(surv ~ pheno$group)
+plot(fit, col = 1:3, las = 1, main = "Cataract 2.0 Latency")
+legend("bottomleft", col = 1:3, lty = 1, legend = c("Gamma", "HZE", "Unirradiated"))
+mod = coxph(surv ~ pheno$group)
+text(x = 25, y = 0.3, labels = paste("p =", format(anova(mod)[2,4],
      digits = 2)), adj = 0)
 
+p <- ggplot(cat2, aes(factor(family), days2))
+p + geom_boxplot(notch = TRUE, notchwidth = .3, aes(fill = factor(family))) +
+        theme_bw(base_size = 18) +
+        ggtitle("") +
+        theme(plot.margin=unit(c(1,1,1.5,1.2),"cm"), 
+              legend.position=c(.9,.1))
+
+
+p1 <- ggplot(pheno, aes(x = family, y = days2))
+p1 + geom_boxplot(notch = T, aes(fill = factor(family))) + geom_jitter() +
+        theme_bw(base_size = 18) +
+        theme(axis.text = element_text(size = 14),
+              legend.position = "none",
+              panel.grid.major = element_line(colour = "grey40"),
+              panel.grid.minor = element_blank())
+
+
+ggplot(cat4, aes(days4)) + 
+        geom_histogram(aes(y =..density.., fill = group), colour="black", binwidth = 14) + 
+        facet_grid(group ~ .) +
+        theme_bw(base_size = 18) +
+        geom_density(col=1) + 
+        ggtitle("Cataract Develop by Age\n(Cataract score 4.0)") +
+        theme(legend.position = "none", axis.title.x = element_blank(), plot.margin=unit(c(1,1,1.5,1.2),"cm"))
+        
+
+multiplot(p1,p2, cols = 1)
+
+p1 <- ggplot(pheno, aes(x=cat3, y=days3, colour=group)) +
+        geom_line() +
+        ggtitle("Growth curve for individual chicks")
+p1
 
 for(i in 1:length(K)) {
   K[[i]] = K[[i]][samples, samples]
