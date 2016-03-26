@@ -23,33 +23,49 @@ sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz"
 
 
 # 2. PHENOTYPE #
+
 Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
 pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M"),
+                   cohort = as.numeric(Total$Cohort),
+                   group = as.character(Total$groups),
                    days = as.numeric(Total$days),
-                   weight = as.numeric(Total$weight), 
-                   OSA = as.numeric(Total$OSA),
-                   AML.qtl = as.numeric(Total$Myeloid.Leukemia),
-                   HCC = as.numeric(Total$Hepatocellular.Carcinoma))
+                   Albino = as.numeric(Total$albino),
+                   PulACA = as.numeric(Total$Pulmonary.Adenocarcinoma),
+                   HCC = as.numeric(Total$Hepatocellular.Carcinoma),
+                   HSA = as.numeric(Total$Hemangiosarcoma),
+                   HS = as.numeric(Total$Histiocytic.Sarcoma),
+                   MammACA = as.numeric(Total$Mammary.Gland.Adenocarcinoma),
+                   GCT = as.numeric(Total$Granulosa.Cell.Tumor),
+                   Thyroid = as.numeric(Total$Thyroid.Tumor),
+                   ThyroidAD = as.numeric(Total$Thyroid.Adenoma),
+                   STS = as.numeric(Total$Soft.Tissue.Sarcomas),
+                   AML = as.numeric(Total$Myeloid.Leukemia),
+                   Harderian.number = as.numeric(Total$Harderian.Tumor.Number),
+                   Harderian = as.numeric(Total$Harderian.Tumor),
+                   HardACA = as.numeric(Total$Harderian.Gland.Adenocarcinoma),
+                   HardAD = as.numeric(Total$Harderian.Gland.Adenoma))
+addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
-neuro.all  <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.neuro/neuro all-Table 1.csv")
-neuro.incorrect <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.neuro/neuro incorrect-Table 1.csv")
-neuro.correct <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.neuro/neuro correct-Table 1.csv")
+HZE <- subset(pheno, group == "HZE")
+HZE.add = matrix(HZE$sex, ncol = 1, dimnames = list(rownames(HZE), "sex"))
+Gamma <- subset(pheno, group == "Gamma")
+Gamma.add = matrix(Gamma$sex, ncol = 1, dimnames = list(rownames(Gamma), "sex"))
+Un <- subset(pheno, group == "Gamma")
+Un.add = matrix(Un$sex, ncol = 1, dimnames = list(rownames(Un), "sex"))
 
-pheno = data.frame(row.names = neuro.incorrect$row.names, sex = as.numeric(neuro.incorrect$sex == "M"),
-                   albino = as.numeric(neuro.incorrect$albino),
-                   albino.fmp = as.numeric(neuro.incorrect$albino.fmp))
+HZE.1 <- subset(pheno, group == "HZE" & cohort == 1)
+HZE.1add = matrix(HZE.1$sex, ncol = 1, dimnames = list(rownames(HZE.1), "sex"))
+Gamma.1 <- subset(pheno, group == "Gamma")
+Gamma.1.add = matrix(Gamma.1$sex, ncol = 1, dimnames = list(rownames(Gamma.1), "sex"))
+Un.1 <- subset(pheno, group == "Unirradiated")
+Un.1.add = matrix(Un.1$sex, ncol = 1, dimnames = list(rownames(Un.1), "sex"))
 
-Gamma <- Total[ which(Total$groups=='Gamma'), ]
-HZE <- Total[ which(Total$groups=='HZE'), ]
-Unirradiate <- Total[ which(Total$groups=='Unirradiated'), ]
 HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1" & Total$HCC.Metastatic.Density>0),]
-
+HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1"), ]
 pheno = data.frame(row.names = HCC.met$row.names, sex = as.numeric(HCC.met$sex == "M"),
-                   days = as.numeric(HCC.met$days),
-                   HCC.met = as.numeric(HCC.met$HCC.Metastatic.Density), 
-                   OSA = as.numeric(HCC.met$OSA),
-                   AML.qtl = as.numeric(HCC.met$Myeloid.Leukemia),
-                   HCC = as.numeric(HCC.met$Hepatocellular.Carcinoma))
+                   HCC.met = as.numeric(HCC.met$HCC.Met),
+                   OSA = as.numeric(HCC.met$Osteosarcoma))
+
 
 # 3. COVARIATES #
 
@@ -59,8 +75,17 @@ addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 # 4. ASSOCIATION MAPPING #
 
-qtl = scanone.assoc(pheno = pheno, pheno.col = "albino.fmp", probs = model.probs, K = K, 
+qtl = scanone.assoc(pheno = pheno, pheno.col = "AML", probs = model.probs, K = K,
                     addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+
+
+
+perms <- Scanone.assoc.perms(perms = 3, pheno = HZE.1, pheno.col = "AML", probs = model.probs, K = K,
+                             addcovar = HZE.1add, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+
+
+
+
 
 save(qtl, file = ".Rdata")
 
@@ -74,7 +99,7 @@ png("_CHR_4.png", width = 2000, height = 1600, res = 128)
 DOQTL:::plot.scanone.assoc(qtl, chr = 7, bin.size = 100)
 dev.off()
 
-layout(matrix(3:1, 3, 1)) 
+layout(matrix(3:1, 3, 1))
 par(mfrow = c(2,2), mar=c(1, 4, 1, 1) + 0.1)
 DOQTL:::plot.scanone.assoc(HZE.days, chr=17, bin.size = 100, main = "HZE Ion", ylim=c(0,15))
 DOQTL:::plot.scanone.assoc(Gamma.days, chr=17, bin.size = 100, main = "Gamma ray", ylim=c(0,15))
@@ -91,12 +116,12 @@ abline(a = 13, b = 0, col = "red")
 
 # 5. LINKAGE MAPPING #
 
-qtl = scanone(pheno = pheno, pheno.col = "sarcomatoid", probs = model.probs, K = K, 
+qtl = scanone(pheno = pheno, pheno.col = "sarcomatoid", probs = model.probs, K = K,
               addcovar = covar, snps = MM_snps)
 plot(qtl, main = "PSC")
 
-perms = scanone.perm(pheno = pheno, pheno.col = "AML", probs = model.probs, addcovar = addcovar, 
-                     snps = MM_snps, path = "~/Desktop/", 
+perms = scanone.perm(pheno = pheno, pheno.col = "AML", probs = model.probs, addcovar = addcovar,
+                     snps = MM_snps, path = "~/Desktop/",
                      nperm = 100)
 
 thr1 = quantile(perms, probs = 0.90)
@@ -113,12 +138,12 @@ list.files("/Users/elijahedmondson/Desktop/R/QTL/WD")
 
 interval = bayesint(qtlscan, chr = 1)
 interval
-mgi = get.mgi.features(chr = interval[1,2], start = interval[1,3], 
+mgi = get.mgi.features(chr = interval[1,2], start = interval[1,3],
                        end = interval[3,3], type = "gene", source = "MGI")
 nrow(mgi)
 head(mgi)
 
-ma = assoc.map(pheno = pheno, pheno.col = "PreT", probs = model.probs, K = K, addcovar = covar, 
+ma = assoc.map(pheno = pheno, pheno.col = "PreT", probs = model.probs, K = K, addcovar = covar,
                snps = MM_snps, chr = interval[1,2], start = interval[1,3], end = interval[3,3])
 coefplot(qtl, chr = 1)
 tmp = assoc.plot(ma, thr = 1)
@@ -133,7 +158,7 @@ unique(tmp$sdps)
 
 
 
-DOQTL.plot.scanone.assoc = function (x, chr, bin.size = 10000, ...) 
+DOQTL.plot.scanone.assoc = function (x, chr, bin.size = 10000, ...)
 {
         if (!missing(chr)) {
                 x = x[names(x) %in% chr]
@@ -141,7 +166,7 @@ DOQTL.plot.scanone.assoc = function (x, chr, bin.size = 10000, ...)
         chrlen = get.chr.lengths()
         chrlen = chrlen[names(chrlen) %in% names(x)]
         chrlen = cumsum(chrlen)
-        chrmid = c(0, chrlen[-length(chrlen)]) + diff(c(0, chrlen)) * 
+        chrmid = c(0, chrlen[-length(chrlen)]) + diff(c(0, chrlen)) *
                 0.5
         names(chrmid) = names(chrlen)
         pos = lapply(x, start)
@@ -155,7 +180,7 @@ DOQTL.plot.scanone.assoc = function (x, chr, bin.size = 10000, ...)
                 for (i in 1:(length(bins) - 1)) {
                         wh = which.min(pv[[c]][bins[i]:bins[i + 1]])
                         wh = wh + bins[i] - 1
-                        pos2[i] = pos[[c]][wh] * 1e-06 + max(1, chrlen[c - 
+                        pos2[i] = pos[[c]][wh] * 1e-06 + max(1, chrlen[c -
                                                                                1])
                         pv2[i] = pv[[c]][wh]
                 }
@@ -166,8 +191,8 @@ DOQTL.plot.scanone.assoc = function (x, chr, bin.size = 10000, ...)
         un.chr = unique(chr)
         m = match(chr, un.chr)
         col = m%%2 + 1
-        plot(unlist(pos), unlist(pv), pch = 16, col = c("black", 
-                                                        "grey60")[col], las = 1, xaxt = "n", xlab = "", ylab = "-log10(p-value)", 
+        plot(unlist(pos), unlist(pv), pch = 16, col = c("black",
+                                                        "grey60")[col], las = 1, xaxt = "n", xlab = "", ylab = "-log10(p-value)",
              xaxs = "i")
         mtext(text = names(chrmid), side = 1, line = 0.1, at = chrmid)
 }
@@ -180,63 +205,59 @@ DOQTL.plot.scanone.assoc = function (x, chr, bin.size = 10000, ...)
 
 
 
-
-
-
-
 scanone.assoc = function(pheno, pheno.col, probs, K, addcovar, intcovar, markers,
                          cross = c("DO", "CC", "HS"), sdp.file, ncl = 1) {
-        
+
         cl = makeCluster(ncl)
         registerDoParallel(cl)
-        
+
         # Synch up markers and haplotype probs.
         markers = markers[markers[,1] %in% dimnames(probs)[[3]],]
         probs = probs[,,dimnames(probs)[[3]] %in% markers[,1]]
-        
+
         # Put the marker positions on a Mb scale.
         if(any(markers[,3] > 200)) {
                 markers[,3] = markers[,3] * 1e-6
         } # if(any(markers[,3] > 200)
-        
-        
-        
+
+
+
         # Get the unique chromosomes.
         chr = unique(markers[,2])
         chr = lapply(chr, "==", markers[,2])
         chr = lapply(chr, which)
         names(chr) = unique(markers[,2])
-        
-        # Split up the data and create a list with elements for each 
+
+        # Split up the data and create a list with elements for each
         # chromosome.
         data = vector("list", length(chr))
         for(i in 1:length(chr)) {
-                data[[i]] = list(pheno = pheno, pheno.col = pheno.col, 
-                                 probs = probs[,,chr[[i]]], K = K[[i]], 
+                data[[i]] = list(pheno = pheno, pheno.col = pheno.col,
+                                 probs = probs[,,chr[[i]]], K = K[[i]],
                                  addcovar = addcovar, markers = markers[chr[[i]],])
         } # for(i)
         names(data) = names(chr)
-        
+
         rm(probs, markers, K, addcovar)
-        
+
         # Load the required libraries on the cores.
         clusterEvalQ(cl = cl, expr = library(DOQTL))
         clusterEvalQ(cl = cl, expr = library(Rsamtools))
         clusterEvalQ(cl = cl, expr = library(regress))
-        
+
         res = foreach(obj = iter(data)) %dopar% {
-                
+
                 s1.assoc(obj, sdp.file)
-                
+
         } # foreach(c)
-        
+
         names(res) = names(data)
-        
+
         stopCluster(cl)
-        
+
         class(res) = c("scanone.assoc", class(res))
         return(res)
-        
+
 } # scanone.assoc()
 
 
@@ -244,18 +265,18 @@ scanone.assoc = function(pheno, pheno.col, probs, K, addcovar, intcovar, markers
 # obj: data object of the type created in scanone.assoc().
 # sdp.file: Tabix file created by condense.sanger.snps().
 s1.assoc = function(obj, sdp.file) {
-        
+
         # Get the samples that are not NA for the current phenotype.
-        sample.keep = which(!is.na(obj$pheno[,obj$pheno.col]) & 
+        sample.keep = which(!is.na(obj$pheno[,obj$pheno.col]) &
                                     rowSums(is.na(obj$addcovar)) == 0)
-        
+
         # Calculate variance components and change each kinship matrix to be the
         # error covariance correction matrix.
         mod = regress(obj$pheno[,obj$pheno.col] ~ obj$addcovar, ~obj$K,
                       pos = c(TRUE, TRUE))
         obj$K = mod$sigma[1] * obj$K + mod$sigma[2] * diag(nrow(obj$K))
         rm(mod)
-        
+
         # Read in the unique SDPs.
         tf = TabixFile(sdp.file)
         sdps = scanTabix(file = sdp.file, param = GRanges(seqnames = obj$markers[1,2],
@@ -265,21 +286,21 @@ s1.assoc = function(obj, sdp.file) {
         chr  = sdps[1,1]
         pos  = as.numeric(sdps[,2])
         sdps = as.numeric(sdps[,3])
-        
+
         # Create a matrix of SDPs.
         sdp.mat = matrix(as.numeric(intToBits(1:2^8)), nrow = 32)
         sdp.mat = sdp.mat[8:1,]
         dimnames(sdp.mat) = list(LETTERS[1:8], 1:2^8)
-        
+
         # Between each pair of markers, get the unique SDPs and their genomic
         # positions. Use the DO genoprobs to create DO genotypes.
-        
+
         # Get a set of overlaps between the markers and SDP positions.
         sdp.gr = GRanges(seqnames = chr, ranges = IRanges(start = pos, width = 1))
-        # Include 0 and 200 Mb to capture SNPs before the first markers and 
+        # Include 0 and 200 Mb to capture SNPs before the first markers and
         # after the last marker.
         markers.gr = GRanges(seqnames = obj$markers[1,2], ranges = IRanges(
-                start = c(0, obj$markers[,3]) * 1e6, 
+                start = c(0, obj$markers[,3]) * 1e6,
                 end = c(obj$markers[,3], 200) * 1e6))
         ol = findOverlaps(query = markers.gr, subject = sdp.gr)
         ol = split(subjectHits(ol), queryHits(ol))
@@ -288,13 +309,13 @@ s1.assoc = function(obj, sdp.file) {
         num.sdps = sum(sapply(unique.sdps, length))
         geno = matrix(0, nrow = nrow(obj$pheno), ncol = num.sdps,
                       dimnames = list(rownames(obj$pheno), 1:num.sdps))
-        
+
         # This maps the positions in the geno matrix back to the genomic positions
         # of the SDPs.
         map = rep(0, length(pos))
-        
+
         idx = 0
-        
+
         # Start of chromosome, sdps before the first marker.
         if(probs.idx[1] == 1) {
                 i = 1
@@ -306,21 +327,21 @@ s1.assoc = function(obj, sdp.file) {
                 map[ol[[i]]] = match(sdps[ol[[i]]], unique.sdps[[i]]) + idx
                 # Increment the index.
                 idx = idx + length(unique.sdps[[i]])
-        } # if(probs.idx[1] == 1) 
-        
+        } # if(probs.idx[1] == 1)
+
         # SDPs bracketed by two markers.
         wh = which(probs.idx > 1 & probs.idx <= dim(obj$probs)[3])
         for(i in wh) {
-                
+
                 rng = (idx + 1):(idx + length(unique.sdps[[i]]))
                 # Use the mean genoprobs between two markers and multiply by the SDPs.
-                geno[,rng] = 0.5 * (obj$probs[,,probs.idx[i] - 1] + obj$probs[,,probs.idx[i]]) %*% 
+                geno[,rng] = 0.5 * (obj$probs[,,probs.idx[i] - 1] + obj$probs[,,probs.idx[i]]) %*%
                         sdp.mat[,unique.sdps[[i]]]
                 map[ol[[i]]] = match(sdps[ol[[i]]], unique.sdps[[i]]) + idx
                 idx = idx + length(unique.sdps[[i]])
-                
+
         } # for(i)
-        
+
         # End of chromosome, sdps after the last marker.
         i = length(probs.idx)
         if(probs.idx[i] > dim(obj$probs)[3]) {
@@ -328,139 +349,139 @@ s1.assoc = function(obj, sdp.file) {
                 geno[,rng] = obj$probs[,,dim(obj$probs)[3]] %*% sdp.mat[,unique.sdps[[i]]]
                 map[ol[[i]]] = match(sdps[ol[[i]]], unique.sdps[[i]]) + idx
         } # if(probs.idx[length(probs.idx)] > dim(obj$probs)[3])
-        
+
         r2 = 0
-        
+
         # X Chromosome, separate females and males and then combine.
         if(chr == "X") {
-                
+
                 # Verify that sex is one of the covariates.
                 if(!any("addcovar" == names(obj))) {
-                        
+
                         stop(paste("In order to map on the X chromosome, you must supply the sex",
                                    "of each sample in \'addcovar\', even if they are all the same sex."))
-                        
+
                 } # if(!any("addcovar" == names(obj)))
-                
+
                 if(length(grep("sex", colnames(obj$addcovar), ignore.case = T)) == 0) {
-                        
+
                         stop(paste("In order to map on the X chromosome, you must supply the sex",
                                    "of each sample in \'addcovar\', even if they are all the same sex."))
-                        
+
                 } # if(grep("sex", colnames(obj$addcovar), ignore.case = T))
-                
+
                 # Get the sex of each sample.
                 sex.col = grep("sex", colnames(obj$addcovar), ignore.case = TRUE)
                 females = which(obj$addcovar[,sex.col] == 0)
                 males   = which(obj$addcovar[,sex.col] == 1)
-                
+
                 if(length(females) == 0 & length(males) == 0) {
                         stop(paste("Sex is not coded using 0 for female and 1 for males. Please",
                                    "set the sex column in addcovar to 0 for females and 1 for males."))
                 } # if(length(females) == 0 & length(males) == 0)
-                
-                # Separate the male and female genotypes in the same matrix. This will be 
+
+                # Separate the male and female genotypes in the same matrix. This will be
                 # a block matrix with all zeros for females in rows with male samples and
                 # all zeros for males in rows with female samples.
                 newgeno = matrix(0, nrow(geno), 2 * ncol(geno))
                 newgeno[females,1:ncol(geno)] = geno[females,]
                 newgeno[males,(ncol(geno)+1):ncol(newgeno)] = geno[males,]
-                
+
                 r2 = matrixeqtl.snps(pheno = obj$pheno[sample.keep,obj$pheno.col,drop = FALSE],
                                      geno = newgeno[sample.keep,,drop = FALSE],
                                      K = obj$K[sample.keep, sample.keep,drop = FALSE],
                                      addcovar = obj$addcovar[sample.keep,,drop = FALSE])
                 r2 = r2[1:ncol(geno)] + r2[(ncol(geno)+1):length(r2)]
                 rm(newgeno)
-                
+
         } else {
-                
+
                 # Autosomes.
                 # Calculate the R^2 for each SDP.
                 r2 = matrixeqtl.snps(pheno = obj$pheno[sample.keep,obj$pheno.col,drop = FALSE],
                                      geno = geno[sample.keep,,drop = FALSE],
                                      K = obj$K[sample.keep,sample.keep,drop = FALSE],
                                      addcovar = obj$addcovar[sample.keep,,drop = FALSE])
-                
+
         } # else
-        
+
         # Convert R^2 to LRS.
         lrs = -length(sample.keep) * log(1.0 - r2)
-        
+
         # Convert the LRS to p-values.
         pv = pchisq(lrs, df = 1, lower.tail = FALSE)
-        
+
         # Place the results in the correct locations and return.
-        return(GRanges(seqnames = Rle(chr, length(pos)), ranges = IRanges(start = pos, 
+        return(GRanges(seqnames = Rle(chr, length(pos)), ranges = IRanges(start = pos,
                                                                           width = 1), p.value = pv[map]))
-        
+
 } # s1.assoc()
 
 
 # Plotting for scanone.assoc.
-plot.scanone.assoc = function(x, chr, bin.size = 1000, sig.thr, 
+plot.scanone.assoc = function(x, chr, bin.size = 1000, sig.thr,
                               sig.col = "red", ...) {
-        
+
         if(!missing(chr)) {
                 x = x[names(x) %in% chr]
         } # if(!missing(chr))
-        
+
         chrlen = get.chr.lengths()
         chrlen = chrlen[names(chrlen) %in% names(x)]
         chrsum = cumsum(chrlen)
         chrmid = c(0, chrsum[-length(chrsum)]) + diff(c(0, chrsum)) * 0.5
         names(chrmid) = names(chrsum)
-        
+
         if(missing(chr)) {
                 autosomes = names(x)[which(!is.na(as.numeric(names(x))))]
                 chr = factor(names(x), levels = c(autosomes, "X", "Y", "M"))
         } # if(!missing(chr))
-        
+
         pos = lapply(x, start)
         pv =  lapply(x, mcols)
         pv =  lapply(pv, "[[", 1)
-        
+
         for(c in 1:length(x)) {
-                
+
                 bins = seq(1, length(pv[[c]]), bin.size)
                 bins[length(bins) + 1] = length(pv[[c]])
                 pos2 = rep(0, length(bins))
                 pv2  = rep(0, length(bins))
-                
+
                 for(i in 1:(length(bins)-1)) {
                         wh = which.min(pv[[c]][bins[i]:bins[i+1]])
                         wh = wh + bins[i] - 1
                         pos2[i] = pos[[c]][wh] * 1e-6 + max(0, chrsum[c - 1])
                         pv2[i]  = pv[[c]][wh]
                 } # for(i)
-                
+
                 pos[[c]] = pos2
                 pv[[c]]  = -log(pv2, 10)
-                
+
         } # for(c)
-        
-        # If we are plotting more than one chormosome, color alternate 
+
+        # If we are plotting more than one chormosome, color alternate
         # chromosomes grey and black.
         col = 1
         chr = rep(chr, sapply(pos, length))
         if(length(pos) > 1) {
                 col = as.numeric(chr) %% 2 + 1
         } # if(length(chr) > 1)
-        
+
         plot(unlist(pos), unlist(pv), pch = 16, col = c("black", "grey60")[col],
              las = 1, xaxt = "n", xlab = "", ylab = "-log10(p-value)", xaxs = "i", ...)
         mtext(text = names(chrmid), side = 1, line = 2.5, at = chrmid, cex = 2)
-        
+
         if(length(pos) == 1) {
-                
+
                 axis(side = 1)
-                
+
         } # if(length(pos) == 1)
-        
+
         if(!missing(sig.thr)) {
-                
+
                 add.sig.thr(sig.thr = sig.thr, sig.col = sig.col, chrsum = chrsum)
-                
+
         } # if(!missing(sig.thr))
-        
+
 } # plot.scanone.assoc()
