@@ -19,12 +19,12 @@ rm(HZE, Gamma, Unirradiated, Total, addcovar)
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 
-GRSD.assoc1(pheno, pheno.col = "Harderian.number", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files", tx = "Total")
+GRSD.assoc(pheno = HZE.1, pheno.col = "HCC", probs, K, addcovar = HZE.1add, markers, snp.file = "snp.file",
+           outdir = "~/Desktop/files", tx = "Gamma")
 
-GRSDassoc.perms(perms = 50, chr = 1:2, pheno = pheno, Xchr = F, addcovar = addcovar,
-                pheno.col = "Thyroid", probs = probs, K = K, markers = markers,
-                snp.file = snp.file, outdir = "~/Desktop/files", tx = "Gamma")
+GRSDassoc.perms(perms = 2, chr = 18:19, pheno = HZE.1, Xchr = F, addcovar = HZE.1add,
+                pheno.col = "HCC", probs = probs, K = K, markers = markers,
+                snp.file = snp.file, outdir = "~/Desktop/files", tx = "Test")
 
 maxLOD(file = "/Users/elijah/Desktop/R/QTL/WD/Binary\ Mapping/Total_AML_QTL.Rdata", chr = 2, LODcutoff = 6)
 
@@ -42,6 +42,9 @@ load(file = "~/Desktop/R/QTL/WD/GRSD.Rdata")
 
 Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
 pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M"),
+                   cohort = as.numeric(Total$Cohort),
+                   group = as.character(Total$groups),
+                   days = as.numeric(Total$days),
                    Albino = as.numeric(Total$albino),
                    PulACA = as.numeric(Total$Pulmonary.Adenocarcinoma),
                    HCC = as.numeric(Total$Hepatocellular.Carcinoma),
@@ -57,6 +60,20 @@ pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M
                    Harderian = as.numeric(Total$Harderian.Tumor),
                    HardACA = as.numeric(Total$Harderian.Gland.Adenocarcinoma),
                    HardAD = as.numeric(Total$Harderian.Gland.Adenoma))
+
+HZE <- subset(pheno, group == "HZE")
+HZE.add = matrix(HZE$sex, ncol = 1, dimnames = list(rownames(HZE), "sex"))
+Gamma <- subset(pheno, group == "Gamma")
+Gamma.add = matrix(Gamma$sex, ncol = 1, dimnames = list(rownames(Gamma), "sex"))
+Un <- subset(pheno, group == "Gamma")
+Un.add = matrix(Un$sex, ncol = 1, dimnames = list(rownames(Un), "sex"))
+
+HZE.1 <- subset(pheno, group == "HZE" & cohort == 1)
+HZE.1add = matrix(HZE.1$sex, ncol = 1, dimnames = list(rownames(HZE.1), "sex"))
+Gamma.1 <- subset(pheno, group == "Gamma")
+Gamma.1.add = matrix(Gamma.1$sex, ncol = 1, dimnames = list(rownames(Gamma.1), "sex"))
+Un.1 <- subset(pheno, group == "Unirradiated")
+Un.1.add = matrix(Un.1$sex, ncol = 1, dimnames = list(rownames(Un.1), "sex"))
 
 HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1" & Total$HCC.Metastatic.Density>0),]
 HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1"), ]
@@ -372,14 +389,6 @@ get.sig.thr(perms, alpha = 0.01, Xchr = TRUE)
 
 
 
-
-
-
-
-
-
-
-
 # AUTOSOME FUNCTION #
 workfxn = function(obj) {
 
@@ -656,8 +665,6 @@ workfxn.xchr = function(obj) {
 
 
 
-
-
 plot.hs = function(qtl, title, bin.width = 1000, ...) {
         library(GenomicRanges)
         library(BSgenome.Mmusculus.UCSC.mm10)
@@ -716,3 +723,19 @@ plot.hs = function(qtl, title, bin.width = 1000, ...) {
         return(new.qtl)
 
 } #plot.hs
+
+plot.hs(qtl, title = "All: PreT Lymphoma", bin.width = 75)
+
+abline(h = 5.842717, col = "green")
+abline(h = 5.666527, col = "blue")
+abline(h = 5.459452, col = "yellow")
+abline(h = 5.370906, col = "orange")
+abline(h = 5.27925, col = "red")
+
+legend("bottomleft", title = "100 Permutations", c("alpha = 0.01", "alpha = 0.05", "alpha = 0.10", "alpha = 0.15", "alpha = 0.20"),
+       lty=c(1,1,1,1,1), lwd=c(2, 2, 2, 2, 2),col=c("green", "blue", "yellow", "orange", "red"))
+
+
+
+
+

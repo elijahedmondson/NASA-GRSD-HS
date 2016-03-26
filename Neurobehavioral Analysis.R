@@ -28,15 +28,11 @@ pheno = data.frame(row.names = GRSD.pheno$row.names, sex = as.numeric(GRSD.pheno
                    weight = as.numeric(GRSD.pheno$Weight.corrected),
                    unirradiated = as.numeric(GRSD.pheno$Unirradiated),
                    Frz.total = as.numeric(GRSD.pheno$context_pctfrze_total),
-                   pig.dis = as.numeric(GRSD.pheno$pigmentdispersion),
+                   pig.dis = as.numeric(GRSD.pheno$pigment.dispersion),
                    avgmo.total = as.numeric(GRSD.pheno$context_avgmo_total),
                    tone.frz = as.numeric(GRSD.pheno$cued_tone_pctfrze_total),
                    train.frz = as.numeric(GRSD.pheno$train_deltapctfrze_isi1_isi4),
-                   train.shock = as.numeric(GRSD.pheno$train_deltaavgmot_shock1_shock5), 
-                   Albino = as.numeric(GRSD.pheno$albino),
-                   PulACA = as.numeric(GRSD.pheno$Pulmonary.Adenocarcinoma),
-                   HCC = as.numeric(GRSD.pheno$Hepatocellular.Carcinoma),
-                   LSA.PreT = as.numeric(GRSD.pheno$PreT))
+                   train.shock = as.numeric(GRSD.pheno$train_deltaavgmot_shock1_shock5))
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 Coh1 <- subset(pheno, cohort == 1)
@@ -86,7 +82,20 @@ QTL.IRR.train.frz = scanone.assoc(pheno = irradiated, pheno.col = "train.frz", p
 QTL.IRR.train.shock = scanone.assoc(pheno = irradiated, pheno.col = "train.shock", probs = model.probs, K = K, addcovar = IRRadd, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
 
 ### QTL PLOT ###
-DOQTL:::plot.scanone.assoc(QTL.C1.frz.total, bin.size = 100, main = "Cohort 1, HZE (n = 190): train_deltapctfrze_isi1_isi4")
+DOQTL:::plot.scanone.assoc(QTL.C1.train.frz, bin.size = 100, 
+                           main = "Cohort 1, HZE (n = 190): train_deltapctfrze_isi1_isi4",
+                           ylim=c(0,13))
+abline(h = 12.73544, col = "green")
+abline(h = 10.97533, col = "blue")
+abline(h = 10.24464, col = "yellow")
+abline(h = 10.02939, col = "orange")
+abline(h = 9.689125, col = "red")
+
+legend(13,13, title = "1,000 Permutations", c("alpha = 0.01", "alpha = 0.05", "alpha = 0.10", "alpha = 0.15", "alpha = 0.20"),
+       lty=c(1,1,1,1,1), lwd=c(2, 2, 2, 2, 2),col=c("green", "blue", "yellow", "orange", "red"))
+
+
+
 DOQTL:::plot.scanone.assoc(QTL.C2.frz.total, bin.size = 100, main = "Cohort 2, HZE (n = 417): train_deltapctfrze_isi1_isi4")
 DOQTL:::plot.scanone.assoc(QTL.IRR.avgmo.total, bin.size = 100, main = "All Irradiated: context_avgmo_total")
 DOQTL:::plot.scanone.assoc(QTL.IRR.tone.frz, bin.size = 100, main = "All Irradiated: cued_tone_pctfrze_total")
