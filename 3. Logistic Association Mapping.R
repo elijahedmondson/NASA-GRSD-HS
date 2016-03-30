@@ -1,5 +1,5 @@
 # LOAD PACKAGES #
-library(DOQTL)
+library(BSgenome.Mmusculus.UCSC.mm10)
 library(doParallel)
 library(foreach)
 library(Rsamtools)
@@ -7,24 +7,23 @@ library(VariantAnnotation)
 library(GenomicRanges)
 library(regress)
 library(MASS)
+library(DOQTL)
 library(lmtest)
 library(HZE)
 options(stringsAsFactors = F)
 load(file = "~/Desktop/R/QTL/WD/GRSD.Rdata")
 setwd("~/Desktop/files")
 outdir = "~/Desktop/files"
-sapply(pheno, sum)
 
-rm(HZE, Gamma, Unirradiated, Total, addcovar)
-addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 
 qlt <- GRSD.assoc(pheno = HZE.1, pheno.col = "HCC", probs, K, addcovar = HZE.1add, markers, snp.file = "snp.file",
            outdir = "~/Desktop/files", tx = "Gamma")
 
-perms <- GRSDassoc.perms(perms = 2, chr = 1:19, pheno = HZE.1, Xchr = F, addcovar = HZE.1add,
+perms <- GRSDassoc.perms(perms = 2, chr = 1:19, pheno = HZE, Xchr = F, addcovar = HZE.add,
                 pheno.col = "HCC", probs = probs, K = K, markers = markers,
-                snp.file = snp.file, outdir = "~/Desktop/files", tx = "Test")
+                snp.file = snp.file, outdir = "~/Desktop/files", tx = "Test",
+                sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 maxLOD(file = "/Users/elijah/Desktop/R/QTL/WD/Binary\ Mapping/Total_AML_QTL.Rdata", chr = 2, LODcutoff = 6)
 
@@ -65,7 +64,7 @@ HZE <- subset(pheno, group == "HZE")
 HZE.add = matrix(HZE$sex, ncol = 1, dimnames = list(rownames(HZE), "sex"))
 Gamma <- subset(pheno, group == "Gamma")
 Gamma.add = matrix(Gamma$sex, ncol = 1, dimnames = list(rownames(Gamma), "sex"))
-Un <- subset(pheno, group == "Gamma")
+Un <- subset(pheno, group == "Unirradiated")
 Un.add = matrix(Un$sex, ncol = 1, dimnames = list(rownames(Un), "sex"))
 
 HZE.1 <- subset(pheno, group == "HZE" & cohort == 1)
@@ -82,7 +81,9 @@ pheno = data.frame(row.names = HCC.met$row.names, sex = as.numeric(HCC.met$sex =
                    OSA = as.numeric(HCC.met$Osteosarcoma))
 
 sapply(pheno, sum)
-rm(HZE, Gamma, Unirradiated)
+
+rm(HZE, Gamma, Unirradiated, Total, addcovar)
+addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 # 3. COVARIATES #
 

@@ -15,33 +15,23 @@ GRSD.pheno <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
 pheno = data.frame(row.names = GRSD.pheno$row.names, sex = as.numeric(GRSD.pheno$sex == "M"),
                    cohort = as.numeric(GRSD.pheno$Cohort),
                    days = as.numeric(GRSD.pheno$days),
-                   catdays = as.numeric(GRSD.pheno$Cataract.2.0.Score),
-                   cataract = as.numeric(GRSD.pheno$Cataract.2.0.Event),
+                   catdays = as.numeric(GRSD.pheno$Cataract.2.0.Score.Days),
+                   cataract = as.numeric(GRSD.pheno$Cataract.2.0.Score.Event),
                    BCS = as.character(GRSD.pheno$BCS),
                    group = as.character(GRSD.pheno$groups),
                    family = as.numeric(GRSD.pheno$family),
                    weight.old = as.numeric(GRSD.pheno$Mass),
                    weight = as.numeric(GRSD.pheno$Weight.corrected),
-                   testage = as.numeric(GRSD.pheno$testagedays),
-                   unirradiated = as.numeric(GRSD.pheno$Unirradiated),
-                   Frz.total = as.numeric(GRSD.pheno$context_pctfrze_total),
-                   pig.dis = as.numeric(GRSD.pheno$pigmentdispersion),
-                   avgmo.total = as.numeric(GRSD.pheno$context_avgmo_total),
-                   tone.frz = as.numeric(GRSD.pheno$cued_tone_pctfrze_total),
-                   train.frz = as.numeric(GRSD.pheno$train_deltapctfrze_isi1_isi4),
-                   train.shock = as.numeric(GRSD.pheno$train_deltaavgmot_shock1_shock5), 
-                   Albino = as.numeric(GRSD.pheno$albino),
-                   PulACA = as.numeric(GRSD.pheno$Pulmonary.Adenocarcinoma),
-                   HCC = as.numeric(GRSD.pheno$Hepatocellular.Carcinoma),
-                   LSA.PreT = as.numeric(GRSD.pheno$PreT))
+                   hardtumor = as.numeric(GRSD.pheno$Harderian.Tumor))
+
 
 addcovar = matrix(phenow$sex, ncol = 1, dimnames = list(rownames(phenow), "sex"))
 cohort1 = subset(pheno, cohort == 1)
 cohort2 = subset(pheno, cohort == 2)
 
-HZE = subset(pheno, group == "HZE")
-Gamma = subset(pheno, group == "Gamma")
-Unirradiated = subset(pheno, group == "Unirradiated")
+HZE = subset(pheno, group == "HZE" & hardtumor == "1")
+Gamma = subset(pheno, group == "Gamma" & hardtumor == "1")
+Unirradiated = subset(pheno, group == "Unirradiated" & hardtumor == "1")
 
 Male = subset(pheno, sex == 1)
 Malew = Male[complete.cases(Male[,6]),]
@@ -79,7 +69,7 @@ DOQTL:::plot.scanone.assoc(Female.weight.QTL, chr=4, bin.size = 50, main = "Fema
 
 
 phenow <- pheno[complete.cases(pheno[,6]),]
-phenow <- phenow[order(family),]
+phenow <- phenow[order(mean(pheno$days)),]
 
 library(ggplot2)
 
@@ -112,15 +102,39 @@ p1 + geom_boxplot(notch = T, aes(fill = factor(sex))) + geom_jitter() +
               panel.grid.minor = element_blank()
         )
 
-
-p2 <- ggplot(phenow, aes(x = reorder(family, weight, FUN = median), y = weight))
-p2 + geom_boxplot(notch = T, aes(fill = factor(family))) + geom_jitter() +
+#Harderian Tumor by Family and Days
+p1 <- ggplot(HZE, aes(x = reorder(family, days, FUN = median), y = days)) + geom_boxplot(notch = T, aes(fill = factor(family))) + geom_jitter() +
         theme_bw(base_size = 18) +
+        ggtitle("Harderian Tumor Latency: HZE Ion Irradiated") +
+        xlab("HS/npt Family") +
         theme(axis.text = element_text(size = 14),
               legend.position = "none",
               panel.grid.major = element_line(colour = "grey40"),
-              panel.grid.minor = element_blank()
-        )
+              panel.grid.minor = element_blank())
+
+p2 <- ggplot(Gamma, aes(x = reorder(family, days, FUN = median), y = days)) + geom_boxplot(notch = T, aes(fill = factor(family))) + geom_jitter() +
+        theme_bw(base_size = 18) +
+        ggtitle("Harderian Tumor Latency: Gamma-ray Irradiated") +
+        xlab("HS/npt Family") +
+        theme(axis.text = element_text(size = 14),
+              legend.position = "none",
+              panel.grid.major = element_line(colour = "grey40"),
+              panel.grid.minor = element_blank())
+
+p3 <- ggplot(Unirradiated, aes(x = reorder(family, days, FUN = median), y = days)) + geom_boxplot(notch = T, aes(fill = factor(family))) + geom_jitter() +
+        theme_bw(base_size = 18) +
+        ggtitle("Harderian Tumor Latency: Unirradiated") +
+        xlab("HS/npt Family") +
+        theme(axis.text = element_text(size = 14),
+              legend.position = "none",
+              panel.grid.major = element_line(colour = "grey40"),
+              panel.grid.minor = element_blank())
+multiplot(p1,p2, cols = 1)
+
+
+
+
+
 
 p1 <- ggplot(Unirradiated, aes(x = family, y = days)) + geom_boxplot(notch = T, aes(fill = factor(family))) + geom_jitter() +
         theme_bw(base_size = 18) +

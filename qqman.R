@@ -1,17 +1,126 @@
 ## qqman
-
+## x = data.frame("BP," "CHR," "P," and optionally, "SNP)
 library(qqman)
-load(file = "/Users/elijah/Desktop/R/QTL/WD/1.\ Linear\ Mapping/NEURO.gamma.QTL.Rdata")
 
-qtl <- QTL.C1.train.frz
-        
+
+##### FOR QTL FROM WELLCOME TRUST ######
+
+chr.function <- function(x){
+        if(x == "chr1")
+                return(1)
+        if(x == "chr2")
+                return(2)
+        if(x == "chr3")
+                return(3)
+        if(x == "chr4")
+                return(4)
+        if(x == "chr5")
+                return(5)
+        if(x == "chr6")
+                return(6)
+        if(x == "chr7")
+                return(7)
+        if(x == "chr8")
+                return(8)
+        if(x == "chr9")
+                return(9)
+        if(x == "chr10")
+                return(10)
+        if(x == "chr11")
+                return(11)
+        if(x == "chr12")
+                return(12)
+        if(x == "chr13")
+                return(13)
+        if(x == "chr14")
+                return(14)
+        if(x == "chr15")
+                return(15)
+        if(x == "chr16")
+                return(16)
+        if(x == "chr17")
+                return(17)
+        if(x == "chr18")
+                return(18)
+        if(x == "chr19")
+                return(19)
+        else
+                return(20)
+}
+
+qtl <- data.frame(SNP = gscan$scan$marker, CHR = gscan$scan$chromosome, BP = gscan$scan$bp, P = gscan$scan$logP)
+qtl$CHR <- sapply(qtl$CHR, chr.function)
+manhattan(qtl, main = 'HS: Context')
+
+rm(gscan, qtl)
+
+
+##### FOR QTL FROM HEATMap Function ######
+library(qqman)
+qtl <- data.frame(CHR = Thyroid.HZE@seqnames,
+                  BP = Thyroid.HZE@ranges@start,
+                  P = Thyroid.HZE@elementMetadata@listData$p.value)
+
+qtl <- data.frame(CHR = Thyroid.gamma@seqnames,
+                  BP = Thyroid.gamma@ranges@start,
+                  P = Thyroid.gamma@elementMetadata@listData$p.value)
+
+chr.function <- function(x){
+        if(x == "1")
+                return(1)
+        if(x == "2")
+                return(2)
+        if(x == "3")
+                return(3)
+        if(x == "4")
+                return(4)
+        if(x == "5")
+                return(5)
+        if(x == "6")
+                return(6)
+        if(x == "7")
+                return(7)
+        if(x == "8")
+                return(8)
+        if(x == "9")
+                return(9)
+        if(x == "10")
+                return(10)
+        if(x == "11")
+                return(11)
+        if(x == "12")
+                return(12)
+        if(x == "13")
+                return(13)
+        if(x == "14")
+                return(14)
+        if(x == "15")
+                return(15)
+        if(x == "16")
+                return(16)
+        if(x == "17")
+                return(17)
+        if(x == "18")
+                return(18)
+        if(x == "19")
+                return(19)
+        else
+                return(20)
+}
+qtl$CHR <- sapply(qtl$CHR, chr.function)
+
+manhattan(qtl, main = 'Gamma Thyroid')
+qq(qtl$P)
+
+
+
+
+
+
+
+##### FOR QTL FROM GRSDbinom ######
+
 DOQTL:::plot.scanone.assoc(QTL.C1.train.frz, bin.size = 100, main = "HZE train_deltapctfrze_isi1_isi4: Cohort 1")
-
-qtl1 <- qtl[1]
-
-
-
-#x = data.frame("BP," "CHR," "P," and optionally, "SNP)
 
 manhattan(new19, chr = "CHR", bp = "BP", p = "P",
            col = c("gray10", "gray60"), chrlabs = NULL,
@@ -32,11 +141,6 @@ qqline(-log10(pv[sample(1:length(pv), 50000)]))
 x <- Sys.time()
 qq(new6$P)
 Sys.time() - x
-
-
-
-
-
 
 new1 <- data.frame(BP = qtl$`1`@ranges@start, CHR = as.numeric(1), P = qtl$`1`@elementMetadata$p.value)
 new2 <- data.frame(BP = qtl$`2`@ranges@start, CHR = as.numeric(2), P = qtl$`2`@elementMetadata$p.value)

@@ -1,9 +1,10 @@
 # LOAD PACKAGES #
-library(DOQTL)
+library(BSgenome.Mmusculus.UCSC.mm10)
 library(doParallel)
 library(foreach)
 library(Rsamtools)
 library(VariantAnnotation)
+library(DOQTL)
 library(GenomicRanges)
 library(survival)
 library(regress)
@@ -71,7 +72,7 @@ p <- ggplot(cat2, aes(factor(family), days2))
 p + geom_boxplot(notch = TRUE, notchwidth = .3, aes(fill = factor(family))) +
         theme_bw(base_size = 18) +
         ggtitle("") +
-        theme(plot.margin=unit(c(1,1,1.5,1.2),"cm"), 
+        theme(plot.margin=unit(c(1,1,1.5,1.2),"cm"),
               legend.position=c(.9,.1))
 
 
@@ -84,14 +85,14 @@ p1 + geom_boxplot(notch = T, aes(fill = factor(family))) + geom_jitter() +
               panel.grid.minor = element_blank())
 
 
-ggplot(cat4, aes(days4)) + 
-        geom_histogram(aes(y =..density.., fill = group), colour="black", binwidth = 14) + 
+ggplot(cat4, aes(days4)) +
+        geom_histogram(aes(y =..density.., fill = group), colour="black", binwidth = 14) +
         facet_grid(group ~ .) +
         theme_bw(base_size = 18) +
-        geom_density(col=1) + 
+        geom_density(col=1) +
         ggtitle("Cataract Develop by Age\n(Cataract score 4.0)") +
         theme(legend.position = "none", axis.title.x = element_blank(), plot.margin=unit(c(1,1,1.5,1.2),"cm"))
-        
+
 
 multiplot(p1,p2, cols = 1)
 
