@@ -1,4 +1,5 @@
-library(DOQTL)
+library(HZE)
+library(ggplot2)
 library(doParallel)
 library(foreach)
 library(Rsamtools)
@@ -7,7 +8,9 @@ library(GenomicRanges)
 library(regress)
 library(MASS)
 library(lmtest)
-library(HZE)
+library(car)
+library(DOQTL)
+
 outdir = "~/Desktop/"
 setwd(outdir)
 
@@ -53,12 +56,12 @@ DOQTL:::plot.scanone.assoc(Weight.QTL, bin.size = 100, main = "Weight")
 DOQTL:::plot.scanone.assoc(Male.weight.QTL, bin.size = 100, main = "Male.weight.QTL")
 DOQTL:::plot.scanone.assoc(Female.weight.QTL, bin.size = 100, main = "Female.weight.QTL")
 
-layout(matrix(2:1, nrow = 2, ncol = 1)) 
+layout(matrix(2:1, nrow = 2, ncol = 1))
 par(mfrow = c(1,1), mar=c(1, 4, 1, 1) + 0.1)
 DOQTL:::plot.scanone.assoc(Male.weight.QTL, bin.size = 100, main = "Male.weight.QTL")
 DOQTL:::plot.scanone.assoc(Female.weight.QTL, bin.size = 100, main = "Female.weight.QTL")
 
-layout(matrix(1:6, nrow = 3, ncol = 2)) 
+layout(matrix(1:6, nrow = 3, ncol = 2))
 par(mfrow = c(3,2), mar=c(1, 4, 1, 1) + 0.1)
 DOQTL:::plot.scanone.assoc(Weight.QTL, chr=1, bin.size = 50, main = "All Chr1", ylim=c(0,35))
 DOQTL:::plot.scanone.assoc(Weight.QTL, chr=4, bin.size = 50, main = "All Chr4", ylim=c(0,35))
@@ -71,36 +74,24 @@ DOQTL:::plot.scanone.assoc(Female.weight.QTL, chr=4, bin.size = 50, main = "Fema
 phenow <- pheno[complete.cases(pheno[,6]),]
 phenow <- phenow[order(mean(pheno$days)),]
 
-library(ggplot2)
 
-p <- ggplot(pheno, aes(factor(cohort), cataract))
-p + geom_boxplot(notch = TRUE, notchwidth = .3, aes(fill = factor(sex))) + geom_jitter() +
-        theme_bw(base_size = 18) +
-        ggtitle("Weight of HS/npt Mice by Body Condition Score at Necropsy") +
-        theme(plot.margin=unit(c(1,1,1.5,1.2),"cm"), 
-              legend.position=c(.9,.1))
 
-ggplot(pheno, aes(x = family, y = weight, color = cohort)) + 
+
+
+ggplot(pheno, aes(x = family, y = weight, color = cohort)) +
         geom_smooth(method=lm, fullrange = T) +
-        geom_point(aes(color=factor(sex), shape=factor(sex)), size = 3) + 
+        geom_point(aes(color=factor(sex), shape=factor(sex)), size = 3) +
         scale_color_manual(values = c("red", "blue"), name="", labels = c("")) +
         scale_shape_manual(values = c(2,0), name="", labels = c("")) +
         theme_bw(base_size = 18) +
         ggtitle("") +
-        theme(plot.margin=unit(c(1,1,1.5,1.2),"cm"), 
+        theme(plot.margin=unit(c(1,1,1.5,1.2),"cm"),
               legend.position=c(.9,.1))
 
 
 
 
-p1 <- ggplot(pheno, aes(x = group, y = weight))
-p1 + geom_boxplot(notch = T, aes(fill = factor(sex))) + geom_jitter() +
-        theme_bw(base_size = 18) +
-        theme(axis.text = element_text(size = 14),
-              legend.position = "none",
-              panel.grid.major = element_line(colour = "grey40"),
-              panel.grid.minor = element_blank()
-        )
+
 
 #Harderian Tumor by Family and Days
 p1 <- ggplot(HZE, aes(x = reorder(family, days, FUN = median), y = days)) + geom_boxplot(notch = T, aes(fill = factor(family))) + geom_jitter() +
@@ -135,7 +126,7 @@ multiplot(p1,p2, cols = 1)
 
 
 
-
+### Reorder
 p1 <- ggplot(Unirradiated, aes(x = family, y = days)) + geom_boxplot(notch = T, aes(fill = factor(family))) + geom_jitter() +
         theme_bw(base_size = 18) +
         ggtitle("Overall Female Survival Time of HS/npt Mice by Family") +
@@ -146,21 +137,21 @@ p2 <- ggplot(Unirradiated, aes(x = reorder(family, days, FUN = median), y = days
         theme(legend.position = "none", axis.title.x = element_blank(), plot.margin=unit(c(1,1,1.5,1.2),"cm"))
 multiplot(p1,p2, cols = 1)
 
-p3 <- ggplot(cohort1w, aes(x = reorder(family, weight, FUN = median), y = weight)) + 
+p3 <- ggplot(cohort1w, aes(x = reorder(family, weight, FUN = median), y = weight)) +
         geom_boxplot(notch = T, aes(fill = factor(family))) + geom_jitter() +
         theme_bw(base_size = 18) +
         ggtitle("Cohort 1 Weight by Family") +
         theme(legend.position = "none", axis.title.x = element_blank(), plot.margin=unit(c(1,1,1.5,1.2),"cm"))
-        
-p4 <- ggplot(cohort2w, aes(x = reorder(family, weight, FUN = median), y = weight)) + 
+
+p4 <- ggplot(cohort2w, aes(x = reorder(family, weight, FUN = median), y = weight)) +
         geom_boxplot(notch = T, aes(fill = factor(family))) + geom_jitter() +
         theme_bw(base_size = 18) + ggtitle("Cohort 2 Weight by Family") +
         theme(legend.position = "none", axis.title.x = element_blank(), plot.margin=unit(c(1,1,1.5,1.2),"cm"))
 multiplot(p3,p4, cols = 1)
 
 
-p1 <- ggplot(pheno, aes(x = weight, fill = cohort)) + 
-        geom_histogram(colour="black", binwidth = 1) + 
+p1 <- ggplot(pheno, aes(x = weight, fill = cohort)) +
+        geom_histogram(colour="black", binwidth = 1) +
         facet_grid(cohort ~ .) +
         stat_function(fun=dbeta,args=fitdistr(phenow$weight,"beta",start=list(shape1=1,shape2=1))$estimate) +
         theme_bw() +
@@ -172,12 +163,12 @@ p1 <- ggplot(pheno, aes(x = weight, fill = cohort)) +
 
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
         library(grid)
-        
+
         # Make a list from the ... arguments and plotlist
         plots <- c(list(...), plotlist)
-        
+
         numPlots = length(plots)
-        
+
         # If layout is NULL, then use 'cols' to determine layout
         if (is.null(layout)) {
                 # Make the panel
@@ -186,20 +177,20 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
                 layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
                                  ncol = cols, nrow = ceiling(numPlots/cols))
         }
-        
+
         if (numPlots==1) {
                 print(plots[[1]])
-                
+
         } else {
                 # Set up the page
                 grid.newpage()
                 pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
-                
+
                 # Make each plot, in the correct location
                 for (i in 1:numPlots) {
                         # Get the i,j matrix positions of the regions that contain this subplot
                         matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
-                        
+
                         print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
                                                         layout.pos.col = matchidx$col))
                 }

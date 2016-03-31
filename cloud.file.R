@@ -1,14 +1,10 @@
-source("https://bioconductor.org/biocLite.R")
-biocLite("DOQTL")
-install.packages("lmtest", "MASS", "regress")
 
-install.packages("~/Dropbox/Rstudio.cloud/HZE_0.1.tar.gz", repos = NULL, type = "source")
-
-library(DOQTL)
+library(BSgenome.Mmusculus.UCSC.mm10)
 library(doParallel)
 library(foreach)
 library(Rsamtools)
 library(VariantAnnotation)
+library(DOQTL)
 library(GenomicRanges)
 library(regress)
 library(MASS)
