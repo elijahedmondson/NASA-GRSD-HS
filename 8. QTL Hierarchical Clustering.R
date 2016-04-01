@@ -65,532 +65,261 @@ plot.hs.qtl = function(qtl, bin.width = 10000, ...) {
 setwd("~/Desktop/R/QTL/WD/Heatmap/")
 
 ##HZE#############################################
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.BHGT.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.BHGT.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+##HZE#############################################
+##HZE#############################################
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.Ectoderm.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.Ectoderm.heatmap.Rdata")
-rm(qtl, qtl.smaller)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.Endoderm.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.Endoderm.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+load(file ="~/Desktop/R/QTL/WD/3.\ CoxPH\ Mapping/HZE/Cataract/HZE_Cataract_Latency_CoxPH_plots.Rdata")
+qtl.smaller = plot.hs.qtl(data)
+save(qtl.smaller, file = "HZE.cataract.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.GCT.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/HZE_AML_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.GCT.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "HZE.AML.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.HCC.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/HZE_HardACA_GR_QTL.Rdata")
+qtl.smaller = plot.hs.qtl(qtl)
+save(qtl.smaller, file = "HZE.HardACA.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
+
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/HZE_HardAD_GR_QTL.Rdata")
+qtl.smaller = plot.hs.qtl(qtl)
+save(qtl.smaller, file = "HZE.HardAD.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
+
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/HZE_HCC_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
 save(qtl.smaller, file = "HZE.HCC.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.HGAd.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.HGAd.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.HGT.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.HGT.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.HS.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/HZE_HS_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
 save(qtl.smaller, file = "HZE.HS.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.HSA.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/HZE_HSA_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
 save(qtl.smaller, file = "HZE.HSA.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.Intracranial.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/HZE_LSA.BLL_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.Intracranial.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "HZE.LSA.BLL.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.LSA.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/HZE_LSA.DLBCL_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.LSA.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "HZE.DLBCL.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.MalMammary.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/HZE_LSA.FBL_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.MalMammary.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "HZE.FBL.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.MammAdenocarcinoma.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/HZE_LSA.PreT_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.MalMammAdenocarcinoma.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "HZE.PreT.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.Mesoderm.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/HZE_MammACA_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.Mesoderm.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "HZE.MammACA.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.Metastatic.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.Metastatic.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.Myeloid.Leukemia.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.Myeloid.Leukemia.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.NN.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.NN.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.OSA.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/HZE_OSA_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
 save(qtl.smaller, file = "HZE.OSA.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.PitAd.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/HZE_Pit_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.PitAd.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "HZE.Pit.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.PulmonaryAdenocarcinoma.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/HZE_PulACA_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.PulmonaryAdenocarcinoma.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "HZE.PulACA.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.PulSarcomatoidCarc.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.PulSarcomatoidCarc.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.RhSA.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.RhSA.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.STS.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/HZE_STS_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
 save(qtl.smaller, file = "HZE.STS.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.ThyroidAd.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/HZE_Thyroid_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.ThyroidAd.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/HZE/AMQTL.ThyTumor.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "HZE.ThyTumor.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
+save(qtl.smaller, file = "HZE.Thyroid.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
 ##Gamma#############################################
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.BHGT.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Gamma.BHGT.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+##Gamma#############################################
+##Gamma#############################################
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.Ectoderm.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_AML_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Gamma.Ectoderm.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Gamma.AML.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.Endoderm.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Gamma.Endoderm.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.GCT.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_GCT_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
 save(qtl.smaller, file = "Gamma.GCT.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.HCC.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_HardACA_GR_QTL.Rdata")
+qtl.smaller = plot.hs.qtl(qtl)
+save(qtl.smaller, file = "Gamma.HardACA.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
+
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_HardAD_GR_QTL.Rdata")
+qtl.smaller = plot.hs.qtl(qtl)
+save(qtl.smaller, file = "Gamma.HardAD.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
+
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_HCC_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
 save(qtl.smaller, file = "Gamma.HCC.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.HGAd.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Gamma.HGAd.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.HGT.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Gamma.HGT.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.HS.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_HS_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
 save(qtl.smaller, file = "Gamma.HS.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.HSA.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_HSA_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
 save(qtl.smaller, file = "Gamma.HSA.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.Intracranial.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_LSA.BLL_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Gamma.Intracranial.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Gamma.LSA.BLL.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.LSA.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_LSA.DLBCL_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Gamma.LSA.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Gamma.LSA.DLBCL.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.MalMammary.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_LSA.FBL_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Gamma.MalMammary.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Gamma.LSA.FBL.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.MammAdenocarcinoma.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_LSA.PreT_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Gamma.MalMammAdenocarcinoma.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Gamma.LSA.PreT.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.Mesoderm.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_MammACA_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Gamma.Mesoderm.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Gamma.MammACA.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.Metastatic.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Gamma.Metastatic.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.Myeloid.Leukemia.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Gamma.Myeloid.Leukemia.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.NN.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Gamma.NN.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.OSA.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_OSA_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
 save(qtl.smaller, file = "Gamma.OSA.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.PitAd.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_Pit_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Gamma.PitAd.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Gamma.Pit.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.PulmonaryAdenocarcinoma.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Gamma.PulmonaryAdenocarcinoma.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.PulSarcomatoidCarc.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Gamma.PulSarcomatoidCarc.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.RhSA.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Gamma.RhSA.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.STS.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_PulACA_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
 save(qtl.smaller, file = "Gamma.STS.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.ThyroidAd.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_Thyroid_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Gamma.ThyroidAd.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Gamma/AMQTL.ThyTumor.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Gamma.ThyTumor.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Gamma.Thyroid.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
 
 ##Background#############################################
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.BHGT.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+##Background#############################################
+##Background#############################################
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Unirradiated_AML_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.BHGT.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Unirradiated.AML.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.Ectoderm.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Unirradiated_HardACA_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.Ectoderm.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Unirradiated.HardACA.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.Endoderm.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Unirradiated_HardAD_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.Endoderm.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Unirradiated.HardAD.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.HCC.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Unirradiated_HCC_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.HCC.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Unirradiated.HCC.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.HGAd.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Unirradiated_HS_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.HGAd.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Unirradiated.HS.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.HGT.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Unirradiated_HSA_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.HGT.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Unirradiated.HSA.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.HS.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Unirradiated_LSA.BLL_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.HS.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Unirradiated.LSA.BLL.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.HSA.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Unirradiated_LSA.DLBCL_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.HSA.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Unirradiated.LSA.DLBCL.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.Intracranial.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Unirradiated_LSA.FBL_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.Intracranial.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Unirradiated.LSA.FBL.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.LSA.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Unirradiated_LSA.PreT_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.LSA.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Unirradiated.LSA.PreT.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.MalMammary.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Unirradiated_MammACA_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.MalMammary.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Unirradiated.MammACA.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.MammAdenocarcinoma.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Unirradiated_OSA_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.MalMammAdenocarcinoma.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Unirradiated.OSA.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.Mesoderm.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Unirradiated_PulACA_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.Mesoderm.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Unirradiated.PulACA.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.Metastatic.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Unirradiated_STS_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.Metastatic.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Unirradiated.STS.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.Myeloid.Leukemia.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Unirradiated_Thyroid_GR_QTL.Rdata")
 qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.Myeloid.Leukemia.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.NN.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.NN.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.OSA.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.OSA.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.PitAd.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.PitAd.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.PulmonaryAdenocarcinoma.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.PulmonaryAdenocarcinoma.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.PulSarcomatoidCarc.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.PulSarcomatoidCarc.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.RhSA.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.RhSA.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.STS.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.STS.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.ThyroidAd.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.ThyroidAd.heatmap.Rdata")
-rm(qtl, qtl.smaller)
-
-load(file ="~/Desktop/R/QTL/WD/Mapping Files/Background/AMQTL.ThyTumor.Rdata")
-qtl <- AM.qtl
-rm(AM.qtl)
-qtl.smaller = plot.hs.qtl(qtl)
-save(qtl.smaller, file = "Background.ThyTumor.heatmap.Rdata")
-rm(qtl, qtl.smaller)
+save(qtl.smaller, file = "Unirradiated.Thyroid.heatmap.Rdata")
+rm(qtl, qtl.smaller, file.prefix)
 
 
+#Load all files for combination#############################################
+#Load all files for combination#############################################
 #Load all files for combination#############################################
 load(file="~/Desktop/R/QTL/WD/Heatmap/HZE.BHGT.heatmap.Rdata")
 HZE.BHGT <- qtl.smaller
@@ -891,7 +620,7 @@ Background.ThyTumor <- qtl.smaller
 rm(qtl.smaller)
 
 #Combining the columns#############################################
-combined <- cbind(-log10(HZE.AML$p.value),
+combined <- cbind((-log10(HZE.AML$p.value)/max-log10(HZE.AML$p.value)),
                   -log10(HZE.GCT$p.value),
                   -log10(HZE.HCC$p.value),
                   -log10(HZE.HGT$p.value),
@@ -940,6 +669,16 @@ combined <- cbind(-log10(HZE.AML$p.value),
                   -log10(Background.ThyTumor$p.value))
 
 write.csv(combined, file="~/Desktop/csv.csv")
+
+LOD.fnx <- function(x){
+        if(x >= "4")
+                return(x / max(combined$))
+        if(x < "4")
+                return(0)
+}
+combined$AML.gamma <- sapply(combined$AML.gamma, LOD.fnx)
+
+
 
 csv <-read.csv(file="~/Desktop/csv.csv", comment.char="#")
 rnames <- csv[,1]

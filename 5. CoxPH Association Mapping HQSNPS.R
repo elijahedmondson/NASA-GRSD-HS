@@ -34,11 +34,10 @@ pheno = data.frame(row.names = GRSD.pheno$row.names, sex = as.numeric(GRSD.pheno
                    cat3 = as.numeric(GRSD.pheno$Cataract.3.0.Score.Event),
                    days4 = as.numeric(GRSD.pheno$Cataract.4.0.Score.Days),
                    cat4 = as.numeric(GRSD.pheno$Cataract.4.0.Score.Event),
-                   pigdisp = as.numeric(GRSD.pheno$pigmentdispersion),
+                   pigdisp = as.numeric(GRSD.pheno$pigment.dispersion),
                    dilate = as.numeric(GRSD.pheno$Did.Not.Dilate))
 pheno = pheno[complete.cases(pheno$cat2),]
-cohort1 = subset(pheno, cohort == 1)
-cohort2 = subset(pheno, cohort == 2)
+
 cat2 = subset(pheno, cat2==1)
 cat3 = subset(pheno, cat3==1)
 cat4 = subset(pheno, cat4==1)
