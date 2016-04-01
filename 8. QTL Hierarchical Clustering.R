@@ -418,7 +418,7 @@ combined$HZE.PulACA <- sapply(combined$HZE.PulACA, LOD.fnx)
 combined$HZE.STS <- sapply(combined$HZE.STS, LOD.fnx)
 combined$HZE.Thyroid <- sapply(combined$HZE.Thyroid, LOD.fnx)
 combined$Gamma.AML <- sapply(combined$Gamma.AML, LOD.fnx)
-combined$Gamma.cataract <- sapply(combined$Gamma.cataract, LOD.fnx)
+#combined$Gamma.cataract <- sapply(combined$Gamma.cataract, LOD.fnx)
 combined$Gamma.GCT <- sapply(combined$Gamma.GCT, LOD.fnx)
 combined$Gamma.HardACA <- sapply(combined$Gamma.HardACA, LOD.fnx)
 combined$Gamma.HardAD <- sapply(combined$Gamma.HardAD, LOD.fnx)
@@ -427,7 +427,7 @@ combined$Gamma.HS <- sapply(combined$Gamma.HS, LOD.fnx)
 combined$Gamma.LSA.BLL <- sapply(combined$Gamma.LSA.BLL, LOD.fnx)
 combined$Gamma.LSA.DLBCL <- sapply(combined$Gamma.LSA.DLBCL, LOD.fnx)
 combined$Gamma.LSA.FBL <- sapply(combined$Gamma.LSA.FBL, LOD.fnx)
-combined$Gamma.LSA.PreT <- sapply(combined$Gamma.LSA.PreT, LOD.fnx)
+#combined$Gamma.LSA.PreT <- sapply(combined$Gamma.LSA.PreT, LOD.fnx)
 combined$Gamma.MammACA <- sapply(combined$Gamma.MammACA, LOD.fnx)
 combined$Gamma.OSA <- sapply(combined$Gamma.OSA, LOD.fnx)
 combined$Gamma.Pit <- sapply(combined$Gamma.Pit, LOD.fnx)
@@ -435,7 +435,7 @@ combined$Gamma.PulACA <- sapply(combined$Gamma.PulACA, LOD.fnx)
 combined$Gamma.STS <- sapply(combined$Gamma.STS, LOD.fnx)
 combined$Gamma.Thyroid <- sapply(combined$Gamma.Thyroid, LOD.fnx)
 combined$Unirradiated.AML <- sapply(combined$Unirradiated.AML, LOD.fnx)
-combined$Unirradiated.cataract <- sapply(combined$Unirradiated.cataract, LOD.fnx)
+#combined$Unirradiated.cataract <- sapply(combined$Unirradiated.cataract, LOD.fnx)
 combined$Unirradiated.HardACA <- sapply(combined$Unirradiated.HardACA, LOD.fnx)
 combined$Unirradiated.HardAD <- sapply(combined$Unirradiated.HardAD, LOD.fnx)
 combined$Unirradiated.HCC <- sapply(combined$Unirradiated.HCC, LOD.fnx)
@@ -474,7 +474,7 @@ combined.max.divide <- data.frame(HZE.AML = (combined$HZE.AML/max(combined$HZE.A
                   Gamma.cataract= (combined$Gamma.cataract/max(combined$Gamma.cataract)),
                   Gamma.GCT= (combined$Gamma.GCT/max(combined$Gamma.GCT)),
                   Gamma.HardACA= (combined$Gamma.HardACA/max(combined$Gamma.HardACA)),
-                  Gamma.HardAD= (combined$Gamma.HardAD/max(combined$Gamma.HardAD)),
+                  #Gamma.HardAD= (combined$Gamma.HardAD/max(combined$Gamma.HardAD)),
                   Gamma.HCC= (combined$Gamma.HCC/max(combined$Gamma.HCC)),
                   Gamma.HS= (combined$Gamma.HS/max(combined$Gamma.HS)),
                   #Gamma.HSA= (combined$Gamma.HSA/max(combined$Gamma.HSA)),
@@ -500,14 +500,11 @@ combined.max.divide <- data.frame(HZE.AML = (combined$HZE.AML/max(combined$HZE.A
                   Unirradiated.LSA.FBL= (combined$Unirradiated.LSA.FBL/max(combined$Unirradiated.LSA.FBL)),
                   Unirradiated.LSA.PreT= (combined$Unirradiated.LSA.PreT/max(combined$Unirradiated.LSA.PreT)),
                   Unirradiated.MammACA= (combined$Unirradiated.MammACA/max(combined$Unirradiated.MammACA)),
-                  Unirradiated.OSA= (combined$Unirradiated.OSA/max(combined$Unirradiated.OSA)),
+                  #Unirradiated.OSA= (combined$Unirradiated.OSA/max(combined$Unirradiated.OSA)),
                   Unirradiated.PulACA= (combined$Unirradiated.PulACA/max(combined$Unirradiated.PulACA)),
                   Unirradiated.STS= (combined$Unirradiated.STS/max(combined$Unirradiated.STS)),
                   Unirradiated.Thyroid = (combined$Unirradiated.Thyroid/max(combined$Unirradiated.Thyroid)))
 colSums(combined.max.divide)
-
-
-
 
 
 ##################################### made4 ##################################### 
@@ -516,7 +513,7 @@ colSums(combined.max.divide)
 ##################################### made4 ##################################### 
 require(made4)
 
-heatplot(t(combined.max.divide), margins = c(10, 10), dend="row", method = "complete", main = "", scaleKey = FALSE)
+heatplot(t(combined.max.divide), margins = c(10, 10), dend="row", method = "ave", main = "", scaleKey = FALSE)
 
 
 
@@ -529,7 +526,7 @@ heatplot(t(combined.max.divide), margins = c(10, 10), dend="row", method = "comp
 
 mypalette <- colorRampPalette(c("green", "yellow", "red"))(n = 299)
 
-hclust.ave <- function(x) hclust(x, method="median")
+hclust.ave <- function(x) hclust(x, method="ave")
 heatmap.2(t(combined.max.divide), Colv=NA, labCol=NA, trace ="row", col=mypalette, key = F,
           tracecol = "black", margins = c(2 , 10), hclust = "median", main = "median", scale = "none",
           RowSideColors = c(rep("gray", 15), rep("blue", 16), rep("black", 14)))
