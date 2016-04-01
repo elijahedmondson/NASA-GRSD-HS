@@ -180,3 +180,17 @@ p + geom_text(aes(label = Frequency), size = 3, hjust = 0.5, vjust = 3, position
 
 
 
+
+
+# Convert to GRangesList for storage
+chrs = c(1:19, "X")
+qtl = GRangesList(GRanges("list", length(result)))
+
+for(i in 1:length(chrs)) {
+        print(i)
+        qtl[[i]] <- GRanges(seqnames = Rle(result[[i]]$CHR),
+                            ranges = IRanges(start = result[[i]]$POS, width = 1),
+                            p.value = result[[i]]$pv)
+} # for(i)
+
+save(qtl, file = "~/Desktop/HZE_Cataract_Latency_QTL.Rdata")

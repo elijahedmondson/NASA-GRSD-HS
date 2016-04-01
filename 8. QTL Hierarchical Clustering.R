@@ -1,6 +1,11 @@
 library(GenomicRanges)
+library(ggplot2)
+library(gplots)
+library(RColorBrewer)
+library(made4)
 library(BSgenome.Mmusculus.UCSC.mm10)
 library(DOQTL)
+library(HZE)
 setwd("~/Desktop/")
 
 # Plot function (w/ binning to average markers and max LOD)
@@ -67,7 +72,9 @@ setwd("~/Desktop/R/QTL/WD/Heatmap/")
 ##HZE#############################################
 ##HZE#############################################
 ##HZE#############################################
-
+load(file = "~/Desktop/R/QTL/WD/3.\ CoxPH\ Mapping/HZE/Cataract/HZE_Cataract_Latency_QTL.Rdata")
+HZE.cataract = plot.hs.qtl(qtl)
+rm(qtl)
 
 load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/HZE_AML_GR_QTL.Rdata")
 HZE.AML = plot.hs.qtl(qtl)
@@ -137,6 +144,10 @@ rm(qtl, file.prefix)
 ##Gamma#############################################
 ##Gamma#############################################
 
+load(file = "~/Desktop/R/QTL/WD/3.\ CoxPH\ Mapping/Gamma/Cataract/Gamma_Cataract_Latency_QTL.Rdata")
+Gamma.cataract = plot.hs.qtl(qtl)
+rm(qtl)
+
 load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_AML_GR_QTL.Rdata")
 Gamma.AML = plot.hs.qtl(qtl)
 rm(qtl, file.prefix)
@@ -194,6 +205,10 @@ Gamma.Pit = plot.hs.qtl(qtl)
 rm(qtl, file.prefix)
 
 load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_PulACA_GR_QTL.Rdata")
+Gamma.PulACA = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_STS_GR_QTL.Rdata")
 Gamma.STS = plot.hs.qtl(qtl)
 rm(qtl, file.prefix)
 
@@ -202,9 +217,14 @@ Gamma.Thyroid = plot.hs.qtl(qtl)
 rm(qtl, file.prefix)
 
 
-##Background#############################################
-##Background#############################################
-##Background#############################################
+##Unirradiated#############################################
+##Unirradiated#############################################
+##Unirradiated#############################################
+
+load(file = "~/Desktop/R/QTL/WD/3.\ CoxPH\ Mapping/Unirradiated/Cataract/Unirradiated_Cataract_Latency_QTL.Rdata")
+Unirradiated.cataract = plot.hs.qtl(qtl)
+rm(qtl)
+
 load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Unirradiated_AML_GR_QTL.Rdata")
 Unirradiated.AML = plot.hs.qtl(qtl)
 rm(qtl, file.prefix)
@@ -266,62 +286,117 @@ Unirradiated.Thyroid = plot.hs.qtl(qtl)
 rm(qtl, file.prefix)
 
 
-
 #Combining the columns#############################################
-combined <- cbind((-log10(HZE.AML$p.value)/max-log10(HZE.AML$p.value)),
-                  -log10(HZE.GCT$p.value),
-                  -log10(HZE.HCC$p.value),
-                  -log10(HZE.HGT$p.value),
-                  -log10(HZE.HS$p.value),
-                  -log10(HZE.HSA$p.value),
-                  -log10(HZE.LSA$p.value),
-                  -log10(HZE.MalMammary$p.value),
-                  -log10(HZE.Metastatic$p.value),
-                  -log10(HZE.OSA$p.value),
-                  -log10(HZE.PitAd$p.value),
-                  -log10(HZE.PulmonaryAdenocarcinoma$p.value),
-                  -log10(HZE.PulSarcomatoidCarc$p.value),
-                  -log10(HZE.RhSA$p.value),
-                  -log10(HZE.STS$p.value),
-                  -log10(HZE.ThyTumor$p.value),
-                  -log10(Gamma.AML$p.value),
-                  -log10(Gamma.GCT$p.value),
-                  -log10(Gamma.HCC$p.value),
-                  -log10(Gamma.HGT$p.value),
-                  -log10(Gamma.HS$p.value),
-                  -log10(Gamma.HSA$p.value),
-                  -log10(Gamma.LSA$p.value),
-                  -log10(Gamma.MalMammary$p.value),
-                  -log10(Gamma.Metastatic$p.value),
-                  -log10(Gamma.OSA$p.value),
-                  -log10(Gamma.PitAd$p.value),
-                  -log10(Gamma.PulmonaryAdenocarcinoma$p.value),
-                  -log10(Gamma.PulSarcomatoidCarc$p.value),
-                  -log10(Gamma.RhSA$p.value),
-                  -log10(Gamma.STS$p.value),
-                  -log10(Gamma.ThyTumor$p.value),
-                  -log10(Background.AML$p.value),
-                  -log10(Background.HCC$p.value),
-                  -log10(Background.HGT$p.value),
-                  -log10(Background.HS$p.value),
-                  -log10(Background.HSA$p.value),
-                  -log10(Background.LSA$p.value),
-                  -log10(Background.MalMammary$p.value),
-                  -log10(Background.Metastatic$p.value),
-                  -log10(Background.OSA$p.value),
-                  -log10(Background.PitAd$p.value),
-                  -log10(Background.PulmonaryAdenocarcinoma$p.value),
-                  -log10(Background.PulSarcomatoidCarc$p.value),
-                  -log10(Background.RhSA$p.value),
-                  -log10(Background.STS$p.value),
-                  -log10(Background.ThyTumor$p.value))
+combined <- cbind(HZE.AML = -log10(HZE.AML$p.value),
+                  HZE.cataract = -log10(HZE.cataract$p.value),
+                  HZE.LSA.DLBCL = -log10(HZE.DLBCL$p.value),
+                  HZE.LSA.FBL = -log10(HZE.FBL$p.value),
+                  HZE.HardACA = -log10(HZE.HardACA$p.value),
+                  HZE.HardAD = -log10(HZE.HardAD$p.value),
+                  HZE.HCC = -log10(HZE.HCC$p.value),
+                  HZE.HS = -log10(HZE.HS$p.value),
+                  #HZE.HSA = -log10(HZE.HSA$p.value),
+                  HZE.LSA.BLL= -log10(HZE.LSA.BLL$p.value),
+                  HZE.LSA.PreT= -log10(HZE.LSA.PreT$p.value),
+                  HZE.MammACA= -log10(HZE.MammACA$p.value),
+                  HZE.OSA= -log10(HZE.OSA$p.value),
+                  HZE.Pit= -log10(HZE.pit$p.value),
+                  HZE.PulACA= -log10(HZE.PulACA$p.value),
+                  HZE.STS= -log10(HZE.STS$p.value),
+                  HZE.Thyroid= -log10(HZE.Thyroid$p.value),
+                  Gamma.AML= -log10(Gamma.AML$p.value),
+                  Gamma.cataract= -log10(Gamma.cataract$p.value),
+                  Gamma.GCT= -log10(Gamma.GCT$p.value),
+                  Gamma.HardACA= -log10(Gamma.HardACA$p.value),
+                  Gamma.HardAD= -log10(Gamma.HardAD$p.value),
+                  Gamma.HCC= -log10(Gamma.HCC$p.value),
+                  Gamma.HS= -log10(Gamma.HS$p.value),
+                  #Gamma.HSA= -log10(Gamma.HSA$p.value),
+                  Gamma.LSA.BLL= -log10(Gamma.LSA.BLL$p.value),
+                  Gamma.LSA.DLBCL= -log10(Gamma.LSA.DLBCL$p.value),
+                  Gamma.LSA.FBL= -log10(Gamma.LSA.FBL$p.value),
+                  Gamma.LSA.PreT= -log10(Gamma.LSA.PreT$p.value),
+                  Gamma.MammACA= -log10(Gamma.MammACA$p.value),
+                  Gamma.OSA= -log10(Gamma.OSA$p.value),
+                  Gamma.Pit= -log10(Gamma.Pit$p.value),
+                  Gamma.PulACA = -log10(Gamma.PulACA$P.value),
+                  Gamma.STS= -log10(Gamma.STS$p.value),
+                  Gamma.Thyroid= -log10(Gamma.Thyroid$p.value),
+                  Unirradiated.AML= -log10(Unirradiated.AML$p.value),
+                  Unirradiated.cataract= -log10(Unirradiated.cataract$p.value),
+                  Unirradiated.HardACA= -log10(Unirradiated.HardACA$p.value),
+                  Unirradiated.HardAD= -log10(Unirradiated.HardAD$p.value),
+                  Unirradiated.HCC= -log10(Unirradiated.HCC$p.value),
+                  Unirradiated.HS= -log10(Unirradiated.HS$p.value),
+                  #Unirradiated.HSA= -log10(Unirradiated.HSA$p.value),
+                  Unirradiated.LSA.BLL= -log10(Unirradiated.LSA.BLL$p.value),
+                  Unirradiated.LSA.DLBCL= -log10(Unirradiated.LSA.DLBCL$p.value),
+                  Unirradiated.LSA.FBL= -log10(Unirradiated.LSA.FBL$p.value),
+                  Unirradiated.LSA.PreT= -log10(Unirradiated.LSA.PreT$p.value),
+                  Unirradiated.MammACA= -log10(Unirradiated.MammACA$p.value),
+                  Unirradiated.OSA= -log10(Unirradiated.OSA$p.value),
+                  Unirradiated.PulACA= -log10(Unirradiated.PulACA$p.value),
+                  Unirradiated.STS= -log10(Unirradiated.STS$p.value),
+                  Unirradiated.Thyroid = -log10(Unirradiated.Thyroid$p.value))
 
-write.csv(combined, file="~/Desktop/csv.csv")
+combined.max.divide <- cbind(HZE.AML = (-log10(HZE.AML$p.value)/max(-log10(HZE.AML$p.value))),
+                  HZE.cataract = (-log10(HZE.cataract$p.value)/max(-log10(HZE.cataract$p.value))),
+                  HZE.LSA.DLBCL = (-log10(HZE.DLBCL$p.value)/max(-log10(HZE.DLBCL$p.value))),
+                  HZE.LSA.FBL = (-log10(HZE.FBL$p.value)/max(-log10(HZE.FBL$p.value))),
+                  HZE.HardACA = (-log10(HZE.HardACA$p.value)/max(-log10(HZE.HardACA$p.value))),
+                  HZE.HardAD = (-log10(HZE.HardAD$p.value)/max(-log10(HZE.HardAD$p.value))),
+                  HZE.HCC = (-log10(HZE.HCC$p.value)/max(-log10(HZE.HCC$p.value))),
+                  HZE.HS = (-log10(HZE.HS$p.value)/max(-log10(HZE.HS$p.value))),
+                  #HZE.HSA = (-log10(HZE.HSA$p.value)/max(-log10(HZE.HSA$p.value))),
+                  HZE.LSA.BLL= (-log10(HZE.LSA.BLL$p.value)/max(-log10(HZE.LSA.BLL$p.value))),
+                  HZE.LSA.PreT= (-log10(HZE.LSA.PreT$p.value)/max(-log10(HZE.LSA.PreT$p.value))),
+                  HZE.MammACA= (-log10(HZE.MammACA$p.value)/max(-log10(HZE.MammACA$p.value))),
+                  #HZE.OSA= (-log10(HZE.OSA$p.value)/max(-log10(HZE.OSA$p.value))),
+                  HZE.Pit= (-log10(HZE.pit$p.value)/max(-log10(HZE.pit$p.value))),
+                  HZE.PulACA= (-log10(HZE.PulACA$p.value)/max(-log10(HZE.PulACA$p.value))),
+                  HZE.STS= (-log10(HZE.STS$p.value)/max(-log10(HZE.STS$p.value))),
+                  HZE.Thyroid= (-log10(HZE.Thyroid$p.value)/max(-log10(HZE.Thyroid$p.value))),
+                  Gamma.AML= (-log10(Gamma.AML$p.value)/max(-log10(Gamma.AML$p.value))),
+                  Gamma.cataract= (-log10(Gamma.cataract$p.value)/max(-log10(Gamma.cataract$p.value))),
+                  Gamma.GCT= (-log10(Gamma.GCT$p.value)/max(-log10(Gamma.GCT$p.value))),
+                  Gamma.HardACA= (-log10(Gamma.HardACA$p.value)/max(-log10(Gamma.HardACA$p.value))),
+                  Gamma.HardAD= (-log10(Gamma.HardAD$p.value)/max(-log10(Gamma.HardAD$p.value))),
+                  Gamma.HCC= (-log10(Gamma.HCC$p.value)/max(-log10(Gamma.HCC$p.value))),
+                  Gamma.HS= (-log10(Gamma.HS$p.value)/max(-log10(Gamma.HS$p.value))),
+                  #Gamma.HSA= (-log10(Gamma.HSA$p.value)/max(-log10(Gamma.HSA$p.value))),
+                  Gamma.LSA.BLL= (-log10(Gamma.LSA.BLL$p.value)/max(-log10(Gamma.LSA.BLL$p.value))),
+                  Gamma.LSA.DLBCL= (-log10(Gamma.LSA.DLBCL$p.value)/max(-log10(Gamma.LSA.DLBCL$p.value))),
+                  Gamma.LSA.FBL= (-log10(Gamma.LSA.FBL$p.value)/max(-log10(Gamma.LSA.FBL$p.value))),
+                  Gamma.LSA.PreT= (-log10(Gamma.LSA.PreT$p.value)/max(-log10(Gamma.LSA.PreT$p.value))),
+                  Gamma.MammACA= (-log10(Gamma.MammACA$p.value)/max(-log10(Gamma.MammACA$p.value))),
+                  #Gamma.OSA= (-log10(Gamma.OSA$p.value)/max(-log10(Gamma.OSA$p.value))),
+                  Gamma.Pit= (-log10(Gamma.Pit$p.value)/max(-log10(Gamma.Pit$p.value))),
+                  Gamma.PulACA= (-log10(Gamma.PulACA$p.value)/max(-log10(Gamma.PulACA$p.value))),
+                  Gamma.STS= (-log10(Gamma.STS$p.value)/max(-log10(Gamma.STS$p.value))),
+                  Gamma.Thyroid= (-log10(Gamma.Thyroid$p.value)/max(-log10(Gamma.Thyroid$p.value))),
+                  Unirradiated.AML= (-log10(Unirradiated.AML$p.value)/max(-log10(Unirradiated.AML$p.value))),
+                  Unirradiated.cataract= (-log10(Unirradiated.cataract$p.value)/max(-log10(Unirradiated.cataract$p.value))),
+                  Unirradiated.HardACA= (-log10(Unirradiated.HardACA$p.value)/max(-log10(Unirradiated.HardACA$p.value))),
+                  Unirradiated.HardAD= (-log10(Unirradiated.HardAD$p.value)/max(-log10(Unirradiated.HardAD$p.value))),
+                  Unirradiated.HCC= (-log10(Unirradiated.HCC$p.value)/max(-log10(Unirradiated.HCC$p.value))),
+                  Unirradiated.HS= (-log10(Unirradiated.HS$p.value)/max(-log10(Unirradiated.HS$p.value))),
+                  #Unirradiated.HSA= (-log10(Unirradiated.HSA$p.value)/max(-log10(Unirradiated.HSA$p.value))),
+                  Unirradiated.LSA.BLL= (-log10(Unirradiated.LSA.BLL$p.value)/max(-log10(Unirradiated.LSA.BLL$p.value))),
+                  Unirradiated.LSA.DLBCL= (-log10(Unirradiated.LSA.DLBCL$p.value)/max(-log10(Unirradiated.LSA.DLBCL$p.value))),
+                  Unirradiated.LSA.FBL= (-log10(Unirradiated.LSA.FBL$p.value)/max(-log10(Unirradiated.LSA.FBL$p.value))),
+                  Unirradiated.LSA.PreT= (-log10(Unirradiated.LSA.PreT$p.value)/max(-log10(Unirradiated.LSA.PreT$p.value))),
+                  Unirradiated.MammACA= (-log10(Unirradiated.MammACA$p.value)/max(-log10(Unirradiated.MammACA$p.value))),
+                  #Unirradiated.OSA= (-log10(Unirradiated.OSA$p.value)/max(-log10(Unirradiated.OSA$p.value))),
+                  Unirradiated.PulACA= (-log10(Unirradiated.PulACA$p.value)/max(-log10(Unirradiated.PulACA$p.value))),
+                  Unirradiated.STS= (-log10(Unirradiated.STS$p.value)/max(-log10(Unirradiated.STS$p.value))),
+                  Unirradiated.Thyroid = (-log10(Unirradiated.Thyroid$p.value)/max(-log10(Unirradiated.Thyroid$p.value))))
+
+
 
 LOD.fnx <- function(x){
-        if(x >= "4")
-                return(x / max(combined$))
-        if(x < "4")
+        if(x >= "3.5")
+                return(x)
+        if(x < "3.5")
                 return(0)
 }
 combined$AML.gamma <- sapply(combined$AML.gamma, LOD.fnx)
@@ -332,42 +407,76 @@ csv <-read.csv(file="~/Desktop/csv.csv", comment.char="#")
 rnames <- csv[,1]
 mat_data <- data.matrix(csv[,2:ncol(csv)])
 
-##plot#############################################
+##################################### heatmap.2##################################### 
+##################################### heatmap.2##################################### 
+##################################### heatmap.2##################################### 
+##################################### heatmap.2##################################### 
+##################################### heatmap.2##################################### 
+
+
 mypalette <- colorRampPalette(c("green", "yellow", "red"))(n = 299)
 
-heatmap.2(t(mat_data), Colv=NA, labCol=NA, trace ="row", col=mypalette,
-          tracecol = "black",
-          RowSideColors = c(
-            rep("gray", 0),
-            rep("blue", 13),
-            rep("black", 13)))
+
+heatmap.2(t(combined.max.divide), Colv=NA, labCol=NA, trace ="row", col=mypalette, key = F,
+          tracecol = "black", margins = c(2 , 10), main = "scale = none", scale = "none",
+          RowSideColors = c(rep("gray", 15), rep("blue", 16), rep("black", 14)))
+
+
 
 par(lend = 1)
 legend(.75, 3, legend = c("Unirradiated", "HZE", "Gamma"),
        col = c("gray", "blue", "black"), lty= 1, lwd = 10)
 
 
+
+
+
+
+
+
+##################################### made4 ##################################### 
+##################################### made4 ##################################### 
+##################################### made4 ##################################### 
+##################################### made4 ##################################### 
+require(made4)
+
+heatplot(combined.max.divide)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ##Plotting 3 QTL maps for comparison##
+##Plotting 3 QTL maps for comparison##
+##Plotting 3 QTL maps for comparison##
+##Plotting 3 QTL maps for comparison##
+##Plotting 3 QTL maps for comparison##
+##Plotting 3 QTL maps for comparison##
+
 layout(matrix(3:1, 3, 1))
 par(mfrow = c(2,2), mar=c(1, 4, 1, 1) + 0.1)
 DOQTL:::plot.scanone.assoc(HZE.days, chr=17, bin.size = 100, main = "HZE Ion", ylim=c(0,15))
 DOQTL:::plot.scanone.assoc(Gamma.days, chr=17, bin.size = 100, main = "Gamma ray", ylim=c(0,15))
 DOQTL:::plot.scanone.assoc(Unirradiated.days, chr=17, bin.size = 100, main = "Unirradiated", ylim=c(0,15))
 DOQTL:::plot.scanone.assoc(qtl, chr=17, bin.size = 100, main = "Total Cases", ylim=c(0,15))
-
 par(mfrow = c(3,1), mar=c(1, 4, 1, 1) + 0.5)
 DOQTL:::plot.scanone.assoc(HZE.days, bin.size = 100, main = "HZE Ion", ylim=c(0,15))
 DOQTL:::plot.scanone.assoc(Gamma.days, bin.size = 100, main = "Gamma ray", ylim=c(0,15))
 DOQTL:::plot.scanone.assoc(Unirradiated.days, bin.size = 100, main = "Unirradiated", ylim=c(0,15))
-
-##plot w perms#############################################
-
 perms <- scanone.perm(pheno, pheno.col = "OSA", probs = model.probs,
                       addcovar = addcovar, snps = MM_snps, nperm=5)
 thr1 = quantile(perms, probs = 0.90)
 thr2 = quantile(perms, probs = 0.95)
 thr3 = quantile(perms, probs = 0.99)
-
 plot(AM.qtl, chr = 14, sig.thr = c(thr1, thr2, thr3), main = "")
 
 
@@ -433,9 +542,6 @@ qtl$CHR <- sapply(qtl$CHR, chr.function)
 
 manhattan(qtl, main = 'Gamma Thyroid')
 qq(qtl$P)
-
-
-
 
 
 
