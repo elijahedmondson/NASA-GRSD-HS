@@ -16,9 +16,11 @@ load(file = "~/Desktop/R/QTL/WD/GRSD.Rdata")
 file.prefix = "cataract"
 plot.title = "cataract"
 
-addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
-GRSD.coxph1(pheno, pheno.col = "cat4", probs, K, addcovar,
-           markers, snp.file, outdir = "~/Desktop/files/", tx = "HZE")
+rm(file.prefix, plot.title)
+
+GRSD.coxph(HZE, pheno.col = "cat2", days.col = "days2", probs, K, addcovar,
+           markers, snp.file, outdir = "~/Desktop/files/", tx = "HZE",
+           sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 
 # PHENOTYPE #
@@ -44,6 +46,17 @@ cat4 = subset(pheno, cat4==1)
 HZE = subset(pheno, group == "HZE")
 Gamma = subset(pheno, group == "Gamma")
 Unirradiated = subset(pheno, group == "Unirradiated")
+
+GRSD.coxph(Unirradiated, pheno.col = "cat4", days.col = "days4", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Unirradiated, pheno.col = "cat3", days.col = "days3", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Unirradiated, pheno.col = "cat2", days.col = "days2", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+
+GRSD.coxph(Gamma, pheno.col = "cat4", days.col = "days4", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Gamma", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Gamma, pheno.col = "cat3", days.col = "days3", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Gamma", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Gamma, pheno.col = "cat2", days.col = "days2", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Gamma", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+
+
+
 
 # COVARIATES #
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))

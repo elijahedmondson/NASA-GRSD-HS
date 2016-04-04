@@ -1,8 +1,6 @@
 # LOAD PACKAGES #
 library(BSgenome.Mmusculus.UCSC.mm10)
 library(doParallel)
-library(foreach)
-library(Rsamtools)
 library(VariantAnnotation)
 library(GenomicRanges)
 library(regress)
@@ -18,7 +16,7 @@ outdir = "~/Desktop/files"
 
 
 qlt <- GRSD.assoc(pheno = HZE.1, pheno.col = "HCC", probs, K, addcovar = HZE.1add, markers, snp.file = "snp.file",
-           outdir = "~/Desktop/files", tx = "Gamma")
+           outdir = "~/Desktop/files", tx = "Gamma", sanger.files = )
 
 perms <- GRSDassoc.perms(perms = 2, chr = 1:19, pheno = HZE, Xchr = F, addcovar = HZE.add,
                 pheno.col = "HCC", probs = probs, K = K, markers = markers,
@@ -43,8 +41,8 @@ Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
 pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M"),
                    cohort = as.numeric(Total$Cohort),
                    group = as.character(Total$groups),
+                   unirradiated = as.numeric(Total$Unirradiated),
                    days = as.numeric(Total$days),
-                   Albino = as.numeric(Total$albino),
                    PulACA = as.numeric(Total$Pulmonary.Adenocarcinoma),
                    HCC = as.numeric(Total$Hepatocellular.Carcinoma),
                    HSA = as.numeric(Total$Hemangiosarcoma),
@@ -55,10 +53,21 @@ pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M
                    ThyroidAD = as.numeric(Total$Thyroid.Adenoma),
                    STS = as.numeric(Total$Soft.Tissue.Sarcomas),
                    AML = as.numeric(Total$Myeloid.Leukemia),
-                   Harderian.number = as.numeric(Total$Harderian.Tumor.Number),
-                   Harderian = as.numeric(Total$Harderian.Tumor),
                    HardACA = as.numeric(Total$Harderian.Gland.Adenocarcinoma),
-                   HardAD = as.numeric(Total$Harderian.Gland.Adenoma))
+                   Harderian = as.numeric(Total$Harderian.Tumor),
+                   HardAD = as.numeric(Total$Harderian.Gland.Adenoma),
+                   LSA.BLL= as.numeric(Total$BLL),
+                   LSA.Bmerge= as.numeric(Total$B.merge),
+                   LSA.DLBCL= as.numeric(Total$DLBCL),
+                   LSA.FBL= as.numeric(Total$FBL),
+                   LSA.PreT = as.numeric(Total$PreT),
+                   OSA = as.numeric(Total$Osteosarcoma),
+                   PitAd = as.numeric(Total$Pituitary.Adenoma),
+                   Amyloid = as.numeric(Total$Amyloidosis),
+                   NN = as.numeric(Total$non.neoplastic),
+                   ectoderm = as.numeric(Total$Ectoderm),
+                   endoderm = as.numeric(Total$Endoderm),
+                   mesoderm = as.numeric(Total$Mesoderm))
 
 HZE <- subset(pheno, group == "HZE")
 HZE.add = matrix(HZE$sex, ncol = 1, dimnames = list(rownames(HZE), "sex"))
@@ -66,6 +75,8 @@ Gamma <- subset(pheno, group == "Gamma")
 Gamma.add = matrix(Gamma$sex, ncol = 1, dimnames = list(rownames(Gamma), "sex"))
 Un <- subset(pheno, group == "Unirradiated")
 Un.add = matrix(Un$sex, ncol = 1, dimnames = list(rownames(Un), "sex"))
+All.irr <- subset(pheno, unirradiated == "0")
+Allirr.add = matrix(All.irr$sex, ncol = 1, dimnames = list(rownames(All.irr), "sex"))
 
 HZE.1 <- subset(pheno, group == "HZE" & cohort == 1)
 HZE.1add = matrix(HZE.1$sex, ncol = 1, dimnames = list(rownames(HZE.1), "sex"))

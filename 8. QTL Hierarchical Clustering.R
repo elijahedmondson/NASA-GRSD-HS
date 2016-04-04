@@ -67,7 +67,134 @@ plot.hs.qtl = function(qtl, bin.width = 10000, ...) {
 
 } # plot.hs.qtl
 
-setwd("~/Desktop/R/QTL/WD/Heatmap/")
+
+
+
+##COAT#############################################
+##COAT#############################################
+##COAT#############################################
+
+load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Coat/Gamma_Albino_GR_QTL.Rdata")
+Gamma.Albino = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
+load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Coat/Gamma_Black_GR_QTL.Rdata")
+Gamma.Black = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
+load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Coat/Gamma_Brown_GR_QTL.Rdata")
+Gamma.Brown = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
+load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Coat/Gamma_Grey_GR_QTL.Rdata")
+Gamma.Grey = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
+load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Coat/Gamma_LB_GR_QTL.Rdata")
+Gamma.LB = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
+load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Coat/Gamma_LG_GR_QTL.Rdata")
+Gamma.LG = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
+load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Coat/HZE_Albino_GR_QTL.Rdata")
+HZE.Albino = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
+load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Coat/HZE_Black_GR_QTL.Rdata")
+HZE.Black = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
+load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Coat/HZE_Brown_GR_QTL.Rdata")
+HZE.Brown = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
+load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Coat/HZE_Grey_GR_QTL.Rdata")
+HZE.Grey = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
+load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Coat/HZE_LB_GR_QTL.Rdata")
+HZE.LB = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
+load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Coat/HZE_LG_GR_QTL.Rdata")
+HZE.LG = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
+load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Coat/Unirradiated_Albino_GR_QTL.Rdata")
+Unirradiated.Albino = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
+load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Coat/Unirradiated_Black_GR_QTL.Rdata")
+Unirradiated.Black = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
+load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Coat/Unirradiated_Brown_GR_QTL.Rdata")
+Unirradiated.Brown = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
+load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Coat/Unirradiated_Grey_GR_QTL.Rdata")
+Unirradiated.Grey = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
+load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Coat/Unirradiated_LB_GR_QTL.Rdata")
+Unirradiated.LB = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
+load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Coat/Unirradiated_LG_GR_QTL.Rdata")
+Unirradiated.LG = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
+combined <- data.frame(HZE.Albino = -log10(HZE.Albino$p.value),
+                       HZE.Black = -log10(HZE.Black$p.value),
+                       HZE.Brown = -log10(HZE.Brown$p.value),
+                       HZE.Grey = -log10(HZE.Grey$p.value),
+                       HZE.LB = -log10(HZE.LB$p.value),
+                       #HZE.LG = -log10(HZE.LG$p.value),
+                       Gamma.Albino = -log10(Gamma.Albino$p.value),
+                       Gamma.Black = -log10(Gamma.Black$p.value),
+                       Gamma.Brown = -log10(Gamma.Brown$p.value),
+                       Gamma.Grey = -log10(Gamma.Grey$p.value),
+                       Gamma.LB = -log10(Gamma.LB$p.value),
+                       #Gamma.LG = -log10(Gamma.LG$p.value),
+                       Unirradiated.Albino = -log10(Unirradiated.Albino$p.value),
+                       Unirradiated.Black = -log10(Unirradiated.Black$p.value),
+                       Unirradiated.Brown = -log10(Unirradiated.Brown$p.value),
+                       Unirradiated.Grey = -log10(Unirradiated.Grey$p.value),
+                       Unirradiated.LB = -log10(Unirradiated.LB$p.value))
+                       Unirradiated.LG = -log10(Unirradiated.LG$p.value)
+
+LOD.fnx <- function(x){
+        if(x >= "4.5")
+                return(x)
+        if(x < "4.5")
+                return(0)
+}
+combined$HZE.AML <- sapply(combined$HZE.AML, LOD.fnx)
+combined$HZE.cataract <- sapply(combined$HZE.cataract, LOD.fnx)
+combined$HZE.LSA.DLBCL <- sapply(combined$HZE.LSA.DLBCL, LOD.fnx)
+combined$HZE.LSA.FBL <- sapply(combined$HZE.LSA.FBL, LOD.fnx)
+combined$HZE.HardACA <- sapply(combined$HZE.HardACA, LOD.fnx)
+
+combined.max.divide <- data.frame(HZE.AML = (combined$HZE.AML/max(combined$HZE.AML)),
+                                  HZE.cataract = (combined$HZE.cataract/max(combined$HZE.cataract)),
+                                  HZE.LSA.DLBCL = (combined$HZE.LSA.DLBCL)/max(combined$HZE.LSA.DLBCL),
+                                  HZE.LSA.FBL = (combined$HZE.LSA.FBL/max(combined$HZE.LSA.FBL)),
+                                  HZE.HardACA = (combined$HZE.HardACA/max(combined$HZE.HardACA)),
+                                  HZE.HardAD = (combined$HZE.HardAD/max(combined$HZE.HardAD)),
+                                  HZE.HCC = (combined$HZE.HCC/max(combined$HZE.HCC)))
+require(made4)
+
+heatplot(t(combined), margins = c(5, 10), dend="row", method = "ave", main = "", key = F, labCol=NA)
+
+chrlen = seqlengths(BSgenome.Mmusculus.UCSC.mm10)
+names(chrlen) = sub("^chr", "", names(chrlen))
+chrlen = chrlen[seqlevels(Gamma.Albino)] * 1e-6
+chrmid = (chrlen / 2) + cumsum(c(1, chrlen[-length(chrlen)]))
+mtext(side = 1, line = 1.3, at = chrmid, text = names(chrlen), cex = 1.2)
+
+
 
 ##HZE#############################################
 ##HZE#############################################
@@ -396,9 +523,9 @@ combined <- data.frame(HZE.AML = -log10(HZE.AML$p.value),
 
 
 LOD.fnx <- function(x){
-        if(x >= "3.5")
+        if(x >= "4.5")
                 return(x)
-        if(x < "3.5")
+        if(x < "4.5")
                 return(0)
 }
 combined$HZE.AML <- sapply(combined$HZE.AML, LOD.fnx)
@@ -418,7 +545,7 @@ combined$HZE.PulACA <- sapply(combined$HZE.PulACA, LOD.fnx)
 combined$HZE.STS <- sapply(combined$HZE.STS, LOD.fnx)
 combined$HZE.Thyroid <- sapply(combined$HZE.Thyroid, LOD.fnx)
 combined$Gamma.AML <- sapply(combined$Gamma.AML, LOD.fnx)
-#combined$Gamma.cataract <- sapply(combined$Gamma.cataract, LOD.fnx)
+combined$Gamma.cataract <- sapply(combined$Gamma.cataract, LOD.fnx)
 combined$Gamma.GCT <- sapply(combined$Gamma.GCT, LOD.fnx)
 combined$Gamma.HardACA <- sapply(combined$Gamma.HardACA, LOD.fnx)
 combined$Gamma.HardAD <- sapply(combined$Gamma.HardAD, LOD.fnx)
@@ -427,7 +554,7 @@ combined$Gamma.HS <- sapply(combined$Gamma.HS, LOD.fnx)
 combined$Gamma.LSA.BLL <- sapply(combined$Gamma.LSA.BLL, LOD.fnx)
 combined$Gamma.LSA.DLBCL <- sapply(combined$Gamma.LSA.DLBCL, LOD.fnx)
 combined$Gamma.LSA.FBL <- sapply(combined$Gamma.LSA.FBL, LOD.fnx)
-#combined$Gamma.LSA.PreT <- sapply(combined$Gamma.LSA.PreT, LOD.fnx)
+combined$Gamma.LSA.PreT <- sapply(combined$Gamma.LSA.PreT, LOD.fnx)
 combined$Gamma.MammACA <- sapply(combined$Gamma.MammACA, LOD.fnx)
 combined$Gamma.OSA <- sapply(combined$Gamma.OSA, LOD.fnx)
 combined$Gamma.Pit <- sapply(combined$Gamma.Pit, LOD.fnx)
@@ -435,7 +562,7 @@ combined$Gamma.PulACA <- sapply(combined$Gamma.PulACA, LOD.fnx)
 combined$Gamma.STS <- sapply(combined$Gamma.STS, LOD.fnx)
 combined$Gamma.Thyroid <- sapply(combined$Gamma.Thyroid, LOD.fnx)
 combined$Unirradiated.AML <- sapply(combined$Unirradiated.AML, LOD.fnx)
-#combined$Unirradiated.cataract <- sapply(combined$Unirradiated.cataract, LOD.fnx)
+combined$Unirradiated.cataract <- sapply(combined$Unirradiated.cataract, LOD.fnx)
 combined$Unirradiated.HardACA <- sapply(combined$Unirradiated.HardACA, LOD.fnx)
 combined$Unirradiated.HardAD <- sapply(combined$Unirradiated.HardAD, LOD.fnx)
 combined$Unirradiated.HCC <- sapply(combined$Unirradiated.HCC, LOD.fnx)
@@ -507,29 +634,31 @@ combined.max.divide <- data.frame(HZE.AML = (combined$HZE.AML/max(combined$HZE.A
 colSums(combined.max.divide)
 
 
-##################################### made4 ##################################### 
-##################################### made4 ##################################### 
-##################################### made4 ##################################### 
-##################################### made4 ##################################### 
+##################################### made4 #####################################
+##################################### made4 #####################################
+##################################### made4 #####################################
+##################################### made4 #####################################
 require(made4)
 
-heatplot(t(combined.max.divide), margins = c(10, 10), dend="row", method = "ave", main = "", scaleKey = FALSE)
+heatplot(t(combined.max.divide), margins = c(10, 10), dend="row", method = "median", main = "", scaleKey = FALSE)
 
 
 
-##################################### heatmap.2##################################### 
-##################################### heatmap.2##################################### 
-##################################### heatmap.2##################################### 
-##################################### heatmap.2##################################### 
-##################################### heatmap.2##################################### 
+##################################### heatmap.2 #####################################
+##################################### heatmap.2 #####################################
+##################################### heatmap.2 #####################################
+##################################### heatmap.2 #####################################
+##################################### heatmap.2 #####################################
 
 
-mypalette <- colorRampPalette(c("green", "yellow", "red"))(n = 299)
+mypalette <- colorRampPalette(c("white", "blue", "green"))(n = 299)
 
-hclust.ave <- function(x) hclust(x, method="ave")
-heatmap.2(t(combined.max.divide), Colv=NA, labCol=NA, trace ="row", col=mypalette, key = F,
-          tracecol = "black", margins = c(2 , 10), hclust = "median", main = "median", scale = "none",
-          RowSideColors = c(rep("gray", 15), rep("blue", 16), rep("black", 14)))
+dist.pear <- function(x) as.dist(1-cor(t(x)))
+hclust.ave <- function(x) hclust(x, method="ward")
+
+heatmap.2(t(combined.max.divide), Colv=NA, labCol=NA, trace = "row", col= mypalette, key = T,
+          tracecol = "black", margins = c(2 , 10), hclustfun = hclust.ave, main = "", scale = "none",
+          RowSideColors = c(rep("gray", 15), rep("blue", 15), rep("black", 14)))
 
 
 
