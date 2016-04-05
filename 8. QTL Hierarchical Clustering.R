@@ -68,7 +68,105 @@ plot.hs.qtl = function(qtl, bin.width = 10000, ...) {
 } # plot.hs.qtl
 
 
+##NEURO#############################################
+##NEURO#############################################
+##NEURO#############################################
+HZE.Neuro.Frz.Total <- plot.hs.qtl(QTL.HZE.frz.total)
+rm(QTL.HZE.frz.total)
 
+HZE.Neuro.AVGMO <- plot.hs.qtl(QTL.HZE.avgmo.total)
+rm(QTL.HZE.avgmo.total)
+
+HZE.Neuro.tone.frz <- plot.hs.qtl(QTL.HZE.tone.frz)
+rm(QTL.HZE.tone.frz)
+
+HZE.Neuro.train.frz <- plot.hs.qtl(QTL.HZE.train.frz)
+rm(QTL.HZE.train.frz)
+
+HZE.Neuro.train.shock <- plot.hs.qtl(QTL.HZE.train.shock)
+rm(QTL.HZE.train.shock)
+
+
+Gamma.Neuro.AVGMO.total <- plot.hs.qtl(QTL.gamma.avgmo.total)
+rm(QTL.gamma.avgmo.total)
+
+Gamma.Neuro.Frz.Total <- plot.hs.qtl(QTL.gamma.frz.total)
+rm(QTL.gamma.frz.total)
+
+Gamma.Neuro.tone.frz <- plot.hs.qtl(QTL.gamma.tone.frz)
+rm(QTL.gamma.tone.frz)
+
+Gamma.Neuro.train.frz <- plot.hs.qtl(QTL.gamma.train.frz)
+rm(QTL.gamma.train.frz)
+
+Gamma.Neuro.train.shock <- plot.hs.qtl(QTL.gamma.train.shock)
+rm(QTL.gamma.train.shock)
+
+
+UN.Neuro.AVGMO.total <- plot.hs.qtl(QTL.UN.avgmo.total)
+rm(QTL.UN.avgmo.total)
+
+UN.Neuro.Frz.Total <- plot.hs.qtl(QTL.UN.frz.total)
+rm(QTL.UN.frz.total)
+
+UN.Neuro.tone.frz <- plot.hs.qtl(QTL.UN.tone.frz)
+rm(QTL.UN.tone.frz)
+
+UN.Neuro.train.frz <- plot.hs.qtl(QTL.UN.train.frz)
+rm(QTL.UN.train.frz)
+
+UN.Neuro.train.shock <- plot.hs.qtl(QTL.UN.train.shock)
+rm(QTL.UN.train.shock)
+
+
+combined <- data.frame(#HZE.Neuro.Frz.Total = -log10(HZE.Neuro.Frz.Total$p.value),
+                       HZE.Neuro.AVGMO = -log10(HZE.Neuro.AVGMO$p.value),
+                       HZE.Neuro.tone.frz = -log10(HZE.Neuro.tone.frz$p.value),
+                       HZE.Neuro.train.frz = -log10(HZE.Neuro.train.frz$p.value),
+                       HZE.Neuro.train.shock = -log10(HZE.Neuro.train.shock$p.value),
+                       Gamma.Neuro.AVGMO.total = -log10(Gamma.Neuro.AVGMO.total$p.value),
+                       #Gamma.Neuro.Frz.Total = -log10(Gamma.Neuro.Frz.Total$p.value),
+                       Gamma.Neuro.tone.frz = -log10(Gamma.Neuro.tone.frz$p.value),
+                       Gamma.Neuro.train.frz = -log10(Gamma.Neuro.train.frz$p.value),
+                       Gamma.Neuro.train.shock = -log10(Gamma.Neuro.train.shock$p.value),
+                       UN.Neuro.AVGMO.total = -log10(UN.Neuro.AVGMO.total$p.value),
+                       #UN.Neuro.Frz.Total = -log10(UN.Neuro.Frz.Total$p.value),
+                       UN.Neuro.tone.frz = -log10(UN.Neuro.tone.frz$p.value),
+                       UN.Neuro.train.frz = -log10(UN.Neuro.train.frz$p.value),
+                       UN.Neuro.train.shock = -log10(UN.Neuro.train.shock$p.value))
+
+LOD.fnx <- function(x){
+        if(x >= "5.5")
+                return(x)
+        if(x < "5.5")
+                return(0)
+}
+combined$HZE.Neuro.Frz.Total <- sapply(combined$HZE.Neuro.Frz.Total, LOD.fnx)
+combined$HZE.Neuro.AVGMO <- sapply(combined$HZE.Neuro.AVGMO, LOD.fnx)
+combined$HZE.Neuro.tone.frz <- sapply(combined$HZE.Neuro.tone.frz, LOD.fnx)
+combined$HZE.Neuro.train.frz <- sapply(combined$HZE.Neuro.train.frz, LOD.fnx)
+combined$HZE.Neuro.train.shock <- sapply(combined$HZE.Neuro.train.shock, LOD.fnx)
+combined$Gamma.Neuro.AVGMO.total <- sapply(combined$Gamma.Neuro.AVGMO.total, LOD.fnx)
+combined$Gamma.Neuro.Frz.Total <- sapply(combined$Gamma.Neuro.Frz.Total, LOD.fnx)
+combined$Gamma.Neuro.tone.frz <- sapply(combined$Gamma.Neuro.tone.frz, LOD.fnx)
+combined$Gamma.Neuro.train.frz <- sapply(combined$Gamma.Neuro.train.frz, LOD.fnx)
+combined$Gamma.Neuro.train.shock <- sapply(combined$Gamma.Neuro.train.shock, LOD.fnx)
+combined$UN.Neuro.AVGMO.total <- sapply(combined$UN.Neuro.AVGMO.total, LOD.fnx)
+combined$UN.Neuro.Frz.Total <- sapply(combined$UN.Neuro.Frz.Total, LOD.fnx)
+combined$UN.Neuro.tone.frz <- sapply(combined$UN.Neuro.tone.frz, LOD.fnx)
+combined$UN.Neuro.train.frz <- sapply(combined$UN.Neuro.train.frz, LOD.fnx)
+combined$UN.Neuro.train.shock <- sapply(combined$UN.Neuro.train.shock, LOD.fnx)
+
+combined.max.divide <- data.frame(HZE.AML = (combined$HZE.AML/max(combined$HZE.AML)),
+                                  HZE.cataract = (combined$HZE.cataract/max(combined$HZE.cataract)),
+                                  HZE.LSA.DLBCL = (combined$HZE.LSA.DLBCL)/max(combined$HZE.LSA.DLBCL),
+                                  HZE.LSA.FBL = (combined$HZE.LSA.FBL/max(combined$HZE.LSA.FBL)),
+                                  HZE.HardACA = (combined$HZE.HardACA/max(combined$HZE.HardACA)),
+                                  HZE.HardAD = (combined$HZE.HardAD/max(combined$HZE.HardAD)),
+                                  HZE.HCC = (combined$HZE.HCC/max(combined$HZE.HCC)))
+require(made4)
+combined = combined[, colSums(combined) > 0.5]
+heatplot(t(combined), margins = c(5, 13), dend="row", method = "ave", main = "", key = F, labCol=NA)
 
 ##COAT#############################################
 ##COAT#############################################
@@ -163,12 +261,12 @@ combined <- data.frame(HZE.Albino = -log10(HZE.Albino$p.value),
                        Unirradiated.Brown = -log10(Unirradiated.Brown$p.value),
                        Unirradiated.Grey = -log10(Unirradiated.Grey$p.value),
                        Unirradiated.LB = -log10(Unirradiated.LB$p.value))
-                       Unirradiated.LG = -log10(Unirradiated.LG$p.value)
+                       #Unirradiated.LG = -log10(Unirradiated.LG$p.value)
 
 LOD.fnx <- function(x){
-        if(x >= "4.5")
+        if(x >= "8.5")
                 return(x)
-        if(x < "4.5")
+        if(x < "8.5")
                 return(0)
 }
 combined$HZE.AML <- sapply(combined$HZE.AML, LOD.fnx)
@@ -185,7 +283,8 @@ combined.max.divide <- data.frame(HZE.AML = (combined$HZE.AML/max(combined$HZE.A
                                   HZE.HardAD = (combined$HZE.HardAD/max(combined$HZE.HardAD)),
                                   HZE.HCC = (combined$HZE.HCC/max(combined$HZE.HCC)))
 require(made4)
-
+combined = combined[, colSums(combined) > 0.5]
+unbrown = cbind(combined$Unirradiated.Brown, combined$HZE.Albino)
 heatplot(t(combined), margins = c(5, 10), dend="row", method = "ave", main = "", key = F, labCol=NA)
 
 chrlen = seqlengths(BSgenome.Mmusculus.UCSC.mm10)
@@ -267,6 +366,10 @@ load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/HZE_Thyroid_GR_QTL.Rdata")
 HZE.Thyroid = plot.hs.qtl(qtl)
 rm(qtl, file.prefix)
 
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/HZE_NN_QTL.Rdata")
+HZE.NonNeoplastic = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
 ##Gamma#############################################
 ##Gamma#############################################
 ##Gamma#############################################
@@ -343,6 +446,10 @@ load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_Thyroid_GR_QTL.Rdata")
 Gamma.Thyroid = plot.hs.qtl(qtl)
 rm(qtl, file.prefix)
 
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Gamma_NN_QTL.Rdata")
+Gamma.NonNeoplastic = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
+
 
 ##Unirradiated#############################################
 ##Unirradiated#############################################
@@ -412,6 +519,9 @@ load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Unirradiated_Thyroid_GR_QTL.R
 Unirradiated.Thyroid = plot.hs.qtl(qtl)
 rm(qtl, file.prefix)
 
+load(file ="~/Desktop/R/QTL/WD/2.\ Binary\ Mapping/Unirradiated_NN_QTL.Rdata")
+Unirradiated.NonNeoplastic = plot.hs.qtl(qtl)
+rm(qtl, file.prefix)
 
 
 ##Total#############################################
@@ -520,12 +630,22 @@ combined <- data.frame(HZE.AML = -log10(HZE.AML$p.value),
                   Unirradiated.PulACA= -log10(Unirradiated.PulACA$p.value),
                   Unirradiated.STS= -log10(Unirradiated.STS$p.value),
                   Unirradiated.Thyroid = -log10(Unirradiated.Thyroid$p.value))
+                  #HZE.NN = -log10(HZE.NonNeoplastic$p.value),
+                  #Gamma.NN = -log10(Gamma.NonNeoplastic$p.value),
+                  #Unirradiated.NN = -log10(Unirradiated.NonNeoplastic$p.value)),
+                  #HZE.Neuro.Frz.Total = -log10(HZE.Neuro.Frz.Total$p.value),
+                  #Gamma.Neuro.Frz.Total = -log10(Gamma.Neuro.Frz.Total$p.value),
+                  #Unirradiated.Neuro.Frz.Total = -log10(UN.Neuro.Frz.Total$p.value))
 
+
+combined <- data.frame(HZE.NN = -log10(HZE.NonNeoplastic$p.value),
+                       Gamma.NN = -log10(Gamma.NonNeoplastic$p.value),
+                       Unirradiated.NN = -log10(Unirradiated.NonNeoplastic$p.value))
 
 LOD.fnx <- function(x){
-        if(x >= "4.5")
+        if(x >= "4")
                 return(x)
-        if(x < "4.5")
+        if(x < "4")
                 return(0)
 }
 combined$HZE.AML <- sapply(combined$HZE.AML, LOD.fnx)
@@ -544,6 +664,7 @@ combined$HZE.Pit <- sapply(combined$HZE.Pit, LOD.fnx)
 combined$HZE.PulACA <- sapply(combined$HZE.PulACA, LOD.fnx)
 combined$HZE.STS <- sapply(combined$HZE.STS, LOD.fnx)
 combined$HZE.Thyroid <- sapply(combined$HZE.Thyroid, LOD.fnx)
+combined$HZE.NN <- sapply(combined$HZE.NN, LOD.fnx)
 combined$Gamma.AML <- sapply(combined$Gamma.AML, LOD.fnx)
 combined$Gamma.cataract <- sapply(combined$Gamma.cataract, LOD.fnx)
 combined$Gamma.GCT <- sapply(combined$Gamma.GCT, LOD.fnx)
@@ -561,6 +682,7 @@ combined$Gamma.Pit <- sapply(combined$Gamma.Pit, LOD.fnx)
 combined$Gamma.PulACA <- sapply(combined$Gamma.PulACA, LOD.fnx)
 combined$Gamma.STS <- sapply(combined$Gamma.STS, LOD.fnx)
 combined$Gamma.Thyroid <- sapply(combined$Gamma.Thyroid, LOD.fnx)
+combined$Gamma.NN <- sapply(combined$Gamma.NN, LOD.fnx)
 combined$Unirradiated.AML <- sapply(combined$Unirradiated.AML, LOD.fnx)
 combined$Unirradiated.cataract <- sapply(combined$Unirradiated.cataract, LOD.fnx)
 combined$Unirradiated.HardACA <- sapply(combined$Unirradiated.HardACA, LOD.fnx)
@@ -577,7 +699,7 @@ combined$Unirradiated.OSA <- sapply(combined$Unirradiated.OSA, LOD.fnx)
 combined$Unirradiated.PulACA <- sapply(combined$Unirradiated.PulACA, LOD.fnx)
 combined$Unirradiated.STS <- sapply(combined$Unirradiated.STS, LOD.fnx)
 combined$Unirradiated.Thyroid <- sapply(combined$Unirradiated.Thyroid, LOD.fnx)
-
+combined$Unirradiated.NN <- sapply(combined$Unirradiated.NN, LOD.fnx)
 
 
 combined.max.divide <- data.frame(HZE.AML = (combined$HZE.AML/max(combined$HZE.AML)),
@@ -630,7 +752,10 @@ combined.max.divide <- data.frame(HZE.AML = (combined$HZE.AML/max(combined$HZE.A
                   #Unirradiated.OSA= (combined$Unirradiated.OSA/max(combined$Unirradiated.OSA)),
                   Unirradiated.PulACA= (combined$Unirradiated.PulACA/max(combined$Unirradiated.PulACA)),
                   Unirradiated.STS= (combined$Unirradiated.STS/max(combined$Unirradiated.STS)),
-                  Unirradiated.Thyroid = (combined$Unirradiated.Thyroid/max(combined$Unirradiated.Thyroid)))
+                  Unirradiated.Thyroid = (combined$Unirradiated.Thyroid/max(combined$Unirradiated.Thyroid)),
+                  HZE.NN = (combined$HZE.NN/max(combined$HZE.NN)),
+                  Gamma.NN = (combined$Gamma.NN/max(combined$Gamma.NN)),
+                  Unirradiated.NN = (combined$Unirradiated.NN/max(combined$Unirradiated.NN)))
 colSums(combined.max.divide)
 
 
@@ -640,7 +765,29 @@ colSums(combined.max.divide)
 ##################################### made4 #####################################
 require(made4)
 
-heatplot(t(combined.max.divide), margins = c(10, 10), dend="row", method = "median", main = "", scaleKey = FALSE)
+combined1 = combined[1:93,]
+combined2 = combined[94:168,]
+combined3 = combined[169:234,]
+combined4 = combined[235:298,]
+combined5 = combined[299:349,]
+combined6 = combined[350:419,]
+combined7 = combined[419:484,]
+
+combined = combined[, colSums(combined) > 0.5]
+combined1 = combined1[, colSums(combined1) > 0.5]
+combined2 = combined2[, colSums(combined2) > 0.5]
+combined3 = combined3[, colSums(combined3) > 0.5]
+combined4 = combined4[, colSums(combined4) > 0.5]
+combined5 = combined5[, colSums(combined5) > 0.5]
+
+combined1cat = cbind(HZE = combined1$HZE.cataract, 
+                     Gamma = combined1$Gamma.cataract, 
+                     Unirradiated = combined1$Unirradiated.cataract)
+combined2thy = cbind(HZE = combined2$HZE.Thyroid, 
+                   Gamma = combined2$Gamma.Thyroid, 
+                   Unirradiated = combined2$Unirradiated.Thyroid)
+
+heatplot(t(combined1cat), margins = c(10, 13), dend="row", method = "ward", main = "Chromosome 2: Thyroid Adenoma", key = F, labCol=NA)
 
 
 
