@@ -13,14 +13,18 @@ outdir = "~/Desktop/files/"
 options(stringsAsFactors = F)
 setwd("~/Desktop/files/")
 load(file = "~/Desktop/R/QTL/WD/GRSD.Rdata")
-file.prefix = "cataract"
-plot.title = "cataract"
 
-rm(file.prefix, plot.title)
-
-GRSD.coxph(HZE, pheno.col = "cat2", days.col = "days2", probs, K, addcovar,
+qtl <- GRSD.coxph(HZE, pheno.col = "cat2", days.col = "days2", probs, K, addcovar,
            markers, snp.file, outdir = "~/Desktop/files/", tx = "HZE",
            sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+
+perms <- GRSDcoxph.perms(perms = 2, pheno = Gamma, chr = 1:19, pheno.col = "cat2", days.col = "days2",
+                         probs = probs, K = K, addcovar = addcovar, markers = markers, snp.file = snp.file,
+                         outdir = "~/Desktop/files/", tx = "Gamma", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+
+
+
+
 
 
 # PHENOTYPE #
@@ -43,6 +47,7 @@ pheno = pheno[complete.cases(pheno$cat2),]
 cat2 = subset(pheno, cat2==1)
 cat3 = subset(pheno, cat3==1)
 cat4 = subset(pheno, cat4==1)
+
 HZE = subset(pheno, group == "HZE")
 Gamma = subset(pheno, group == "Gamma")
 Unirradiated = subset(pheno, group == "Unirradiated")
@@ -60,15 +65,8 @@ GRSD.coxph(Gamma, pheno.col = "cat2", days.col = "days2", probs, K, addcovar, ma
 
 # COVARIATES #
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
-samples = intersect(rownames(pheno), rownames(probs))
-samples = intersect(samples, rownames(addcovar))
-samples = intersect(samples, rownames(K[[1]]))
-stopifnot(length(samples) > 0)
-print(paste("Found", length(samples), "samples in common."))
 
-pheno = pheno[samples,,drop = FALSE]
-addcovar = addcovar[samples,,drop = FALSE]
-probs = probs[samples,,,drop = FALSE]
+
 
 
 # COX PH MODEL #
