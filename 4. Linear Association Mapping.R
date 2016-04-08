@@ -1,3 +1,4 @@
+
 library(BSgenome.Mmusculus.UCSC.mm10)
 library(doParallel)
 library(foreach)
@@ -13,8 +14,8 @@ library(HZE)
 
 # 1. GENOTYPE #
 
-load(file = "~/Desktop/R/Build/K.Rdata")
-load(file = "~/Desktop/R/Build/model.probs.Rdata")
+load(file = "~/Desktop/R/QTL/WD/HS\ HMM\ Rdata/K.Rdata")
+load(file = "~/Desktop/R/QTL/WD/HS\ HMM\ Rdata/model.probs.Rdata")
 load(url("ftp://ftp.jax.org/MUGA/MM_snps.Rdata"))
 outdir = "~/Desktop/"
 setwd(outdir)
@@ -30,36 +31,41 @@ pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M
                    cohort = as.numeric(Total$Cohort),
                    group = as.character(Total$groups),
                    days = as.numeric(Total$days),
-                   Albino = as.numeric(Total$albino),
-                   PulACA = as.numeric(Total$Pulmonary.Adenocarcinoma),
-                   HCC = as.numeric(Total$Hepatocellular.Carcinoma),
-                   HSA = as.numeric(Total$Hemangiosarcoma),
-                   HS = as.numeric(Total$Histiocytic.Sarcoma),
-                   MammACA = as.numeric(Total$Mammary.Gland.Adenocarcinoma),
-                   GCT = as.numeric(Total$Granulosa.Cell.Tumor),
-                   Thyroid = as.numeric(Total$Thyroid.Tumor),
-                   ThyroidAD = as.numeric(Total$Thyroid.Adenoma),
-                   STS = as.numeric(Total$Soft.Tissue.Sarcomas),
-                   AML = as.numeric(Total$Myeloid.Leukemia),
-                   Harderian.number = as.numeric(Total$Harderian.Tumor.Number),
-                   Harderian = as.numeric(Total$Harderian.Tumor),
-                   HardACA = as.numeric(Total$Harderian.Gland.Adenocarcinoma),
-                   HardAD = as.numeric(Total$Harderian.Gland.Adenoma))
+                   unirradiated = as.numeric(Total$Unirradiated),
+                   AML.t = as.numeric(Total$AML.transform),
+                   HCC.t = as.numeric(Total$HCC.transform),
+                   PreT.t = as.numeric(Total$PreT.transform),
+                   LSA.t = as.numeric(Total$LSA.transform),
+                   Amyloid.t = as.numeric(Total$Amyloid.transform),
+                   PitAd.t = as.numeric(Total$PitAd.transform),
+                   PulACA.t = as.numeric(Total$PulACA.transform),
+                   Hard.number.t = as.numeric(Total$Hard.number.transform),
+                   Hard.t = as.numeric(Total$Hard.transform),
+                   FBL.t = as.numeric(Total$FBL.transform),
+                   Bmerge.t = as.numeric(Total$Merge.Transform),
+                   DLBCL.t = as.numeric(Total$DLBCL.transform),
+                   NN.t = as.numeric(Total$NN.transform),
+                   PulMet.t = as.numeric(Total$PulMet.transform),
+                   Thyroid.t = as.numeric(Total$Thyroid.transform),
+                   OSA.t = as.numeric(Total$OSA.transform),
+                   PSC = as.numeric(Total$Pulmonary.Sarcomatoid.Carcinoma),
+                   unirradiated = as.numeric(Total$Unirradiated),
+                   Frz.total = as.numeric(Total$context_pctfrze_total),
+                   pig.dis = as.numeric(Total$pigment.dispersion),
+                   avgmo.total = as.numeric(Total$context_avgmo_total),
+                   tone.frz = as.numeric(Total$cued_tone_pctfrze_total),
+                   train.frz = as.numeric(Total$train_deltapctfrze_isi1_isi4),
+                   train.shock = as.numeric(Total$train_deltaavgmot_shock1_shock5))
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 HZE <- subset(pheno, group == "HZE")
-HZE.add = matrix(HZE$sex, ncol = 1, dimnames = list(rownames(HZE), "sex"))
 Gamma <- subset(pheno, group == "Gamma")
-Gamma.add = matrix(Gamma$sex, ncol = 1, dimnames = list(rownames(Gamma), "sex"))
-Un <- subset(pheno, group == "Gamma")
-Un.add = matrix(Un$sex, ncol = 1, dimnames = list(rownames(Un), "sex"))
+Un <- subset(pheno, group == "Unirradiated")
+Allirr <- subset(pheno, unirradiated == 0)
 
 HZE.1 <- subset(pheno, group == "HZE" & cohort == 1)
-HZE.1add = matrix(HZE.1$sex, ncol = 1, dimnames = list(rownames(HZE.1), "sex"))
-Gamma.1 <- subset(pheno, group == "Gamma")
-Gamma.1.add = matrix(Gamma.1$sex, ncol = 1, dimnames = list(rownames(Gamma.1), "sex"))
-Un.1 <- subset(pheno, group == "Unirradiated")
-Un.1.add = matrix(Un.1$sex, ncol = 1, dimnames = list(rownames(Un.1), "sex"))
+Gamma.1 <- subset(pheno, group == "Gamma" & cohort == 1)
+Un.1 <- subset(pheno, group == "Unirradiated" & cohort == 1)
 
 HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1" & Total$HCC.Metastatic.Density>0),]
 HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1"), ]
@@ -76,21 +82,70 @@ addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 # 4. ASSOCIATION MAPPING #
 
-qtl = scanone.assoc(pheno = pheno, pheno.col = "AML", probs = model.probs, K = K,
-                    addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+AML.t.pheno.Rdata = scanone.assoc(pheno = pheno, pheno.col = "AML.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+HCC.t.pheno.Rdata = scanone.assoc(pheno = pheno, pheno.col = "HCC.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+PreT.t.pheno.Rdata = scanone.assoc(pheno = pheno, pheno.col = "PreT.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+LSA.t.pheno.Rdata = scanone.assoc(pheno = pheno, pheno.col = "LSA.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+Amyloid.t.pheno.Rdata = scanone.assoc(pheno = pheno, pheno.col = "Amyloid.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+PitAd.t.pheno.Rdata = scanone.assoc(pheno = pheno, pheno.col = "PitAd.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+PulACA.t.pheno.Rdata = scanone.assoc(pheno = pheno, pheno.col = "PulACA.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+Hard.number.t.pheno = scanone.assoc(pheno = pheno, pheno.col = "Hard.number.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+Hard.t.pheno = scanone.assoc(pheno = pheno, pheno.col = "Hard.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+FBL.t.pheno = scanone.assoc(pheno = pheno, pheno.col = "FBL.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+Bmerge.t.pheno = scanone.assoc(pheno = pheno, pheno.col = "Bmerge.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+DLBCL.t.pheno = scanone.assoc(pheno = pheno, pheno.col = "DLBCL.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+NN.t.pheno = scanone.assoc(pheno = pheno, pheno.col = "NN.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+PulMet.t.pheno = scanone.assoc(pheno = pheno, pheno.col = "PulMet.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+Thyroid.t.pheno = scanone.assoc(pheno = pheno, pheno.col = "Thyroid.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+HSA
+Mammary
+
+save(AML.t.pheno.Rdata, file = "AML.t.pheno.Rdata")
+save(Thyroid.t.pheno, file = "Thyroid.t.pheno.Rdata")
+save(PulMet.t.pheno, file = "PulMet.t.pheno.Rdata")
+save(DLBCL.t.pheno, file = "DLBCL.t.pheno.Rdata")
+save(NN.t.pheno, file = "NN.t.pheno.Rdata")
+save(Bmerge.t.pheno, file = "Bmerge.t.pheno.Rdata")
+save(FBL.t.pheno, file = "FBL.t.pheno.Rdata")
+save(Hard.t.pheno, file = "Hard.t.pheno.Rdata")
+save(Hard.number.t.pheno, file = "Hard.number.t.pheno.Rdata")
+save(PulACA.t.pheno.Rdata, file = "PulACA.t.pheno.Rdata")
+save(PitAd.t.pheno.Rdata, file = "PitAd.t.pheno.Rdata")
+save(Amyloid.t.pheno.Rdata, file = "Amyloid.t.pheno.Rdata")
+save(LSA.t.pheno.Rdata, file = "LSA.t.pheno.Rdata")
+save(PreT.t.pheno.Rdata, file = "PreT.t.pheno.Rdata")
+save(HCC.t.pheno.Rdata, file = "HCC.t.pheno.Rdata")
+
+DOQTL:::plot.scanone.assoc(AML.t.pheno.Rdata, bin.size = 100, main = "AML.t.pheno")
+DOQTL:::plot.scanone.assoc(Thyroid.t.pheno, bin.size = 100, main = "Thyroid.t.pheno")
+DOQTL:::plot.scanone.assoc(PulMet.t.pheno, bin.size = 100, main = "PulMet.t.pheno")
+DOQTL:::plot.scanone.assoc(NN.t.pheno, bin.size = 100, main = "NN.t.pheno")
+DOQTL:::plot.scanone.assoc(DLBCL.t.pheno, bin.size = 100, main = "DLBCL.t.pheno")
+DOQTL:::plot.scanone.assoc(Bmerge.t.pheno, bin.size = 100, main = "Bmerge.t.pheno")
+DOQTL:::plot.scanone.assoc(FBL.t.pheno, bin.size = 100, main = "FBL.t.pheno")
+DOQTL:::plot.scanone.assoc(Hard.t.pheno, bin.size = 100, main = "Hard.t.pheno")
+DOQTL:::plot.scanone.assoc(Hard.number.t.pheno, bin.size = 100, main = "Hard.number.t.pheno")
+DOQTL:::plot.scanone.assoc(PulACA.t.pheno.Rdata, bin.size = 100, main = "PulACA.t.pheno")
+DOQTL:::plot.scanone.assoc(PitAd.t.pheno.Rdata, bin.size = 100, main = "PitAd.t.pheno")
+DOQTL:::plot.scanone.assoc(Amyloid.t.pheno.Rdata, bin.size = 100, main = "Amyloid.t.pheno")
+DOQTL:::plot.scanone.assoc(LSA.t.pheno.Rdata, bin.size = 100, main = "LSA.t.pheno")
+DOQTL:::plot.scanone.assoc(PreT.t.pheno.Rdata, bin.size = 100, main = "PreT.t.pheno")
+DOQTL:::plot.scanone.assoc(HCC.t.pheno.Rdata, bin.size = 100, main = "HCC.t.pheno")
 
 
 
-perms <- Scanone.assoc.perms(perms = 3, pheno = HZE.1, pheno.col = "AML", probs = model.probs, K = K,
-                             addcovar = HZE.1add, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+
+
+
+
+perms <- Scanone.assoc.perms(perms = 1, pheno = HZE, pheno.col = "AML.t", probs = model.probs, K = K,
+                             tx = "HZE", addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
 
 
 
 
 
-save(qtl, file = ".Rdata")
 
-DOQTL:::plot.scanone.assoc(qtl, bin.size = 100, main = "Albino.fmp: Incorrect Cases")
 
 png("CorrectNeuro.albino.png", width = 2400, height = 1080, res = 200)
 DOQTL:::plot.scanone.assoc(qtl, bin.size = 100)
@@ -159,6 +214,82 @@ unique(tmp$sdps)
 
 
 
+############  PERMUTATION ANALYSIS  ############
+############  PERMUTATION ANALYSIS  ############
+############  PERMUTATION ANALYSIS  ############
+############  PERMUTATION ANALYSIS  ############
+
+# Significance thresholds
+
+
+perms = matrix(1, nrow = 1000, ncol = 2, dimnames = list(1:1000, c("A", "X")))
+
+for(p in 1:1000) {
+        print(p)
+        pheno.perm = data.frame(row.names = sample(GRSD.pheno$row.names), sex = as.numeric(GRSD.pheno$sex == "M"),
+                                cohort = as.numeric(GRSD.pheno$Cohort),
+                                group = as.character(GRSD.pheno$groups),
+                                family = as.character(GRSD.pheno$family),
+                                weight = as.numeric(GRSD.pheno$Weight.corrected),
+                                unirradiated = as.numeric(GRSD.pheno$Unirradiated),
+                                Frz.total = as.numeric(GRSD.pheno$context_pctfrze_total),
+                                pig.dis = as.numeric(GRSD.pheno$pigmentdispersion),
+                                avgmo.total = as.numeric(GRSD.pheno$context_avgmo_total),
+                                tone.frz = as.numeric(GRSD.pheno$cued_tone_pctfrze_total),
+                                train.frz = as.numeric(GRSD.pheno$train_deltapctfrze_isi1_isi4),
+                                train.shock = as.numeric(GRSD.pheno$train_deltaavgmot_shock1_shock5),
+                                Albino = as.numeric(GRSD.pheno$albino),
+                                PulACA = as.numeric(GRSD.pheno$Pulmonary.Adenocarcinoma),
+                                HCC = as.numeric(GRSD.pheno$Hepatocellular.Carcinoma),
+                                LSA.PreT = as.numeric(GRSD.pheno$PreT))
+
+        HZE.1perm <- subset(pheno.perm, group == "HZE" & cohort == 1)
+
+        HZE.1addperm = matrix(HZE.1perm$sex, ncol = 1, dimnames = list(rownames(HZE.1perm), "sex"))
+
+        min.a.pv = 1
+
+
+        qtl = scanone.assoc(pheno = HZE.1perm, pheno.col = 11, probs = model.probs, K = K, addcovar = HZE.1addperm, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+
+        min.a.pv = min(min.a.pv, min(qtl$`1`@elementMetadata$p.value),
+                       min(qtl$`2`@elementMetadata$p.value),
+                       min(qtl$`3`@elementMetadata$p.value),
+                       min(qtl$`4`@elementMetadata$p.value),
+                       min(qtl$`5`@elementMetadata$p.value),
+                       min(qtl$`6`@elementMetadata$p.value),
+                       min(qtl$`7`@elementMetadata$p.value),
+                       min(qtl$`8`@elementMetadata$p.value),
+                       min(qtl$`9`@elementMetadata$p.value),
+                       min(qtl$`10`@elementMetadata$p.value),
+                       min(qtl$`11`@elementMetadata$p.value),
+                       min(qtl$`13`@elementMetadata$p.value),
+                       min(qtl$`14`@elementMetadata$p.value),
+                       min(qtl$`15`@elementMetadata$p.value),
+                       min(qtl$`16`@elementMetadata$p.value),
+                       min(qtl$`17`@elementMetadata$p.value),
+                       min(qtl$`18`@elementMetadata$p.value),
+                       min(qtl$`19`@elementMetadata$p.value),
+                       min(qtl$`X`@elementMetadata$p.value))
+
+        print(-log10(min.a.pv))
+
+        perms[p,] = c(min.a.pv, 1)
+
+} # for(p)
+
+
+
+
+
+
+
+
+
+
+
+
+
 DOQTL.plot.scanone.assoc = function (x, chr, bin.size = 10000, ...)
 {
         if (!missing(chr)) {
@@ -197,14 +328,6 @@ DOQTL.plot.scanone.assoc = function (x, chr, bin.size = 10000, ...)
              xaxs = "i")
         mtext(text = names(chrmid), side = 1, line = 0.1, at = chrmid)
 }
-
-
-
-
-
-
-
-
 
 scanone.assoc = function(pheno, pheno.col, probs, K, addcovar, intcovar, markers,
                          cross = c("DO", "CC", "HS"), sdp.file, ncl = 1) {

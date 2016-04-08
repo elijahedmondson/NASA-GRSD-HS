@@ -18,7 +18,7 @@ qtl <- GRSD.coxph(HZE, pheno.col = "cat2", days.col = "days2", probs, K, addcova
            markers, snp.file, outdir = "~/Desktop/files/", tx = "HZE",
            sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
-perms <- GRSDcoxph.perms(perms = 2, pheno = Gamma, chr = 1:19, pheno.col = "cat2", days.col = "days2",
+perms <- GRSDcoxph.perms(perms = 1, pheno = Gamma, chr = 18:19, pheno.col = "cat2", days.col = "days2",
                          probs = probs, K = K, addcovar = addcovar, markers = markers, snp.file = snp.file,
                          outdir = "~/Desktop/files/", tx = "Gamma", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
