@@ -83,54 +83,8 @@ addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 # 4. ASSOCIATION MAPPING #
 
 AML.t.pheno.Rdata = scanone.assoc(pheno = pheno, pheno.col = "AML.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
-HCC.t.pheno.Rdata = scanone.assoc(pheno = pheno, pheno.col = "HCC.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
-PreT.t.pheno.Rdata = scanone.assoc(pheno = pheno, pheno.col = "PreT.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
-LSA.t.pheno.Rdata = scanone.assoc(pheno = pheno, pheno.col = "LSA.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
-Amyloid.t.pheno.Rdata = scanone.assoc(pheno = pheno, pheno.col = "Amyloid.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
-PitAd.t.pheno.Rdata = scanone.assoc(pheno = pheno, pheno.col = "PitAd.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
-PulACA.t.pheno.Rdata = scanone.assoc(pheno = pheno, pheno.col = "PulACA.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
-Hard.number.t.pheno = scanone.assoc(pheno = pheno, pheno.col = "Hard.number.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
-Hard.t.pheno = scanone.assoc(pheno = pheno, pheno.col = "Hard.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
-FBL.t.pheno = scanone.assoc(pheno = pheno, pheno.col = "FBL.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
-Bmerge.t.pheno = scanone.assoc(pheno = pheno, pheno.col = "Bmerge.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
-DLBCL.t.pheno = scanone.assoc(pheno = pheno, pheno.col = "DLBCL.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
-NN.t.pheno = scanone.assoc(pheno = pheno, pheno.col = "NN.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
-PulMet.t.pheno = scanone.assoc(pheno = pheno, pheno.col = "PulMet.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
-Thyroid.t.pheno = scanone.assoc(pheno = pheno, pheno.col = "Thyroid.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
-HSA
-Mammary
 
-save(AML.t.pheno.Rdata, file = "AML.t.pheno.Rdata")
-save(Thyroid.t.pheno, file = "Thyroid.t.pheno.Rdata")
-save(PulMet.t.pheno, file = "PulMet.t.pheno.Rdata")
-save(DLBCL.t.pheno, file = "DLBCL.t.pheno.Rdata")
-save(NN.t.pheno, file = "NN.t.pheno.Rdata")
-save(Bmerge.t.pheno, file = "Bmerge.t.pheno.Rdata")
-save(FBL.t.pheno, file = "FBL.t.pheno.Rdata")
-save(Hard.t.pheno, file = "Hard.t.pheno.Rdata")
-save(Hard.number.t.pheno, file = "Hard.number.t.pheno.Rdata")
-save(PulACA.t.pheno.Rdata, file = "PulACA.t.pheno.Rdata")
-save(PitAd.t.pheno.Rdata, file = "PitAd.t.pheno.Rdata")
-save(Amyloid.t.pheno.Rdata, file = "Amyloid.t.pheno.Rdata")
-save(LSA.t.pheno.Rdata, file = "LSA.t.pheno.Rdata")
-save(PreT.t.pheno.Rdata, file = "PreT.t.pheno.Rdata")
-save(HCC.t.pheno.Rdata, file = "HCC.t.pheno.Rdata")
-
-DOQTL:::plot.scanone.assoc(AML.t.pheno.Rdata, bin.size = 100, main = "AML.t.pheno")
-DOQTL:::plot.scanone.assoc(Thyroid.t.pheno, bin.size = 100, main = "Thyroid.t.pheno")
-DOQTL:::plot.scanone.assoc(PulMet.t.pheno, bin.size = 100, main = "PulMet.t.pheno")
-DOQTL:::plot.scanone.assoc(NN.t.pheno, bin.size = 100, main = "NN.t.pheno")
-DOQTL:::plot.scanone.assoc(DLBCL.t.pheno, bin.size = 100, main = "DLBCL.t.pheno")
-DOQTL:::plot.scanone.assoc(Bmerge.t.pheno, bin.size = 100, main = "Bmerge.t.pheno")
-DOQTL:::plot.scanone.assoc(FBL.t.pheno, bin.size = 100, main = "FBL.t.pheno")
-DOQTL:::plot.scanone.assoc(Hard.t.pheno, bin.size = 100, main = "Hard.t.pheno")
-DOQTL:::plot.scanone.assoc(Hard.number.t.pheno, bin.size = 100, main = "Hard.number.t.pheno")
-DOQTL:::plot.scanone.assoc(PulACA.t.pheno.Rdata, bin.size = 100, main = "PulACA.t.pheno")
-DOQTL:::plot.scanone.assoc(PitAd.t.pheno.Rdata, bin.size = 100, main = "PitAd.t.pheno")
-DOQTL:::plot.scanone.assoc(Amyloid.t.pheno.Rdata, bin.size = 100, main = "Amyloid.t.pheno")
-DOQTL:::plot.scanone.assoc(LSA.t.pheno.Rdata, bin.size = 100, main = "LSA.t.pheno")
-DOQTL:::plot.scanone.assoc(PreT.t.pheno.Rdata, bin.size = 100, main = "PreT.t.pheno")
-DOQTL:::plot.scanone.assoc(HCC.t.pheno.Rdata, bin.size = 100, main = "HCC.t.pheno")
+DOQTL:::plot.scanone.assoc(HCC.t.pheno.Rdata, bin.size = 100, main = "")
 
 
 
@@ -138,8 +92,7 @@ DOQTL:::plot.scanone.assoc(HCC.t.pheno.Rdata, bin.size = 100, main = "HCC.t.phen
 
 
 
-perms <- Scanone.assoc.perms(perms = 1, pheno = HZE, pheno.col = "AML.t", probs = model.probs, K = K,
-                             tx = "HZE", addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+perms <- Scanone.assoc.perms(perms = 200, pheno = Gamma, pheno.col = "AML.t", probs = model.probs, K = K, tx = "Gamma", addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
 
 
 
