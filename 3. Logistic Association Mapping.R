@@ -70,20 +70,13 @@ pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M
                    mesoderm = as.numeric(Total$Mesoderm))
 
 HZE <- subset(pheno, group == "HZE")
-HZE.add = matrix(HZE$sex, ncol = 1, dimnames = list(rownames(HZE), "sex"))
 Gamma <- subset(pheno, group == "Gamma")
-Gamma.add = matrix(Gamma$sex, ncol = 1, dimnames = list(rownames(Gamma), "sex"))
 Un <- subset(pheno, group == "Unirradiated")
-Un.add = matrix(Un$sex, ncol = 1, dimnames = list(rownames(Un), "sex"))
 All.irr <- subset(pheno, unirradiated == "0")
-Allirr.add = matrix(All.irr$sex, ncol = 1, dimnames = list(rownames(All.irr), "sex"))
 
 HZE.1 <- subset(pheno, group == "HZE" & cohort == 1)
-HZE.1add = matrix(HZE.1$sex, ncol = 1, dimnames = list(rownames(HZE.1), "sex"))
 Gamma.1 <- subset(pheno, group == "Gamma")
-Gamma.1.add = matrix(Gamma.1$sex, ncol = 1, dimnames = list(rownames(Gamma.1), "sex"))
 Un.1 <- subset(pheno, group == "Unirradiated")
-Un.1.add = matrix(Un.1$sex, ncol = 1, dimnames = list(rownames(Un.1), "sex"))
 
 HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1" & Total$HCC.Metastatic.Density>0),]
 HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1"), ]
@@ -134,7 +127,7 @@ print(paste("Mapping with", length(samples), "samples."))
 pheno = pheno[samples,,drop = FALSE]
 addcovar = addcovar[samples,,drop = FALSE]
 probs = probs[samples,,,drop = FALSE]
-
+K19 = K19[samples,,,drop = F]
 
 
 # 4. DEFINE TRAIT #

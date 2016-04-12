@@ -87,7 +87,7 @@ addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 AML.t.pheno.Rdata = scanone.assoc(pheno = pheno, pheno.col = "AML.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
 
-DOQTL:::plot.scanone.assoc(HCC.t.pheno.Rdata, bin.size = 100, main = "")
+DOQTL:::plot.scanone.assoc(Weight.QTL, bin.size = 10, main = "Weight")
 
 
 
