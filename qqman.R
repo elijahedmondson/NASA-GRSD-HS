@@ -65,6 +65,16 @@ qtl <- data.frame(CHR = Thyroid.gamma@seqnames,
                   BP = Thyroid.gamma@ranges@start,
                   P = Thyroid.gamma@elementMetadata@listData$p.value)
 
+P.Allirr.cat2 <- data.frame(CHR = Allirr.cat2@seqnames,
+                  BP = Allirr.cat2@ranges@start,
+                  P = Allirr.cat2@elementMetadata@listData$p.value)
+P.Gamma.cat2 <- data.frame(CHR = Thyroid.gamma@seqnames,
+                  BP = Thyroid.gamma@ranges@start,
+                  P = Thyroid.gamma@elementMetadata@listData$p.value)
+P.HZE.cat2 <- data.frame(CHR = Thyroid.gamma@seqnames,
+                  BP = Thyroid.gamma@ranges@start,
+                  P = Thyroid.gamma@elementMetadata@listData$p.value)
+
 chr.function <- function(x){
         if(x == "1")
                 return(1)
@@ -112,8 +122,25 @@ qtl$CHR <- sapply(qtl$CHR, chr.function)
 manhattan(qtl, main = 'Gamma Thyroid')
 qq(qtl$P)
 
+Allirr.cat2.13 <- Allirr.cat2[13]
+Allirr.cat2.13 <- data.frame(BP = Allirr.cat2.13@unlistData@ranges@start, CHR = as.numeric(13), P = Allirr.cat2.13@unlistData@elementMetadata$p.value)
+Gamma.cat2.13 <- Gamma.cat2[13]
+Gamma.cat2.13 <- data.frame(BP = Gamma.cat2.13@unlistData@ranges@start, CHR = as.numeric(13), P = Gamma.cat2.13@unlistData@elementMetadata$p.value)
+HZE.cat2.13 <- HZE.cat2[13]
+HZE.cat2.13 <- data.frame(BP = HZE.cat2.13@unlistData@ranges@start, CHR = as.numeric(13), P = HZE.cat2.13@unlistData@elementMetadata$p.value)
+UN.cat2.13 <- Unirradiated.cat2[13]
+UN.cat2.13 <- data.frame(BP = UN.cat2.13@unlistData@ranges@start, CHR = as.numeric(13), P = UN.cat2.13@unlistData@elementMetadata$p.value)
 
 
+
+manhattan(Allirr.cat2.13, ylim=c(0,10))
+par(new=TRUE, bg = "transparent")
+manhattan(Gamma.cat2.13, ylim=c(0,10))
+par(new=TRUE, bg = "transparent")
+manhattan(HZE.cat2.13, ylim=c(0,10))
+manhattan(UN.cat2.13, ylim=c(0,10))
+
+qq(Allirr.cat2.13$P)
 
 
 
