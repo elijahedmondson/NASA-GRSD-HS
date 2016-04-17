@@ -29,13 +29,18 @@ pheno = data.frame(row.names = GRSD.pheno$row.names, sex = as.numeric(GRSD.pheno
                    family = as.character(GRSD.pheno$family),
                    weight = as.numeric(GRSD.pheno$Weight.corrected),
                    unirradiated = as.numeric(GRSD.pheno$Unirradiated),
-                   Frz.total = as.numeric(GRSD.pheno$context_pctfrze_total),
-                   pig.dis = as.numeric(GRSD.pheno$pigment.dispersion),
-                   avgmo.total = as.numeric(GRSD.pheno$context_avgmo_total),
-                   tone.frz = as.numeric(GRSD.pheno$cued_tone_pctfrze_total),
-                   train.frz = as.numeric(GRSD.pheno$train_deltapctfrze_isi1_isi4),
-                   train.shock = as.numeric(GRSD.pheno$train_deltaavgmot_shock1_shock5))
-
+                   context_pctfrze_total = as.numeric(GRSD.pheno$context_pctfrze_total),
+                   context_avgmo_total = as.numeric(GRSD.pheno$context_avgmo_total),
+                   cued_tone_pctfrze_total = as.numeric(GRSD.pheno$cued_tone_pctfrze_total),
+                   train_deltapctfrze_isi1_isi4 = as.numeric(GRSD.pheno$train_deltapctfrze_isi1_isi4),
+                   train_deltaavgmot_shock1_shock5 = as.numeric(GRSD.pheno$train_deltaavgmot_shock1_shock5),
+                   train_pctfrze_baseline = as.numeric(GRSD.pheno$train_pctfrze_baseline), 
+                   train_pctfrze_isi1 = as.numeric(GRSD.pheno$train_pctfrze_isi1),
+                   train_pctfrze_isi2 = as.numeric(GRSD.pheno$train_pctfrze_isi2),
+                   train_pctfrze_isi3 = as.numeric(GRSD.pheno$train_pctfrze_isi3), 
+                   train_pctfrze_isi4 = as.numeric(GRSD.pheno$train_pctfrze_isi4),
+                   meanisibyfam = )
+pheno.w = pheno[complete.cases(pheno[,7:11]),]
 ############ SPECIFY COVARIATES ############ 
 ############ SPECIFY COVARIATES ############ 
 ############ SPECIFY COVARIATES ############ 
@@ -44,12 +49,13 @@ pheno = data.frame(row.names = GRSD.pheno$row.names, sex = as.numeric(GRSD.pheno
 addcovar = cbind(addcovar, cohort = pheno$cohort)
 addcovar = cbind(pheno$row.names, sex = pheno$sex, cohort = pheno$cohort)
 
-HZE <- subset(pheno, group == "HZE")
-Gamma <- subset(pheno, group == "Gamma")
-Unirradiated <- subset(pheno, group == "Unirradiated")
-Allirr <- subset(pheno, unirradiated == 0)
+HZE <- subset(pheno.w, group == "HZE")
+Gamma <- subset(pheno.w, group == "Gamma")
+Unirradiated <- subset(pheno.w, group == "Unirradiated")
+Allirr <- subset(pheno.w, unirradiated == 0)
 
-
+coh1 <- subset(pheno.w, cohort =="1")
+coh2 <- subset(pheno.w, cohort =="2")
 
 ############ MAP ############   
 ############ MAP ############  
@@ -78,7 +84,74 @@ hist(Gamma$train.shock, main = "Gamma", col = "green")
 
 
 
+ggplot(pheno, aes(x = family, y = train.shock, color = cohort)) +
+        geom_smooth(method=lm, fullrange = T) +
+        geom_point(aes(color=factor(sex), shape=factor(sex)), size = 3) +
+        scale_color_manual(values = c("red", "blue"), name="", labels = c("")) +
+        scale_shape_manual(values = c(2,0), name="", labels = c("")) +
+        theme_bw(base_size = 18) +
+        ggtitle("") +
+        theme(plot.margin=unit(c(1,1,1.5,1.2),"cm"),
+              legend.position=c(.9,.1))
 
+ggplot(pheno.w, aes(x = reorder(family, train.shock, FUN = median), y = train.shock)) + 
+        geom_boxplot(notch = T, aes(fill = factor(family))) + geom_jitter() +
+        theme_bw(base_size = 18) +
+        ggtitle("=") +
+        xlab("HS/npt Family") +
+        theme(axis.text = element_text(size = 14),
+              legend.position = "none",
+              panel.grid.major = element_line(colour = "grey40"),
+              panel.grid.minor = element_blank())
+
+
+p1 <- ggplot(HZE, aes(x = reorder(family, train.shock, FUN = median), y = train.shock)) + 
+        geom_boxplot(notch = T, aes(fill = factor(family))) + geom_jitter() +
+        theme_bw(base_size = 18) +
+        ggtitle("HZE") +
+        xlab("HS/npt Family") +
+        theme(axis.text = element_text(size = 14),
+              legend.position = "none",
+              panel.grid.major = element_line(colour = "grey40"),
+              panel.grid.minor = element_blank())
+p2 <- ggplot(Gamma, aes(x = reorder(family, train.shock, FUN = median), y = train.shock)) + 
+        geom_boxplot(notch = T, aes(fill = factor(family))) + geom_jitter() +
+        theme_bw(base_size = 18) +
+        ggtitle("Gamma") +
+        xlab("HS/npt Family") +
+        theme(axis.text = element_text(size = 14),
+              legend.position = "none",
+              panel.grid.major = element_line(colour = "grey40"),
+              panel.grid.minor = element_blank())
+p3 <- ggplot(Unirradiated, aes(x = reorder(family, train.shock, FUN = median), y = train.shock)) + 
+        geom_boxplot(notch = T, aes(fill = factor(family))) + geom_jitter() +
+        theme_bw(base_size = 18) +
+        ggtitle("Unirradiated") +
+        xlab("HS/npt Family") +
+        theme(axis.text = element_text(size = 14),
+              legend.position = "none",
+              panel.grid.major = element_line(colour = "grey40"),
+              panel.grid.minor = element_blank())
+multiplot(p1,p2,p3, cols = 1)
+
+# HISTOGRAM
+p1 <- ggplot(HZE, aes(x = log(train.shock))) + 
+        geom_histogram(aes(y = ..density..), binwidth = .5) + geom_density() +
+        ggtitle("HZE") 
+p2 <- ggplot(Gamma, aes(x = log(train.shock))) + 
+        geom_histogram(aes(y = ..density..), binwidth = .5) + geom_density() +
+        ggtitle("Gamma") 
+p3 <- ggplot(Unirradiated, aes(x = log(train.shock))) + 
+        geom_histogram(aes(y = ..density..), binwidth = .5) + geom_density() +
+        ggtitle("Unirradiated") 
+multiplot(p1,p2,p3, cols = 1)
+
+#SCATTERPLOT
+ggplot(pheno.w, aes(x = log(context_avgmo_total), 
+                    y = log(train_deltapctfrze_isi1_isi4), 
+                    color = cohort)) + 
+        geom_point(shape=1) +
+        geom_smooth(method=lm)
 
 ############ MANHATTAN PLOTs ############ 
 ############ MANHATTAN PLOTs ############ 

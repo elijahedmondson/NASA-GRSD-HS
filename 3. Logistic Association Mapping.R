@@ -8,12 +8,21 @@ library(MASS)
 library(DOQTL)
 library(lmtest)
 library(HZE)
+library(dplyr)
 options(stringsAsFactors = F)
 load(file = "~/Desktop/R/QTL/WD/GRSD.Rdata")
 setwd("~/Desktop/files")
 outdir = "~/Desktop/files"
 
 
+
+addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
+
+
+
+bootstrap <- HS.assoc.bootstrap(perms = 2, chr = 2, pheno = HZE, pheno.col = "Thyroid",
+                                probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files",
+                                tx = "", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 qlt <- GRSD.assoc(pheno = HZE.1, pheno.col = "HCC", probs, K, addcovar = HZE.1add, markers, snp.file = "snp.file",
            outdir = "~/Desktop/files", tx = "Gamma", sanger.files = )
@@ -38,7 +47,8 @@ load(file = "~/Desktop/R/QTL/WD/GRSD.Rdata")
 # 2. PHENOTYPE #
 
 Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
-pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M"),
+pheno = data.frame(row.names = Total$row.names, rownames = Total$corrected,
+                   sex = as.numeric(Total$sex == "M"),
                    cohort = as.numeric(Total$Cohort),
                    group = as.character(Total$groups),
                    unirradiated = as.numeric(Total$Unirradiated),
