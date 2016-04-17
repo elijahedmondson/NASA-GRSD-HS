@@ -16,7 +16,7 @@ outdir = "~/Desktop/files"
 
 
 
-addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
+addcovar = matrix(HZE$sex, ncol = 1, dimnames = list(row.names(HZE), "sex"))
 
 
 
@@ -24,10 +24,10 @@ bootstrap <- HS.assoc.bootstrap(perms = 2, chr = 2, pheno = HZE, pheno.col = "Th
                                 probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files",
                                 tx = "", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
-qlt <- GRSD.assoc(pheno = HZE.1, pheno.col = "HCC", probs, K, addcovar = HZE.1add, markers, snp.file = "snp.file",
+qlt <- GRSD.assoc(pheno = HZE.1, pheno.col = "HCC", probs, K, addcovar = addcovar, markers, snp.file = "snp.file",
            outdir = "~/Desktop/files", tx = "Gamma", sanger.files = )
 
-perms <- GRSDassoc.perms(perms = 2, chr = 1:19, pheno = HZE, Xchr = F, addcovar = HZE.add,
+perms <- GRSDassoc.perms(perms = 2, chr = 19, pheno = HZE, Xchr = F, addcovar = addcovar,
                 pheno.col = "HCC", probs = probs, K = K, markers = markers,
                 snp.file = snp.file, outdir = "~/Desktop/files", tx = "Test",
                 sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")

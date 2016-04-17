@@ -49,18 +49,11 @@ addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 
 GRSD.coxph(Allirr, pheno.col = "cat4", days.col = "days4", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Allirr, pheno.col = "cat3", days.col = "days3", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Allirr, pheno.col = "cat2", days.col = "days2", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-
-GRSD.coxph(Unirradiated, pheno.col = "Tumor", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Gamma, pheno.col = "Tumor", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Gamma", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(HZE, pheno.col = "Tumor", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "HZE", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Allirr, pheno.col = "Tumor", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 
-perms <- GRSDcoxph.perms(perms = 1, pheno = Gamma, chr = 1:19, pheno.col = "cat2", days.col = "days2",
+perms <- GRSDcoxph.perms(perms = 5, pheno = HZE, chr = 19, pheno.col = "cat2", days.col = "days2",
                          probs = probs, K = K, addcovar = addcovar, markers = markers, snp.file = snp.file,
-                         outdir = "~/Desktop/files/", tx = "Gamma", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+                         outdir = "~/Desktop/files/", tx = "HZE", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 
 
