@@ -16,7 +16,7 @@ outdir = "~/Desktop/files"
 
 
 
-addcovar = matrix(HZE$sex, ncol = 1, dimnames = list(row.names(HZE), "sex"))
+addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
 
 
 
@@ -47,7 +47,7 @@ load(file = "~/Desktop/R/QTL/WD/GRSD.Rdata")
 # 2. PHENOTYPE #
 
 Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
-pheno = data.frame(row.names = Total$row.names, rownames = Total$corrected,
+pheno = data.frame(row.names = Total$row.names, rownames = Total$row.names,
                    sex = as.numeric(Total$sex == "M"),
                    cohort = as.numeric(Total$Cohort),
                    group = as.character(Total$groups),
