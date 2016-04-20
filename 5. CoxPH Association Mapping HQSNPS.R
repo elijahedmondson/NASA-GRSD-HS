@@ -31,7 +31,8 @@ pheno = data.frame(row.names = GRSD.pheno$row.names, sex = as.numeric(GRSD.pheno
                    days4 = as.numeric(GRSD.pheno$Cataract.4.0.Score.Days),
                    cat4 = as.numeric(GRSD.pheno$Cataract.4.0.Score.Event),
                    pigdisp = as.numeric(GRSD.pheno$pigment.dispersion),
-                   dilate = as.numeric(GRSD.pheno$Did.Not.Dilate))
+                   dilate = as.numeric(GRSD.pheno$Did.Not.Dilate),
+                   AML = as.numeric(GRSD.pheno$Myeloid.Leukemia))
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 pheno = pheno[complete.cases(pheno$cat2),]
 
@@ -48,7 +49,7 @@ Allirr = subset(pheno, Unirradiated == 0)
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 
-GRSD.coxph(Allirr, pheno.col = "cat4", days.col = "days4", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Allirr, pheno.col = "AML", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 
 perms <- GRSDcoxph.perms(perms = 5, pheno = HZE, chr = 19, pheno.col = "cat2", days.col = "days2",

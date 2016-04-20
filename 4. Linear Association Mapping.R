@@ -28,6 +28,7 @@ sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz"
 
 Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
 pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M"),
+                   albino = as.numeric(Total$albino),
                    cohort = as.numeric(Total$Cohort),
                    group = as.character(Total$groups),
                    days = as.numeric(Total$days),
@@ -82,9 +83,9 @@ addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 # 4. ASSOCIATION MAPPING #
 
-AML.t.pheno.Rdata = scanone.assoc(pheno = pheno, pheno.col = "AML.t", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+qtl = scanone.assoc(pheno = HZE.1, pheno.col = "albino", probs = probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
 
-DOQTL:::plot.scanone.assoc(Weight.QTL, bin.size = 10, main = "Weight")
+DOQTL:::plot.scanone.assoc(qtl, bin.size = 100, main = "")
 
 
 
@@ -127,9 +128,9 @@ abline(a = 13, b = 0, col = "red")
 
 # 5. LINKAGE MAPPING #
 
-qtl = scanone(pheno = pheno, pheno.col = "sarcomatoid", probs = model.probs, K = K,
-              addcovar = covar, snps = MM_snps)
-plot(qtl, main = "PSC")
+qtl = scanone(pheno = HZE.1, pheno.col = "albino", probs = probs, K = K,
+              addcovar = addcovar, snps = MM_snps)
+plot(qtl, main = "")
 
 perms = scanone.perm(pheno = pheno, pheno.col = "AML", probs = model.probs, addcovar = addcovar,
                      snps = MM_snps, path = "~/Desktop/",
@@ -141,22 +142,16 @@ thr3 = quantile(perms, probs = 0.99)
 
 plot(qtl, sig.thr = c(thr1, thr2, thr3), main = "PSC")
 
-setwd("/Users/elijahedmondson/Desktop/R/QTL/WD")
-getwd()
-save(perms, file = "sarcomatoid.3000perms.Rdata")
-save(qtl, file = "sarcomatoid.3000perms.Rdata")
-list.files("/Users/elijahedmondson/Desktop/R/QTL/WD")
-
-interval = bayesint(qtlscan, chr = 1)
+interval = bayesint(qtl, chr = 7)
 interval
 mgi = get.mgi.features(chr = interval[1,2], start = interval[1,3],
                        end = interval[3,3], type = "gene", source = "MGI")
 nrow(mgi)
 head(mgi)
 
-ma = assoc.map(pheno = pheno, pheno.col = "PreT", probs = model.probs, K = K, addcovar = covar,
+ma = assoc.map(pheno = pheno, pheno.col = "albino", probs = probs, K = K, addcovar = addcovar,
                snps = MM_snps, chr = interval[1,2], start = interval[1,3], end = interval[3,3])
-coefplot(qtl, chr = 1)
+coefplot(qtl, chr = 7, cross = "HS", colors = "HS")
 tmp = assoc.plot(ma, thr = 1)
 unique(tmp$sdps)
 
