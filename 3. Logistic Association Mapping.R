@@ -14,38 +14,6 @@ load(file = "~/Desktop/R/QTL/WD/GRSD.Rdata")
 setwd("~/Desktop/files")
 outdir = "~/Desktop/files"
 
-
-
-addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
-
-
-
-bootstrap <- HS.assoc.bootstrap(perms = 2, chr = 2, pheno = HZE, pheno.col = "Thyroid",
-                                probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files",
-                                tx = "", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-
-qlt <- GRSD.assoc(pheno = HZE.1, pheno.col = "HCC", probs, K, addcovar = addcovar, markers, snp.file = "snp.file",
-           outdir = "~/Desktop/files", tx = "Gamma", sanger.files = )
-
-perms <- GRSDassoc.perms(perms = 2, chr = 19, pheno = HZE, Xchr = F, addcovar = addcovar,
-                pheno.col = "HCC", probs = probs, K = K, markers = markers,
-                snp.file = snp.file, outdir = "~/Desktop/files", tx = "Test",
-                sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-
-maxLOD(file = "/Users/elijah/Desktop/R/QTL/WD/Binary\ Mapping/Total_AML_QTL.Rdata", chr = 2, LODcutoff = 6)
-
-load(file = "/Users/elijah/Desktop/R/QTL/WD/Binary\ Mapping/Total_AML_QTL.Rdata")
-max(-log10(qtl[[15]]$p.value))
-max.LOD.position <- qtl$end[which(-log10(qtl$p.value) > 6)]
-
-# 1. GENOTYPE #
-
-load(file = "~/Desktop/R/QTL/WD/GRSD.Rdata")
-
-
-
-# 2. PHENOTYPE #
-
 Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
 pheno = data.frame(row.names = Total$row.names, rownames = Total$row.names,
                    sex = as.numeric(Total$sex == "M"),
@@ -78,6 +46,7 @@ pheno = data.frame(row.names = Total$row.names, rownames = Total$row.names,
                    ectoderm = as.numeric(Total$Ectoderm),
                    endoderm = as.numeric(Total$Endoderm),
                    mesoderm = as.numeric(Total$Mesoderm))
+addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
 
 HZE <- subset(pheno, group == "HZE")
 Gamma <- subset(pheno, group == "Gamma")
@@ -94,10 +63,28 @@ pheno = data.frame(row.names = HCC.met$row.names, sex = as.numeric(HCC.met$sex =
                    HCC.met = as.numeric(HCC.met$HCC.Met),
                    OSA = as.numeric(HCC.met$Osteosarcoma))
 
-sapply(pheno, sum)
 
-rm(HZE, Gamma, Unirradiated, Total, addcovar)
-addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
+qlt <- GRSD.assoc(pheno = HZE.1, pheno.col = "HCC", probs, K, addcovar = addcovar, markers, snp.file = "snp.file",
+                  outdir = "~/Desktop/files", tx = "Gamma", sanger.files = )
+
+perms <- GRSDassoc.perms(perms = 2, chr = 19, pheno = HZE, Xchr = F, addcovar = addcovar,
+                         pheno.col = "HCC", probs = probs, K = K, markers = markers,
+                         snp.file = snp.file, outdir = "~/Desktop/files", tx = "Test",
+                         sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+
+bootstrap <- HS.assoc.bootstrap(perms = 2, chr = 2, pheno = HZE, pheno.col = "Thyroid",
+                                probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files",
+                                tx = "HZE", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+
+
+QUANTILE = quantile(bootstrap[,4], c(0.025,0.975))
+print("95% Confidence Interval for QTL:")
+print(paste(QUANTILE))
+
+
+newmarks = markers$Mb_NCBI38[which(markers$Mb_NCBI38 >= 123321012 & markers$Mb_NCBI38 <= 123393661)]
+
+
 
 # 3. COVARIATES #
 

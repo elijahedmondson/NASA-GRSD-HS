@@ -1,7 +1,9 @@
 ## qqman
-## x = data.frame("BP," "CHR," "P," and optionally, "SNP)
+## x = data.frame("BP," "CHR," "P," and optionally, "SNP")
 library(qqman)
-
+library(fastmatch)
+library(Kmisc)
+library(lattice)
 
 ##### FOR QTL FROM WELLCOME TRUST ######
 
@@ -55,25 +57,102 @@ manhattan(qtl, main = 'HS: Context')
 rm(gscan, qtl)
 
 
-##### FOR QTL FROM HEATMap Function ######
+##### FOR QTL BINOM Function ######
+plot.hs.qtl = function(qtl, bin.width = 1, ...) {
+
+        new.qtl = NULL
+        for(chr in 1:length(qtl)) {
+
+                print(chr)
+
+                # Create 100 SNP bins.
+                brks = cut(x = 1:length(qtl[[chr]]), breaks = length(qtl[[chr]]) / bin.width)
+                # Split up the SNP positions and get the mean.
+                pos = split(start(qtl[[chr]]), brks)
+                pos = sapply(pos, mean)
+                # Split up the p-values and get the max.
+                pv = split(mcols(qtl[[chr]])$p.value, brks)
+                pv = sapply(pv, min)
+
+                # Make a single new GRanges object to return.
+                gr = GRanges(seqnames = seqnames(qtl[[chr]])[1],
+                             ranges = IRanges(start = pos, width = 1), p.value = pv)
+
+                if(chr == 1) {
+                        new.qtl = gr
+                } else {
+                        new.qtl = c(new.qtl, gr)
+                } # else
+
+        } # for(chr)
+
+        # Get the chromosome lengths.
+        chrlen = seqlengths(BSgenome.Mmusculus.UCSC.mm10)
+        names(chrlen) = sub("^chr", "", names(chrlen))
+        chrlen = chrlen[seqlevels(new.qtl)] * 1e-6
+
+        # Add the chr lengths to the chromosomes for plotting.
+        # Switch positions to genome Mb.
+        gmb = start(new.qtl) * 1e-6
+        for(chr in 2:length(chrlen)) {
+
+                wh = which(seqnames(new.qtl) == names(chrlen)[chr])
+                gmb[wh] = gmb[wh] + sum(chrlen[1:(chr - 1)])
+
+        } # for(chr)
+
+        # Get chromosome mid-points for plotting the Chr name.
+        chrmid = (chrlen / 2) + cumsum(c(1, chrlen[-length(chrlen)]))
+
+        # Make the plot.
+        col = rep(rgb(0,0,0), length(new.qtl))
+        even.chr = which(seqnames(new.qtl) %in% (1:10 * 2))
+        col[even.chr] = rgb(0.7,0.7,0.7)
+        plot(gmb, -log10(new.qtl$p.value), pch = 20, xaxt = "n",
+             col = col, las = 1, xlab = "", ylab = "-log10(p-value)", ...)
+        mtext(side = 1, line = 0.5, at = chrmid, text = names(chrlen), cex = 1.2)
+
+        return(new.qtl)
+
+} # plot.hs.qtl
+load(file ="~/Desktop/R/QTL/WD/2.\ Binomial\ Mapping/Rdata/Allirr_Thyroid_QTL.Rdata")
+Allirr = plot.hs.qtl(qtl)
+load(file ="/Users/elijah/Desktop/R/QTL/WD/2.\ Binomial\ Mapping/Rdata/Gamma_Thyroid_GR_QTL.Rdata")
+Gamma = plot.hs.qtl(qtl)
+load(file ="/Users/elijah/Desktop/R/QTL/WD/2.\ Binomial\ Mapping/Rdata/HZE_Thyroid_GR_QTL.Rdata")
+HZE = plot.hs.qtl(qtl)
+
+
 library(qqman)
-qtl <- data.frame(CHR = Thyroid.HZE@seqnames,
-                  BP = Thyroid.HZE@ranges@start,
-                  P = Thyroid.HZE@elementMetadata@listData$p.value)
+HZE <- data.frame(CHR = HZE@seqnames,
+                  BP = HZE@ranges@start,
+                  P = HZE@elementMetadata@listData$p.value)
 
-qtl <- data.frame(CHR = Thyroid.gamma@seqnames,
-                  BP = Thyroid.gamma@ranges@start,
-                  P = Thyroid.gamma@elementMetadata@listData$p.value)
+Gamma <- data.frame(CHR = Gamma@seqnames,
+                      BP = Gamma@ranges@start,
+                      P = Gamma@elementMetadata@listData$p.value)
 
-P.Allirr.cat2 <- data.frame(CHR = Allirr.cat2@seqnames,
-                  BP = Allirr.cat2@ranges@start,
-                  P = Allirr.cat2@elementMetadata@listData$p.value)
-P.Gamma.cat2 <- data.frame(CHR = Thyroid.gamma@seqnames,
-                  BP = Thyroid.gamma@ranges@start,
-                  P = Thyroid.gamma@elementMetadata@listData$p.value)
-P.HZE.cat2 <- data.frame(CHR = Thyroid.gamma@seqnames,
-                  BP = Thyroid.gamma@ranges@start,
-                  P = Thyroid.gamma@elementMetadata@listData$p.value)
+All_Irradiated <- data.frame(CHR = Allirr@seqnames,
+                      BP = Allirr@ranges@start,
+                      P = Allirr@elementMetadata@listData$p.value)
+
+HZE = HZE[which(HZE$CHR == 2), ]
+Gamma = Gamma[which(Gamma$CHR == 2), ]
+All_Irradiated = All_Irradiated[which(All_Irradiated$CHR == 2), ]
+
+HZE$groups = c("HZE")
+Gamma$groups = c("Gamma")
+All_Irradiated$groups = c("All_Irradiated")
+
+new = rbind(All_Irradiated, HZE, Gamma)
+pv = new$P
+bp = new$BP
+chr = as.numeric(new$CHR)
+groups = new$groups
+
+manhattan_plot(pval = pv, bp, chr, groups, cex = 2.5, xlab = "", cutoff = c(5.73, 4.48))
+
+manhattan_plot(pval = pv, bp, chr, groups, cex = 3, xlab = "")
 
 chr.function <- function(x){
         if(x == "1")
@@ -118,6 +197,13 @@ chr.function <- function(x){
                 return(20)
 }
 qtl$CHR <- sapply(qtl$CHR, chr.function)
+
+
+qtl$CHR <- sapply(qtl$CHR, chr.function)
+
+
+
+
 
 manhattan(qtl, main = 'Gamma Thyroid')
 qq(qtl$P)

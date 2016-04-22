@@ -14,7 +14,7 @@ options(stringsAsFactors = F)
 snp.file = "/Users/elijahedmondson/Desktop/R/Build/mgp.v4.snps.dbSNP.vcf.gz"
 sdp.file = "/Users/elijahedmondson/Desktop/R/Build/HS_Sanger_SDPs.txt.bgz"
 setwd("/Users/elijahedmondson/Desktop/R/QTL/WD")
-pheno = data.frame(row.names = sample$row.names, sex = as.numeric(sample$sex == "M"),  
+pheno = data.frame(row.names = sample$row.names, sex = as.numeric(sample$sex == "M"),
                    albino = as.numeric(sample$albino),
                    days = as.numeric(sample$days))
 covar = data.frame(sex = as.numeric(sample$sex == "M"))
@@ -23,12 +23,12 @@ rownames(covar) = rownames(pheno)
 rownames(addcovar) = rownames(pheno)
 
 #Linkage Mapping
-LM.qtl = scanone(pheno = pheno, pheno.col = "days", probs = model.probs, K = K, 
+LM.qtl = scanone(pheno = pheno, pheno.col = "days", probs = model.probs, K = K,
               addcovar = covar, snps = MM_snps)
 plot(LM.qtl, main = "test")
 save(LM.qtl, file = "")
-perms = scanone.perm(pheno = pheno, pheno.col = "days", probs = model.probs, addcovar = covar, 
-                     snps = MM_snps, path = "/Users/elijahedmondson/Desktop/R/QTL/perms", 
+perms = scanone.perm(pheno = pheno, pheno.col = "days", probs = model.probs, addcovar = covar,
+                     snps = MM_snps, path = "/Users/elijahedmondson/Desktop/R/QTL/perms",
                      nperm = 10)
 thr1 = quantile(perms, probs = 0.90)
 thr2 = quantile(perms, probs = 0.95)
@@ -36,7 +36,7 @@ thr3 = quantile(perms, probs = 0.99)
 plot(qtl, sig.thr = c(thr1, thr2, thr3), main = "")
 interval = bayesint(qtl, chr = 7)
 interval
-mgi = get.mgi.features(chr = interval[1,2], start = interval[1,3], end = interval[3,3], 
+mgi = get.mgi.features(chr = interval[1,2], start = interval[1,3], end = interval[3,3],
                        type = "gene", source = "MGI")
 nrow(mgi)
 head(mgi)
@@ -44,7 +44,7 @@ head(mgi)
 #Association Mapping
 pheno[,2] = as.numeric(pheno[,2]) - 1
 
-AM.qtl = scanone.assoc(pheno = pheno, pheno.col = 2, probs = probs, K = K, 
+AM.qtl = scanone.assoc(pheno = pheno, pheno.col = 2, probs = probs, K = K,
                     addcovar = covar, markers = markers, cross = "HS", sdp.file = sdp.file, ncl = 2)
 plot(AM.qtl, main = "test")
 save(AM.qtl, file = "")
@@ -134,13 +134,13 @@ library(RColorBrewer)
 my.col <- c("#ccf2ff", "#9CB071", "#9CB071",
          "#9CB071", "#9CB071", "#87AFC7",
          "#FFCBA4", "#ff9966", "#E6E600FF",
-         "#2B547E", "#E8C034FF", "#404040", 
-         "#e6e6e6", "#ff6666", "#617C58", 
+         "#2B547E", "#E8C034FF", "#404040",
+         "#e6e6e6", "#ff6666", "#617C58",
          "#87CEEB", "#C48793", "#EDC9AF")
 barplot(t(stack), col = my.col, ylab = "Number of Mice", ylim = c(0,800), xlim = c(0,12), width = 2)
 
 
-legend("bottomright", 
+legend("bottomright",
        legend = c(colnames(stack)[18:1]), #in order from top to bottom
        fill = my.col[18:1], # 6:1 reorders so legend order matches graph
        title = "Tumor Histotype")
@@ -152,12 +152,12 @@ legend("bottomright",
 
 
 Group <- c(rep(c("Gamma", "HZE", "Unirradiated"), each = 18))
-Histotype <- c(rep(c("Non-neoplastic", "Lymphoma PreT","Lymphoma BLL", 
-               "Lymphoma FBL", "Lymphoma DLBCL", "Myeloid Leukemia", 
-               "Pulmonary Adenocarcinoma", "Hepatocellular Carcinoma", 
-               "Hemangiosarcoma", "Histiocytic Sarcoma", 
+Histotype <- c(rep(c("Non-neoplastic", "Lymphoma PreT","Lymphoma BLL",
+               "Lymphoma FBL", "Lymphoma DLBCL", "Myeloid Leukemia",
+               "Pulmonary Adenocarcinoma", "Hepatocellular Carcinoma",
+               "Hemangiosarcoma", "Histiocytic Sarcoma",
                "Mammary Adenocarcinoma",
-               "Ovarian Granulosa Cell Tumor", "Thyroid Adenoma", 
+               "Ovarian Granulosa Cell Tumor", "Thyroid Adenoma",
                "Soft Tissue Sarcoma", "Harderian Gland Adenocarcinoma",
                "Harderian Gland Adenoma", "Osteosarcoma", "Pituitary Adenoma"), times = 3))
 Tumor <- c(stack$Gamma, stack$HZE, stack$Unirradiated)
@@ -167,30 +167,17 @@ Data <- data.frame(Group, Histotype, Tumor)
 Data
 qplot(factor(Group), data = Data, geom = "bar", fill = factor(Tumor))
 
-Data <- ddply(Data, .(Group), 
+Data <- ddply(Data, .(Group),
               transform, pos = cumsum(Tumor) - (0.5 * Tumor)
 )
 
 
-ggplot(Data, aes(x = Group, y= Tumor, fill = Histotype), 
-       geom_bar(stat="identity"), 
+ggplot(Data, aes(x = Group, y= Tumor, fill = Histotype),
+       geom_bar(stat="identity"),
        geom_text(aes(label = Frequency, y = pos), size = 3))
 
-p + geom_text(aes(label = Frequency), size = 3, hjust = 0.5, vjust = 3, position = "stack") 
+p + geom_text(aes(label = Frequency), size = 3, hjust = 0.5, vjust = 3, position = "stack")
 
 
 
 
-
-# Convert to GRangesList for storage
-chrs = c(1:19, "X")
-qtl = GRangesList(GRanges("list", length(result)))
-
-for(i in 1:length(chrs)) {
-        print(i)
-        qtl[[i]] <- GRanges(seqnames = Rle(result[[i]]$CHR),
-                            ranges = IRanges(start = result[[i]]$POS, width = 1),
-                            p.value = result[[i]]$pv)
-} # for(i)
-
-save(qtl, file = "~/Desktop/HZE_Cataract_Latency_QTL.Rdata")
