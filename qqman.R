@@ -58,7 +58,7 @@ rm(gscan, qtl)
 
 
 ##### FOR QTL BINOM Function ######
-plot.hs.qtl = function(qtl, bin.width = 1, ...) {
+plot.hs.qtl = function(qtl, bin.width = 5, ...) {
 
         new.qtl = NULL
         for(chr in 1:length(qtl)) {
@@ -152,7 +152,7 @@ groups = new$groups
 
 manhattan_plot(pval = pv, bp, chr, groups, cex = 2.5, xlab = "", cutoff = c(5.73, 4.48))
 
-manhattan_plot(pval = pv, bp, chr, groups, cex = 3, xlab = "")
+manhattan_plot(pval = pv, bp, chr, groups, cex = 2, xlab = "")
 
 chr.function <- function(x){
         if(x == "1")
@@ -281,5 +281,3 @@ x <- join_all(list(new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, 
            new15, new16, new17, new18, new19, new20), by = "BP", type = "full")
 rm(new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, new11, new12, new13, new14,
    new15, new16, new17, new18, new19, new20)
-
-

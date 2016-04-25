@@ -53,15 +53,7 @@ Gamma <- subset(pheno, group == "Gamma")
 Un <- subset(pheno, group == "Unirradiated")
 All.irr <- subset(pheno, unirradiated == "0")
 
-HZE.1 <- subset(pheno, group == "HZE" & cohort == 1)
-Gamma.1 <- subset(pheno, group == "Gamma")
-Un.1 <- subset(pheno, group == "Unirradiated")
 
-HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1" & Total$HCC.Metastatic.Density>0),]
-HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1"), ]
-pheno = data.frame(row.names = HCC.met$row.names, sex = as.numeric(HCC.met$sex == "M"),
-                   HCC.met = as.numeric(HCC.met$HCC.Met),
-                   OSA = as.numeric(HCC.met$Osteosarcoma))
 
 
 qlt <- GRSD.assoc(pheno = HZE.1, pheno.col = "HCC", probs, K, addcovar = addcovar, markers, snp.file = "snp.file",
@@ -74,10 +66,11 @@ perms <- GRSDassoc.perms(perms = 2, chr = 19, pheno = HZE, Xchr = F, addcovar = 
 
 bootstrap <- HS.assoc.bootstrap(perms = 2, chr = 2, pheno = HZE, pheno.col = "Thyroid",
                                 probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files",
-                                tx = "HZE", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+                                tx = "HZE", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/",
+                                peakMB = 122584526)
 
 
-QUANTILE = quantile(bootstrap[,4], c(0.025,0.975))
+gamma.quant = quantile(gamma$Thyroid, c(0.025,0.975))
 print("95% Confidence Interval for QTL:")
 print(paste(QUANTILE))
 

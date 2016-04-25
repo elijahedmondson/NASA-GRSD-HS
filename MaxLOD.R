@@ -1,17 +1,12 @@
 
-print(probs["UNC6"])
-
-model.probs[which(model.probs$ = "UNC5422316")]
-
-model.probs["UNC6"]
 
 
 LODmat = matrix(0, nrow = 20, ncol = 3, dimnames = list(1:20, c("min", "max", "top")))
 #10
 for(i in 1:19) {
         top = max(-log10(qtl[[i]]$p.value))
-        if(top > 100) {
-                LOD.drop.int = top - 1.5
+        if(top > 6) {
+                LOD.drop.int = top - .5
                 max.LOD.position <- qtl[[i]]@ranges[which(-log10(qtl[[i]]$p.value) > LOD.drop.int)]
                 print(paste(i, max.LOD.position@start[1], max(max.LOD.position@start), top))
                 LODmat[i,] = c(max.LOD.position@start[1], max(max.LOD.position@start), top)
@@ -21,7 +16,7 @@ for(i in 1:19) {
 
 
 
-chr = 5
+chr = 2
 
 #Max LOD score
 top <- max(-log10(qtl[[chr]]$p.value))
