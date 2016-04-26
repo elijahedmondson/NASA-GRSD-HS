@@ -38,33 +38,53 @@ pheno = data.frame(row.names = GRSD.pheno$row.names, sex = as.numeric(GRSD.pheno
                    train_pctfrze_isi1 = as.numeric(GRSD.pheno$train_pctfrze_isi1),
                    train_pctfrze_isi2 = as.numeric(GRSD.pheno$train_pctfrze_isi2),
                    train_pctfrze_isi3 = as.numeric(GRSD.pheno$train_pctfrze_isi3), 
-                   train_pctfrze_isi4 = as.numeric(GRSD.pheno$train_pctfrze_isi4),
-                   meanisibyfam = )
-pheno.w = pheno[complete.cases(pheno[,7:11]),]
-############ SPECIFY COVARIATES ############ 
-############ SPECIFY COVARIATES ############ 
-############ SPECIFY COVARIATES ############ 
-############ SPECIFY COVARIATES ############ 
+                   train_pctfrze_isi4 = as.numeric(GRSD.pheno$train_pctfrze_isi4))
+pheno = pheno[complete.cases(pheno[,1:16]),]
+pheno1 = data.frame(row.names = pheno$row.names, sex = pheno$sex,
+                   cohort = as.numeric(pheno$cohort),
+                   group = as.character(pheno$group),
+                   family = as.numeric(pheno$family),
+                   weight = as.numeric(pheno$weight),
+                   unirradiated = as.numeric(pheno$unirradiated),
+                   context_pctfrze_total = as.numeric(log10(pheno$context_pctfrze_total)),
+                   context_avgmo_total = as.numeric(log10(pheno$context_avgmo_total)),
+                   cued_tone_pctfrze_total = as.numeric(log10(pheno$cued_tone_pctfrze_total)),
+                   train_deltapctfrze_isi1_isi4 = as.numeric(log10(pheno$train_deltapctfrze_isi1_isi4)),
+                   train_deltaavgmot_shock1_shock5 = as.numeric(pheno$train_deltaavgmot_shock1_shock5))
 
+
+### Test for normality using the Kolmogorov-Smirnov Normality test ###
+hist(pheno$context_pctfrze_total, breaks = 70)
+hist(pheno$context_avgmo_total, breaks = 70)
+hist(pheno$cued_tone_pctfrze_total, breaks = 70)
+hist(pheno$train_deltapctfrze_isi1_isi4, breaks = 70)
+hist(pheno$train_deltaavgmot_shock1_shock5, breaks = 70)
+
+
+ks.test(x = pheno$train_pctfrze_isi2, y = pnorm)
+ks.test(x = log(pheno$train_pctfrze_isi2), y = pnorm)
+ks.test(x = log10(pheno$train_pctfrze_isi2), y = pnorm)
+
+############ SPECIFY COVARIATES ############ 
+############ SPECIFY COVARIATES ############ 
+############ SPECIFY COVARIATES ############ 
+############ SPECIFY COVARIATES ############ 
+addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
 addcovar = cbind(addcovar, cohort = pheno$cohort)
-addcovar = cbind(pheno$row.names, sex = pheno$sex, cohort = pheno$cohort)
 
-HZE <- subset(pheno.w, group == "HZE")
-Gamma <- subset(pheno.w, group == "Gamma")
-Unirradiated <- subset(pheno.w, group == "Unirradiated")
-Allirr <- subset(pheno.w, unirradiated == 0)
-
-coh1 <- subset(pheno.w, cohort =="1")
-coh2 <- subset(pheno.w, cohort =="2")
+HZE <- subset(pheno, group == "HZE")
+Gamma <- subset(pheno, group == "Gamma")
+Unirradiated <- subset(pheno, group == "Unirradiated")
+Allirr <- subset(pheno, unirradiated == 0)
 
 ############ MAP ############   
 ############ MAP ############  
 ############ MAP ############  
 ############ MAP ############  
 
-QTL.C1.train.frz = scanone.assoc(pheno = Gamma, pheno.col = "train.frz", probs = model.probs, 
+qtl = scanone.assoc(pheno = Gamma, pheno.col = "context_avgmo_total", probs = model.probs, 
                                  K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
-
+DOQTL:::plot.scanone.assoc(
 ############ DATA VISUALIZATION ############
 ############ DATA VISUALIZATION ############  
 ############ DATA VISUALIZATION ############  

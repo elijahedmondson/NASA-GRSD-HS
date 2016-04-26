@@ -15,41 +15,69 @@ setwd("~/Desktop/files/")
 load(file = "~/Desktop/R/QTL/WD/GRSD.Rdata")
 
 # PHENOTYPE #
-GRSD.pheno <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
-pheno = data.frame(row.names = GRSD.pheno$row.names, sex = as.numeric(GRSD.pheno$sex == "M"),
-                   cohort = as.numeric(GRSD.pheno$Cohort),
-                   Unirradiated = as.numeric(GRSD.pheno$Unirradiated),
-                   family = as.numeric(GRSD.pheno$family),
-                   group = as.character(GRSD.pheno$groups),
-                   days = as.numeric(GRSD.pheno$days),
-                   NN = as.numeric(GRSD.pheno$non.neoplastic),
-                   Tumor = as.numeric(GRSD.pheno$Tumor),
-                   days2 = as.numeric(GRSD.pheno$Cataract.2.0.Score.Days),
-                   cat2 = as.numeric(GRSD.pheno$Cataract.2.0.Score.Event),
-                   days3 = as.numeric(GRSD.pheno$Cataract.3.0.Score.Days),
-                   cat3 = as.numeric(GRSD.pheno$Cataract.3.0.Score.Event),
-                   days4 = as.numeric(GRSD.pheno$Cataract.4.0.Score.Days),
-                   cat4 = as.numeric(GRSD.pheno$Cataract.4.0.Score.Event),
-                   pigdisp = as.numeric(GRSD.pheno$pigment.dispersion),
-                   dilate = as.numeric(GRSD.pheno$Did.Not.Dilate),
-                   AML = as.numeric(GRSD.pheno$Myeloid.Leukemia))
+Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
+pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M"),
+                   cohort = as.numeric(Total$Cohort),
+                   Unirradiated = as.numeric(Total$Unirradiated),
+                   family = as.numeric(Total$family),
+                   group = as.character(Total$groups),
+                   days = as.numeric(Total$days),
+                   NN = as.numeric(Total$non.neoplastic),
+                   Tumor = as.numeric(Total$Tumor),
+                   days2 = as.numeric(Total$Cataract.2.0.Score.Days),
+                   cat2 = as.numeric(Total$Cataract.2.0.Score.Event),
+                   days3 = as.numeric(Total$Cataract.3.0.Score.Days),
+                   cat3 = as.numeric(Total$Cataract.3.0.Score.Event),
+                   days4 = as.numeric(Total$Cataract.4.0.Score.Days),
+                   cat4 = as.numeric(Total$Cataract.4.0.Score.Event),
+                   pigdisp = as.numeric(Total$pigment.dispersion),
+                   dilate = as.numeric(Total$Did.Not.Dilate),
+                   PulACA = as.numeric(Total$Pulmonary.Adenocarcinoma),
+                   HCC = as.numeric(Total$Hepatocellular.Carcinoma),
+                   HSA = as.numeric(Total$Hemangiosarcoma),
+                   HS = as.numeric(Total$Histiocytic.Sarcoma),
+                   MammACA = as.numeric(Total$Mammary.Gland.Adenocarcinoma),
+                   GCT = as.numeric(Total$Granulosa.Cell.Tumor),
+                   Thyroid = as.numeric(Total$Thyroid.Tumor),
+                   ThyroidAD = as.numeric(Total$Thyroid.Adenoma),
+                   STS = as.numeric(Total$Soft.Tissue.Sarcomas),
+                   AML = as.numeric(Total$Myeloid.Leukemia),
+                   HardACA = as.numeric(Total$Harderian.Gland.Adenocarcinoma),
+                   Harderian = as.numeric(Total$Harderian.Tumor),
+                   HardAD = as.numeric(Total$Harderian.Gland.Adenoma),
+                   LSA.BLL= as.numeric(Total$BLL),
+                   LSA.Bmerge= as.numeric(Total$B.merge),
+                   LSA.DLBCL= as.numeric(Total$DLBCL),
+                   LSA.FBL= as.numeric(Total$FBL),
+                   LSA.PreT = as.numeric(Total$PreT),
+                   OSA = as.numeric(Total$Osteosarcoma),
+                   PitAd = as.numeric(Total$Pituitary.Adenoma))
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 pheno = pheno[complete.cases(pheno$cat2),]
-
-cat2 = subset(pheno, cat2==1)
-cat3 = subset(pheno, cat3==1)
-cat4 = subset(pheno, cat4==1)
 
 HZE = subset(pheno, group == "HZE")
 Gamma = subset(pheno, group == "Gamma")
 Unirradiated = subset(pheno, group == "Unirradiated")
 Allirr = subset(pheno, Unirradiated == 0)
 
-# COVARIATES #
-addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
-
-GRSD.coxph(Allirr, pheno.col = "AML", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Allirr, pheno.col = "HCC", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Allirr, pheno.col = "LSA.PreT", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Allirr, pheno.col = "PulACA", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Allirr, pheno.col = "HSA", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Allirr, pheno.col = "HS", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Allirr, pheno.col = "MammACA", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Allirr, pheno.col = "Thyroid", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Allirr, pheno.col = "STS", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Allirr, pheno.col = "HardACA", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Allirr, pheno.col = "Harderian", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Allirr, pheno.col = "LSA.BLL", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Allirr, pheno.col = "LSA.Bmerge", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Allirr, pheno.col = "LSA.DLBCL", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Allirr, pheno.col = "LSA.FBL", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Allirr, pheno.col = "LSA.PreT", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Allirr, pheno.col = "OSA", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Allirr, pheno.col = "PitAd", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Allirr", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 
 perms <- GRSDcoxph.perms(perms = 5, pheno = HZE, chr = 19, pheno.col = "cat2", days.col = "days2",

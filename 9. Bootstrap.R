@@ -73,41 +73,68 @@ print(paste(QUANTILE))
 ### PLOTTING BOOTSTRAP RESULTS (HISTOGRAM) ###
 ### PLOTTING BOOTSTRAP RESULTS (HISTOGRAM) ###
 Thy.boot <- read.csv("~/Desktop/QTL Data/Bootstrap.overall-Table 1.csv")
+Thy.boot2 = Thy.boot[which(Thy.boot$AML.LOD > 7),]
 
-gamma = Thy.boot[which(Thy.boot$TX == "Gamma"),]
+gamma = Thy.boot[which(Thy.boot$TX == "gamma"),]
 hze = Thy.boot[which(Thy.boot$TX == "HZE"),]
 un = Thy.boot[which(Thy.boot$TX == "Unirradiated"),]
+allirr = Thy.boot[which(Thy.boot$TX == "All.irradiated"),]
+
+gamma = Thy.boot[which(Thy.boot$TX == "gamma" & Thy.boot$AML.LOD > 5),]
+hze = Thy.boot[which(Thy.boot$TX == "HZE" & Thy.boot$AML.LOD > 5),]
+un = Thy.boot[which(Thy.boot$TX == "Unirradiated" & Thy.boot$AML.LOD > 5),]
+allirr = Thy.boot[which(Thy.boot$TX == "All.irradiated" & Thy.boot$AML.LOD > 5),]
+
+
 
 #HISTOGRAM
 layout(matrix(3:1, 3, 1))
-hist(un$Thyroid, breaks=150, col="blue", main = "Unirradiated", xlab="Chromosome 2", prob = T, xlim = c(0, 182113224))
-lines(density(un$Thyroid), col="black")
-hist(gamma$Thyroid, breaks=150, col="green", main = "Gamma", xlab="Chromosome 2", prob = T, xlim = c(0, 182113224))
-lines(density(gamma$Thyroid), col="black")
-hist(hze$Thyroid, breaks=150, col="red", main = "HZE", xlab="Chromosome 2", prob = T, xlim = c(0, 113282124))
-lines(density(hze$Thyroid), col="black", lwd = 1)
+hist(un$AML.Locus, breaks=150, col="blue", main = "Unirradiated", xlab="Chromosome 2", prob = T, xlim = c(0, 182113224))
+lines(density(un$AML.Locus), col="black")
+hist(gamma$AML.Locus, breaks=150, col="green", main = "Gamma", xlab="Chromosome 2", prob = T, xlim = c(0, 182113224))
+lines(density(gamma$AML.Locus), col="black")
+hist(hze$AML.Locus, breaks=150, col="red", main = "HZE", xlab="Chromosome 2", prob = T, xlim = c(0, 182113224))
+lines(density(hze$AML.Locus), col="black", lwd = 1)
+
+layout(matrix(4:1, 4, 1))
+hist(un$AML.Locus, breaks=150, col="blue", main = "Unirradiated", xlab="Chromosome 2", prob = T, xlim = c(0, 182113224))
+lines(density(un$AML.Locus), col="black")
+hist(gamma$AML.Locus, breaks=150, col="green", main = "Gamma", xlab="", prob = T, xlim = c(0, 182113224))
+lines(density(gamma$AML.Locus), col="black")
+hist(hze$AML.Locus, breaks=150, col="red", main = "HZE", xlab="", prob = T, xlim = c(0, 182113224))
+lines(density(hze$AML.Locus), col="black", lwd = 1)
+hist(allirr$AML.Locus, breaks=150, col="black", main = "All Irradiated", xlab="", prob = T, xlim = c(0, 182113224))
+lines(density(All.irradiated$AML.Locus), col="black", lwd = 1)
 
 #HISTOGRAM WITHOUT DENSITY
 layout(matrix(3:1, 3, 1))
-hist(un$Thyroid, breaks=25, col="blue", main = "Unirradiated", xlab="Chromosome 2",xlim = c(110000000, 130000000))
-
-hist(gamma$Thyroid, breaks=30, col="green", main = "Gamma", xlab="Chromosome 2",xlim = c(110000000, 130000000))
-
-hist(hze$Thyroid, breaks=20, col="red", main = "HZE", xlab="Chromosome 2",xlim = c(110000000, 130000000))
+hist(un$AML.Locus, breaks=150, col="blue", main = "Unirradiated", xlab="Chromosome 2",xlim = c(110000000, 130000000))
+hist(gamma$AML.Locus, breaks=150, col="green", main = "Gamma", xlab="Chromosome 2",xlim = c(110000000, 130000000))
+hist(hze$AML.Locus, breaks=150, col="red", main = "HZE", xlab="Chromosome 2",xlim = c(110000000, 130000000))
 
 
 
 
 #KERNAL DENSITY
 layout(matrix(3:1, 3, 1))
-d = density(hze$Thyroid)
+d = density(hze$AML.Locus)
 plot(d, col="red", main = "HZE", xlab="Chromosome 2", xlim = c(0, 182113224))
-d = density(gamma$Thyroid) 
+d = density(gamma$AML.Locus) 
 plot(d, col="green", main = "Gamma", xlab="Chromosome 2", xlim = c(0, 182113224))
-d = density(un$Thyroid) 
+d = density(un$AML.Locus) 
 plot(d, col="blue", main = "Unirradiated", xlab="Chromosome 2", xlim = c(0, 182113224))
 
-hist(hze$Thyroid, prob = T)
+layout(matrix(4:1, 4, 1))
+d = density(un$AML.Locus) 
+plot(d, col="blue", main = "Unirradiated", xlab="Chromosome 2", xlim = c(0, 182113224))
+d = density(gamma$AML.Locus) 
+plot(d, col="green", main = "Gamma", xlab="Chromosome 2", xlim = c(0, 182113224))
+d = density(hze$AML.Locus)
+plot(d, col="red", main = "HZE", xlab="Chromosome 2", xlim = c(0, 182113224))
+d = density(allirr$AML.Locus) 
+plot(d, col="blue", main = "Unirradiated", xlab="Chromosome 2", xlim = c(0, 182113224))
+
+hist(hze$AML.Locus, prob = T)
 lines(density(x))
 
 
@@ -116,15 +143,20 @@ title(main = "Nonparametric Bootstrap Resampling with Replacement: Distribution 
 
 
 
-thyroid.boot <- factor(Thy.boot$tx, levels = c("Gamma", "HZE", "Unirradiated"),
-                       labels = c("Gamma", "HZE", "Unirradiaed"))
-polygon(d, col="red", border="blue")
-
-
+AML.boot <- factor(Thy.boot$TX, levels = c("All.irradiated", "gamma", "HZE", "Unirradiated"),
+                       labels = c("All Irradiated", "Gamma", "HZE", "Unirradiated"))
 par(mfrow=c(1,1))
-sm.density.compare(Thy.boot$Thyroid, Thy.boot$TX, xlab = "Chromosome 2")
-title(main = "Thyroid Adenoma: Resample Model Averaging")
-colfill = c(2:(2+length(levels(Thy.boot))))
-legend("topright", levels(Thy.boot), fill = colfill)
+sm.density.compare(Thy.boot$AML.Locus, Thy.boot$TX, xlab = "Chromosome 2", lwd = 2.5)
+title(main = "AML Adenoma: Resample Model Averaging")
+colfill = c(2:(2+length(levels(AML.boot))))
+legend("topright", levels(AML.boot), fill = colfill)
 
-sm.binomial.bootstrap()
+
+AML.boot <- factor(Thy.boot2$TX, levels = c("All.irradiated", "gamma", "HZE", "Unirradiated"),
+                       labels = c("All Irradiated", "Gamma", "HZE", "Unirradiated"))
+par(mfrow=c(1,1))
+sm.density.compare(Thy.boot2$AML.Locus, Thy.boot2$TX, xlab = "Chromosome 2", lwd = 2.5)
+title(main = "AML Adenoma: Resample Model Averaging")
+colfill = c(2:(2+length(levels(AML.boot))))
+legend("topright", levels(AML.boot), fill = colfill)
+#sm.binomial.bootstrap()
