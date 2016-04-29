@@ -161,6 +161,32 @@ p1 <- ggplot(pheno, aes(x = weight, fill = cohort)) +
 
 
 
+
+
+
+
+#####HISTOGRAM#####
+layout(matrix(3:1, 3, 1))
+hist(pheno$days, breaks=150, col="blue", main = "")
+lines(density(un$AML.Locus), col="black")
+hist(pheno$days, breaks=150, col="green", main = "Gamma", xlab="Chromosome 2", prob = T, xlim = c(0, 182113224))
+lines(density(gamma$AML.Locus), col="black")
+hist(hze$AML.Locus, breaks=150, col="red", main = "HZE", xlab="Chromosome 2", prob = T, xlim = c(0, 182113224))
+lines(density(hze$AML.Locus), col="black", lwd = 1)
+
+
+
+AML.boot <- factor(pheno$days, levels = c("All.irradiated", "gamma", "HZE", "Unirradiated"),
+                   labels = c("All Irradiated", "Gamma", "HZE", "Unirradiated"))
+par(mfrow=c(1,1))
+sm.density.compare(Thy.boot2$AML.Locus, Thy.boot2$TX, xlab = "Chromosome 2", lwd = 2.5)
+title(main = "AML Adenoma: Resample Model Averaging")
+colfill = c(2:(2+length(levels(AML.boot))))
+legend("topright", levels(AML.boot), fill = colfill)
+#sm.binomial.bootstrap()
+
+
+
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
         library(grid)
 

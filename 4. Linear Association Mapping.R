@@ -56,7 +56,9 @@ pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M
                    avgmo.total = as.numeric(Total$context_avgmo_total),
                    tone.frz = as.numeric(Total$cued_tone_pctfrze_total),
                    train.frz = as.numeric(Total$train_deltapctfrze_isi1_isi4),
-                   train.shock = as.numeric(Total$train_deltaavgmot_shock1_shock5))
+                   train.shock = as.numeric(Total$train_deltaavgmot_shock1_shock5),
+                   pu.1 = as.numeric(Total$Pu.1.transform),
+                   no.pu.1 = as.numeric(Total$No.deletion.AML.transform))
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 HZE <- subset(pheno, group == "HZE")
@@ -83,9 +85,9 @@ addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 # 4. ASSOCIATION MAPPING #
 
-qtl = scanone.assoc(pheno = HZE.1, pheno.col = "albino", probs = probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+qtl = scanone.assoc(pheno = Allirr, pheno.col = "pu.1", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
 
-DOQTL:::plot.scanone.assoc(qtl, bin.size = 100, main = "")
+DOQTL:::plot.scanone.assoc(qtl, bin.size = 100, main = "PU.1 Deletion Transform")
 
 
 
