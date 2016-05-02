@@ -4,6 +4,7 @@ library(qqman)
 library(fastmatch)
 library(Kmisc)
 library(lattice)
+library(HZE)
 
 ##### FOR QTL FROM WELLCOME TRUST ######
 
@@ -58,7 +59,7 @@ rm(gscan, qtl)
 
 
 ##### FOR QTL BINOM Function ######
-plot.hs.qtl = function(qtl, bin.width = 5, ...) {
+plot.hs.qtl = function(qtl, bin.width = 1, ...) {
 
         new.qtl = NULL
         for(chr in 1:length(qtl)) {
@@ -116,11 +117,11 @@ plot.hs.qtl = function(qtl, bin.width = 5, ...) {
 
 } # plot.hs.qtl
 load(file ="~/Desktop/R/QTL/WD/2.\ Binomial\ Mapping/Rdata/Allirr_Thyroid_QTL.Rdata")
-Allirr = plot.hs.qtl(qtl)
+Allirr = plot.hs.qtl(allirr)
 load(file ="/Users/elijah/Desktop/R/QTL/WD/2.\ Binomial\ Mapping/Rdata/Gamma_Thyroid_GR_QTL.Rdata")
-Gamma = plot.hs.qtl(qtl)
+Gamma = plot.hs.qtl(gamma)
 load(file ="/Users/elijah/Desktop/R/QTL/WD/2.\ Binomial\ Mapping/Rdata/HZE_Thyroid_GR_QTL.Rdata")
-HZE = plot.hs.qtl(qtl)
+HZE = plot.hs.qtl(hze)
 
 
 library(qqman)
@@ -136,15 +137,15 @@ All_Irradiated <- data.frame(CHR = Allirr@seqnames,
                       BP = Allirr@ranges@start,
                       P = Allirr@elementMetadata@listData$p.value)
 
-HZE = HZE[which(HZE$CHR == 2), ]
-Gamma = Gamma[which(Gamma$CHR == 2), ]
-All_Irradiated = All_Irradiated[which(All_Irradiated$CHR == 2), ]
+HZE = HZE[which(HZE$CHR == 11), ]
+Gamma = Gamma[which(Gamma$CHR == 11), ]
+All_Irradiated = All_Irradiated[which(All_Irradiated$CHR == 11), ]
 
 HZE$groups = c("HZE")
 Gamma$groups = c("Gamma")
 All_Irradiated$groups = c("All_Irradiated")
 
-new = rbind(All_Irradiated, HZE, Gamma)
+new = rbind(All_Irradiated, Gamma, HZE)
 pv = new$P
 bp = new$BP
 chr = as.numeric(new$CHR)

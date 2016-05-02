@@ -10,18 +10,21 @@ library(DOQTL)
 
 par(mfrow = c(4,1), mar=c(1, 4, 1, 1) + 0.5)
 #layout(matrix(4:1, 4, 1))
-plot.hs.red.qtl(HZE.coxph.mamm, bin.width = 10, main = "HZE ion", ylim = c(0, 6.5))
-abline(a = 5.7, b = 0, col = "grey")
-abline(a = 5, b = 0, col = "lightgrey")
-plot.hs.blue.qtl(Gamma.coxph.mamm, bin.width = 10, main = "Gamma-ray", ylim = c(0, 6.5))
-abline(a = 5.7, b = 0, col = "grey")
-plot.hs.purple.qtl(All.irr.coxph.mamm, bin.width = 10, main = "All Irradiated", ylim = c(0, 6.5))
-abline(a = 5.7, b = 0, col = "grey")
-plot.hs.green.qtl(qtl, bin.width = 10, main = "Unirradiated", ylim = c(0, 6.5))
-abline(a = 5.7, b = 0, col = "grey")
+plot.hs.red.qtl(hze[2], bin.width = 5, main = "HZE ion", ylim = c(0, 6.5))
+abline(a = 5.73, b = 0, col = "grey")
+abline(a = 4.48, b = 0, col = "lightgrey")
+plot.hs.blue.qtl(gamma[2], bin.width = 5, main = "Gamma-ray", ylim = c(0, 6.5))
+abline(a = 5.73, b = 0, col = "grey")
+abline(a = 4.48, b = 0, col = "lightgrey")
+plot.hs.purple.qtl(allirr[2], bin.width = 5, main = "All Irradiated", ylim = c(0, 6.5))
+abline(a = 5.73, b = 0, col = "grey")
+abline(a = 4.48, b = 0, col = "lightgrey")
+plot.hs.green.qtl(un[2], bin.width = 5, main = "Unirradiated", ylim = c(0, 6.5))
+abline(a = 5.73, b = 0, col = "grey")
+abline(a = 4.48, b = 0, col = "lightgrey")
 
 
-
+, ylim = c(0, 6.5)
 
 
 
@@ -253,3 +256,49 @@ plot.hs.green.qtl = function(qtl, bin.width = 1000, ...) {
         return(new.qtl)
         
 } # plot.hs.green.qtl
+
+
+
+
+
+
+
+
+library(qqman)
+library(fastmatch)
+library(Kmisc)
+library(lattice)
+library(HZE)
+
+
+
+
+
+library(qqman)
+HZE <- data.frame(CHR = HZE@unlistData@seqnames,
+                  BP = HZE@unlistData@ranges@start,
+                  P = HZE@unlistData@elementMetadata@listData$p.value)
+
+Gamma <- data.frame(CHR = Gamma@unlistData@seqnames,
+                    BP = Gamma@unlistData@ranges@start,
+                    P = Gamma@unlistData@elementMetadata@listData$p.value)
+
+All_Irradiated <- data.frame(CHR = Allirr@unlistData@seqnames,
+                             BP = Allirr@unlistData@ranges@start,
+                             P = Allirr@unlistData@elementMetadata@listData$p.value)
+
+HZE = HZE[which(HZE$CHR == 11), ]
+Gamma = Gamma[which(Gamma$CHR == 11), ]
+All_Irradiated = All_Irradiated[which(All_Irradiated$CHR == 11), ]
+
+HZE$groups = c("HZE")
+Gamma$groups = c("Gamma")
+All_Irradiated$groups = c("All_Irradiated")
+
+new = rbind(All_Irradiated, HZE, Gamma)
+pv = new$P
+bp = new$BP
+chr = as.numeric(new$CHR)
+groups = new$groups
+
+manhattan_plot(pval = pv, bp, chr, groups, cex = 2.5, xlab = "", cutoff = c(5.73, 4.48))

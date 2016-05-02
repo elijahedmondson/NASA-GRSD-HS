@@ -17,6 +17,7 @@ setwd("~/Desktop/files")
 outdir = "~/Desktop/files"
 Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
 pheno = data.frame(row.names = Total$row.names, rownames = Total$row.names,
+                   family = as.numeric(Total$family),
                    sex = as.numeric(Total$sex == "M"),
                    cohort = as.numeric(Total$Cohort),
                    group = as.character(Total$groups),
@@ -61,9 +62,9 @@ bootstrap <- HS.assoc.bootstrap(perms = 2, chr = 2, pheno = HZE, pheno.col = "Th
                                 peakMB = 122584526)
 
 
-gamma.quant = quantile(gamma$Thyroid, c(0.025,0.975))
+quant = quantile(thy1$average, c(0.025,0.975))
 print("95% Confidence Interval for QTL:")
-print(paste(QUANTILE))
+print(paste(quant))
 
 
 

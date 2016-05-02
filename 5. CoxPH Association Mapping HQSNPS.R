@@ -61,23 +61,8 @@ Unirradiated = subset(pheno, group == "Unirradiated")
 Allirr = subset(pheno, Unirradiated == 0)
 
 
-GRSD.coxph(Unirradiated, pheno.col = "HCC", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(HZE, pheno.col = "MammACA", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "HZE", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 GRSD.coxph(Unirradiated, pheno.col = "LSA.PreT", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Unirradiated, pheno.col = "PulACA", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Unirradiated, pheno.col = "HSA", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Unirradiated, pheno.col = "HS", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Unirradiated, pheno.col = "MammACA", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Unirradiated, pheno.col = "Thyroid", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Unirradiated, pheno.col = "STS", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Unirradiated, pheno.col = "HardACA", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Unirradiated, pheno.col = "Harderian", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Unirradiated, pheno.col = "LSA.BLL", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Unirradiated, pheno.col = "LSA.Bmerge", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Unirradiated, pheno.col = "LSA.DLBCL", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Unirradiated, pheno.col = "LSA.FBL", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Unirradiated, pheno.col = "OSA", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Unirradiated, pheno.col = "PitAd", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Unirradiated, pheno.col = "AML", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 
 perms <- GRSDcoxph.perms(perms = 5, pheno = HZE, chr = 19, pheno.col = "cat2", days.col = "days2",
@@ -88,20 +73,17 @@ perms <- GRSDcoxph.perms(perms = 5, pheno = HZE, chr = 19, pheno.col = "cat2", d
 
 
 # COX PH MODEL #
-surv = Surv(pheno$days2, pheno$cat2)
-fit = survfit(surv ~ pheno$group)
-plot(fit, col = 1:3, las = 1, main = "Cataract 2.0 Latency")
-legend("bottomleft", col = 1:3, lty = 1, legend = c("Gamma", "HZE", "Unirradiated"))
-mod = coxph(surv ~ pheno$group)
-text(x = 25, y = 0.3, labels = paste("p =", format(anova(mod)[2,4],
-     digits = 2)), adj = 0)
+gamma = pheno[pheno$group == "Gamma",]
+hze = pheno[pheno$group == "HZE",]
+un = pheno[pheno$group == "Unirradiated",]
 
-p <- ggplot(cat2, aes(factor(family), days2))
-p + geom_boxplot(notch = TRUE, notchwidth = .3, aes(fill = factor(family))) +
-        theme_bw(base_size = 18) +
-        ggtitle("") +
-        theme(plot.margin=unit(c(1,1,1.5,1.2),"cm"),
-              legend.position=c(.9,.1))
+surv = Surv(un$days)
+fit = survfit(surv ~ un$sex)
+plot(fit, col = 1:2, las = 1, main = "plot.title")
+legend("bottomleft", col = 1:2, lty = 1, legend = c("female", "male"))
+mod = coxph(surv ~ un$sex)
+text(x = 25, y = 0.15, labels = paste("p =", format(anova(mod)[2,4], digits = 2)), adj = 0)
+fit
 
 
 p1 <- ggplot(pheno, aes(x = family, y = days2))

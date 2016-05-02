@@ -171,16 +171,31 @@ combine <- cbind(seqnames=as.character(result[[1:2]]$ID), -log10(result[[1]]$pv)
 #Combining the columns
 combined <- cbind(seqnames=as.character(seqnames))
 
-combined <- cbind(seqnames=as.character(seqnames(HZE.Mesoderm)),
-                  -log10(Background.Ectoderm$p.value),
-                  -log10(Background.Endoderm$p.value),
-                  -log10(Background.Mesoderm$p.value),
-                  -log10(HZE.Ectoderm$p.value),
-                  -log10(HZE.Endoderm$p.value),
-                  -log10(HZE.Mesoderm$p.value),
-                  -log10(Gamma.Ectoderm$p.value),
-                  -log10(Gamma.Endoderm$p.value),
-                  -log10(Gamma.Mesoderm$p.value))
+combined <- cbind(seqnames=as.character(seqnames(Gamma.AML)),
+                  -log10(Gamma.AML$p.value),
+                  -log10(Gamma.HardACA$p.value),
+                  -log10(Gamma.HCC$p.value),
+                  -log10(Gamma.LSA.BLL$p.value),
+                  -log10(Gamma.LSA.DLBCL$p.value),
+                  -log10(Gamma.MammACA$p.value),
+                  -log10(Gamma.PulACA$p.value),
+                  -log10(Gamma.Thyroid$p.value),
+                  -log10(HZE.AML$p.value),
+                  -log10(HZE.HardACA$p.value),
+                  -log10(HZE.HCC$p.value),
+                  -log10(HZE.LSA.BLL$p.value),
+                  -log10(HZE.DLBCL$p.value),
+                  -log10(HZE.MammACA$p.value),
+                  -log10(HZE.PulACA$p.value),
+                  -log10(HZE.Thyroid$p.value),
+                  -log10(Unirradiated.AML$p.value),
+                  -log10(Unirradiated.HardACA$p.value),
+                  -log10(Unirradiated.HCC$p.value),
+                  -log10(Unirradiated.LSA.BLL$p.value),
+                  -log10(Unirradiated.LSA.DLBCL$p.value),
+                  -log10(Unirradiated.MammACA$p.value),
+                  -log10(Unirradiated.PulACA$p.value),
+                  -log10(Unirradiated.Thyroid$p.value))
 head(combined)
 heatmap(combined, Rowv = NA)
 
