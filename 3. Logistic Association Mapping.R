@@ -17,6 +17,7 @@ outdir = "~/Desktop/files"
 Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
 pheno = data.frame(row.names = Total$row.names, rownames = Total$row.names,
                    sex = as.numeric(Total$sex == "M"),
+                   LG = as.numeric(Total$light.grey),
                    cohort = as.numeric(Total$Cohort),
                    group = as.character(Total$groups),
                    unirradiated = as.numeric(Total$Unirradiated),
@@ -56,8 +57,8 @@ All.irr <- subset(pheno, unirradiated == "0")
 
 
 
-qlt <- GRSD.assoc(pheno = HZE.1, pheno.col = "HCC", probs, K, addcovar = addcovar, markers, snp.file = "snp.file",
-                  outdir = "~/Desktop/files", tx = "Gamma", sanger.files = )
+qlt <- GRSD.assoc(pheno = Un, pheno.col = "LG", probs, K, addcovar = addcovar, markers, snp.file = "snp.file",
+                  outdir = "~/Desktop/files", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 perms <- GRSDassoc.perms(perms = 2, chr = 19, pheno = HZE, Xchr = F, addcovar = addcovar,
                          pheno.col = "HCC", probs = probs, K = K, markers = markers,

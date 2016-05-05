@@ -7,6 +7,7 @@ library(BSgenome.Mmusculus.UCSC.mm10)
 library(DOQTL)
 library(HZE)
 library(amap)
+library(sigclust)
 setwd("~/Desktop/")
 
 # Plot function (w/ binning to average markers and max LOD)
@@ -241,7 +242,7 @@ load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binomial\ Mapping/Rdata/Coat/Uni
 Unirradiated.LB = plot.hs.qtl(qtl)
 rm(qtl, file.prefix)
 
-load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binomial\ Mapping/Rdata/Coat/Unirradiated_LG_GR_QTL.Rdata")
+load(file = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binomial\ Mapping/Rdata/Coat/Unirradiated_LG_QTL.Rdata")
 Unirradiated.LG = plot.hs.qtl(qtl)
 rm(qtl, file.prefix)
 
@@ -249,29 +250,34 @@ combined <- data.frame(HZE.Albino = -log10(HZE.Albino$p.value),
                        HZE.Black = -log10(HZE.Black$p.value),
                        HZE.Brown = -log10(HZE.Brown$p.value),
                        HZE.Grey = -log10(HZE.Grey$p.value),
-                       HZE.LB = -log10(HZE.LB$p.value),
-                       #HZE.LG = -log10(HZE.LG$p.value),
+                       #HZE.LB = -log10(HZE.LB$p.value),
+                       HZE.LG = -log10(HZE.LG$p.value),
                        Gamma.Albino = -log10(Gamma.Albino$p.value),
                        Gamma.Black = -log10(Gamma.Black$p.value),
                        Gamma.Brown = -log10(Gamma.Brown$p.value),
                        Gamma.Grey = -log10(Gamma.Grey$p.value),
-                       Gamma.LB = -log10(Gamma.LB$p.value),
-                       #Gamma.LG = -log10(Gamma.LG$p.value),
+                       #Gamma.LB = -log10(Gamma.LB$p.value),
+                       Gamma.LG = -log10(Gamma.LG$p.value),
                        Unirradiated.Albino = -log10(Unirradiated.Albino$p.value),
                        Unirradiated.Black = -log10(Unirradiated.Black$p.value),
                        Unirradiated.Brown = -log10(Unirradiated.Brown$p.value),
                        Unirradiated.Grey = -log10(Unirradiated.Grey$p.value),
-                       Unirradiated.LB = -log10(Unirradiated.LB$p.value))
-                       Unirradiated.LG = -log10(Unirradiated.LG$p.value),
+                       #Unirradiated.LB = -log10(Unirradiated.LB$p.value),
+                       Unirradiated.LG = -log10(Unirradiated.LG$p.value))
+
+combined = t(combined)
 
 
+heatplot(combined, margins = c(5, 10), dend="row", method = "ave", main = "", key = F, labCol=NA)
 
-
-heatplot(t(combined), margins = c(5, 10), dend="row", method = "ave", main = "", key = F, labCol=NA)
-
-hc <- hcluster(t(combined), method = "pearson", diag = FALSE, upper = FALSE,
+hc <- hcluster(combined, method = "pearson", diag = FALSE, upper = FALSE,
          link = "ave", members = NULL, nbproc = 2, doubleprecision = TRUE)
 plot(hc)
+
+pvalue = sigclust(combined, nsim = 1000, icovest = 3)
+plot(pvalue)
+
+
 
 perms = 10000
 cluster.height = matrix(1, nrow = perms, ncol = 2, dimnames = list(1:perms, c("min", "average")))
@@ -609,58 +615,62 @@ rm(qtl, file.prefix)
 #Combining the columns#############################################
 #Combining the columns#############################################
 combined <- data.frame(
-                HZE.AML = -log10(HZE.AML$p.value),
+                #HZE.AML = -log10(HZE.AML$p.value),
                   HZE.cataract = -log10(HZE.cataract$p.value),
-                HZE.LSA.B = -log10(HZE.LSA.B$p.value),
-                  #HZE.LSA.DLBCL = -log10(HZE.DLBCL$p.value),
-                  #HZE.LSA.FBL = -log10(HZE.FBL$p.value),
-                #HZE.LSA.BLL= -log10(HZE.LSA.BLL$p.value),
+                #HZE.LSA.B = -log10(HZE.LSA.B$p.value),
+                  HZE.LSA.DLBCL = -log10(HZE.DLBCL$p.value),
+                  HZE.LSA.FBL = -log10(HZE.FBL$p.value),
+                HZE.LSA.BLL= -log10(HZE.LSA.BLL$p.value),
                   HZE.HardACA = -log10(HZE.HardACA$p.value),
                   HZE.HardAD = -log10(HZE.HardAD$p.value),
                   HZE.HCC = -log10(HZE.HCC$p.value),
                   #HZE.HS = -log10(HZE.HS$p.value),
-                  HZE.HSA = -log10(HZE.HSA$p.value),
+                  #HZE.HSA = -log10(HZE.HSA$p.value),
                   HZE.LSA.PreT= -log10(HZE.LSA.PreT$p.value),
                   HZE.MammACA= -log10(HZE.MammACA$p.value),
-                  HZE.OSA= -log10(HZE.OSA$p.value),
+                 #HZE.OSA= -log10(HZE.OSA$p.value),
                   HZE.Pit= -log10(HZE.pit$p.value),
                   HZE.PulACA= -log10(HZE.PulACA$p.value),
                   #HZE.STS= -log10(HZE.STS$p.value),
                   HZE.Thyroid= -log10(HZE.Thyroid$p.value),
-                  Gamma.AML= -log10(Gamma.AML$p.value),
+                  #Gamma.AML= -log10(Gamma.AML$p.value),
                   Gamma.cataract= -log10(Gamma.cataract$p.value),
                   Gamma.GCT= -log10(Gamma.GCT$p.value),
                   Gamma.HardACA= -log10(Gamma.HardACA$p.value),
                   Gamma.HardAD= -log10(Gamma.HardAD$p.value),
                   Gamma.HCC= -log10(Gamma.HCC$p.value),
                   #Gamma.HS= -log10(Gamma.HS$p.value),
-                  Gamma.HSA= -log10(Gamma.HSA$p.value),
-                  #Gamma.LSA.BLL= -log10(Gamma.LSA.BLL$p.value),
-                Gamma.LSA.B= -log10(Gamma.LSA.B$p.value),
-                  #Gamma.LSA.DLBCL= -log10(Gamma.LSA.DLBCL$p.value),
-                  #Gamma.LSA.FBL= -log10(Gamma.LSA.FBL$p.value),
+                  #Gamma.HSA= -log10(Gamma.HSA$p.value),
+                  Gamma.LSA.BLL= -log10(Gamma.LSA.BLL$p.value),
+                #Gamma.LSA.B= -log10(Gamma.LSA.B$p.value),
+                  Gamma.LSA.DLBCL= -log10(Gamma.LSA.DLBCL$p.value),
+                  Gamma.LSA.FBL= -log10(Gamma.LSA.FBL$p.value),
                   Gamma.LSA.PreT= -log10(Gamma.LSA.PreT$p.value),
                   Gamma.MammACA= -log10(Gamma.MammACA$p.value),
-                  Gamma.OSA= -log10(Gamma.OSA$p.value),
+                  #Gamma.OSA= -log10(Gamma.OSA$p.value),
                   Gamma.Pit= -log10(Gamma.Pit$p.value),
                   Gamma.PulACA = -log10(Gamma.PulACA$p.value),
                   #Gamma.STS= -log10(Gamma.STS$p.value),
                   Gamma.Thyroid= -log10(Gamma.Thyroid$p.value),
-                  Unirradiated.AML= -log10(Unirradiated.AML$p.value),
+                  #Unirradiated.AML= -log10(Unirradiated.AML$p.value),
                   Unirradiated.cataract= -log10(Unirradiated.cataract$p.value),
                   #Unirradiated.HardACA= -log10(Unirradiated.HardACA$p.value),
                   Unirradiated.HardAD= -log10(Unirradiated.HardAD$p.value),
                   Unirradiated.HCC= -log10(Unirradiated.HCC$p.value),
                   #Unirradiated.HS= -log10(Unirradiated.HS$p.value),
                   #Unirradiated.HSA= -log10(Unirradiated.HSA$p.value),
-                  #Unirradiated.LSA.BLL= -log10(Unirradiated.LSA.BLL$p.value),
-                Unirradiated.LSA.B= -log10(Unirradiated.LSA.B$p.value),
-                  #Unirradiated.LSA.DLBCL= -log10(Unirradiated.LSA.DLBCL$p.value),
-                  #Unirradiated.LSA.FBL= -log10(Unirradiated.LSA.FBL$p.value),
+                  Unirradiated.LSA.BLL= -log10(Unirradiated.LSA.BLL$p.value),
+                #Unirradiated.LSA.B= -log10(Unirradiated.LSA.B$p.value),
+                  Unirradiated.LSA.DLBCL= -log10(Unirradiated.LSA.DLBCL$p.value),
+                  Unirradiated.LSA.FBL= -log10(Unirradiated.LSA.FBL$p.value),
                   Unirradiated.LSA.PreT= -log10(Unirradiated.LSA.PreT$p.value),
                   #Unirradiated.MammACA= -log10(Unirradiated.MammACA$p.value),
                   #Unirradiated.OSA= -log10(Unirradiated.OSA$p.value),
                   Unirradiated.PulACA= -log10(Unirradiated.PulACA$p.value))
+combined = t(combined)
+hc <- hcluster(combined, method = "pearson", diag = F, upper = FALSE,
+               link = "complete", members = NULL, nbproc = 2, doubleprecision = T)
+plot(hc)
 
 
 (combined$HZE.cataract/max(combined$HZE.cataract))
@@ -674,20 +684,20 @@ combined.perm <- data.frame(
         HZE.AML = (sample(combined$HZE.AML)),
         HZE.cataract = (sample(combined$HZE.cataract)),
         HZE.LSA.B = (sample(combined$HZE.LSA.B)),
-        #HZE.LSA.DLBCL = (sample(combined$HZE.DLBCL)),
-        #HZE.LSA.FBL = (sample(combined$HZE.FBL)),
-        #HZE.LSA.BLL= (sample(combined$HZE.LSA.BLL)),
+        HZE.LSA.DLBCL = (sample(combined$HZE.DLBCL)),
+        HZE.LSA.FBL = (sample(combined$HZE.FBL)),
+        HZE.LSA.BLL= (sample(combined$HZE.LSA.BLL)),
         HZE.HardACA = (sample(combined$HZE.HardACA)),
         HZE.HardAD = (sample(combined$HZE.HardAD)),
         HZE.HCC = (sample(combined$HZE.HCC)),
-        #HZE.HS = (sample(combined$HZE.HS)),
+        HZE.HS = (sample(combined$HZE.HS)),
         HZE.HSA = (sample(combined$HZE.HSA)),
         HZE.LSA.PreT= (sample(combined$HZE.LSA.PreT)),
         HZE.MammACA= (sample(combined$HZE.MammACA)),
         HZE.OSA= (sample(combined$HZE.OSA)),
         HZE.Pit= (sample(combined$HZE.Pit)),
         HZE.PulACA= (sample(combined$HZE.PulACA)),
-        #HZE.STS= (sample(combined$HZE.STS)),
+        HZE.STS= (sample(combined$HZE.STS)),
         HZE.Thyroid= (sample(combined$HZE.Thyroid)),
         Gamma.AML= (sample(combined$Gamma.AML)),
         Gamma.cataract= (sample(combined$Gamma.cataract)),
@@ -695,33 +705,33 @@ combined.perm <- data.frame(
         Gamma.HardACA= (sample(combined$Gamma.HardACA)),
         Gamma.HardAD= (sample(combined$Gamma.HardAD)),
         Gamma.HCC= (sample(combined$Gamma.HCC)),
-        #Gamma.HS= (sample(combined$Gamma.HS)),
+        Gamma.HS= (sample(combined$Gamma.HS)),
         Gamma.HSA= (sample(combined$Gamma.HSA)),
-        #Gamma.LSA.BLL= (sample(combined$Gamma.LSA.BLL)),
+        Gamma.LSA.BLL= (sample(combined$Gamma.LSA.BLL)),
         Gamma.LSA.B= (sample(combined$Gamma.LSA.B)),
-        #Gamma.LSA.DLBCL= (sample(combined$Gamma.LSA.DLBCL)),
-        #Gamma.LSA.FBL= (sample(combined$Gamma.LSA.FBL)),
+        Gamma.LSA.DLBCL= (sample(combined$Gamma.LSA.DLBCL)),
+        Gamma.LSA.FBL= (sample(combined$Gamma.LSA.FBL)),
         Gamma.LSA.PreT= (sample(combined$Gamma.LSA.PreT)),
         Gamma.MammACA= (sample(combined$Gamma.MammACA)),
         Gamma.OSA= (sample(combined$Gamma.OSA)),
         Gamma.Pit= (sample(combined$Gamma.Pit)),
         Gamma.PulACA = (sample(combined$Gamma.PulACA)),
-        #Gamma.STS= (sample(combined$Gamma.STS)),
+        Gamma.STS= (sample(combined$Gamma.STS)),
         Gamma.Thyroid= (sample(combined$Gamma.Thyroid)),
         Unirradiated.AML= (sample(combined$Unirradiated.AML)),
         Unirradiated.cataract= (sample(combined$Unirradiated.cataract)),
-        #Unirradiated.HardACA= (sample(combined$Unirradiated.HardACA)),
+        Unirradiated.HardACA= (sample(combined$Unirradiated.HardACA)),
         Unirradiated.HardAD= (sample(combined$Unirradiated.HardAD)),
         Unirradiated.HCC= (sample(combined$Unirradiated.HCC)),
-        #Unirradiated.HS= (sample(combined$Unirradiated.HS)),
-        #Unirradiated.HSA= (sample(combined$Unirradiated.HSA)),
-        #Unirradiated.LSA.BLL= (sample(combined$Unirradiated.LSA.BLL)),
+        Unirradiated.HS= (sample(combined$Unirradiated.HS)),
+        Unirradiated.HSA= (sample(combined$Unirradiated.HSA)),
+        Unirradiated.LSA.BLL= (sample(combined$Unirradiated.LSA.BLL)),
         Unirradiated.LSA.B= (sample(combined$Unirradiated.LSA.B)),
-        #Unirradiated.LSA.DLBCL= (sample(combined$Unirradiated.LSA.DLBCL)),
-        #Unirradiated.LSA.FBL= (sample(combined$Unirradiated.LSA.FBL)),
+        Unirradiated.LSA.DLBCL= (sample(combined$Unirradiated.LSA.DLBCL)),
+        Unirradiated.LSA.FBL= (sample(combined$Unirradiated.LSA.FBL)),
         Unirradiated.LSA.PreT= (sample(combined$Unirradiated.LSA.PreT)),
-        #Unirradiated.MammACA= (sample(combined$Unirradiated.MammACA)),
-        #Unirradiated.OSA= (sample(combined$Unirradiated.OSA)),
+        Unirradiated.MammACA= (sample(combined$Unirradiated.MammACA)),
+        Unirradiated.OSA= (sample(combined$Unirradiated.OSA)),
         Unirradiated.PulACA= (sample(combined$Unirradiated.PulACA)))
 
 
@@ -732,34 +742,40 @@ combined.perm <- data.frame(
 ## Link: "ward", "single", "complete", "average", 
 ##       "mcquitty", "median", "centroid","centroid2"
 
-hc <- hcluster(t(combined), method = "pearson", diag = F, upper = FALSE,
+hc <- hcluster(t(combined13), method = "pearson", diag = F, upper = FALSE,
                link = "complete", members = NULL, nbproc = 2, doubleprecision = T)
 plot(hc)
+abline(h=0.2440728, col = "green")
+
+pvalue = sigclust(combined, nsim = 1000, icovest = 3)
+plot(pvalue)
+
 
 
 ##### Permutation for hcluster ######=
 perms = 10000
+time = Sys.time()
 cluster.height = matrix(1, nrow = perms, ncol = 2, dimnames = list(1:perms, c("min", "average")))
 for(p in 1:perms) {
-        time = Sys.time()
+        
         
         print(p)
         
         combined.perm <- data.frame(
                 HZE.AML = (sample(combined$HZE.AML)),
                 HZE.cataract = (sample(combined$HZE.cataract)),
-                HZE.LSA.B = (sample(combined$HZE.LSA.B)),
-                #HZE.LSA.DLBCL = (sample(combined$HZE.DLBCL)),
-                #HZE.LSA.FBL = (sample(combined$HZE.FBL)),
-                #HZE.LSA.BLL= (sample(combined$HZE.LSA.BLL)),
+                #HZE.LSA.B = (sample(combined$HZE.LSA.B)),
+                HZE.LSA.DLBCL = (sample(combined$HZE.LSA.DLBCL)),
+                HZE.LSA.FBL = (sample(combined$HZE.LSA.FBL)),
+                HZE.LSA.BLL= (sample(combined$HZE.LSA.BLL)),
                 HZE.HardACA = (sample(combined$HZE.HardACA)),
                 HZE.HardAD = (sample(combined$HZE.HardAD)),
                 HZE.HCC = (sample(combined$HZE.HCC)),
                 #HZE.HS = (sample(combined$HZE.HS)),
-                HZE.HSA = (sample(combined$HZE.HSA)),
+                #HZE.HSA = (sample(combined$HZE.HSA)),
                 HZE.LSA.PreT= (sample(combined$HZE.LSA.PreT)),
                 HZE.MammACA= (sample(combined$HZE.MammACA)),
-                HZE.OSA= (sample(combined$HZE.OSA)),
+                #HZE.OSA= (sample(combined$HZE.OSA)),
                 HZE.Pit= (sample(combined$HZE.Pit)),
                 HZE.PulACA= (sample(combined$HZE.PulACA)),
                 #HZE.STS= (sample(combined$HZE.STS)),
@@ -771,14 +787,14 @@ for(p in 1:perms) {
                 Gamma.HardAD= (sample(combined$Gamma.HardAD)),
                 Gamma.HCC= (sample(combined$Gamma.HCC)),
                 #Gamma.HS= (sample(combined$Gamma.HS)),
-                Gamma.HSA= (sample(combined$Gamma.HSA)),
-                #Gamma.LSA.BLL= (sample(combined$Gamma.LSA.BLL)),
-                Gamma.LSA.B= (sample(combined$Gamma.LSA.B)),
-                #Gamma.LSA.DLBCL= (sample(combined$Gamma.LSA.DLBCL)),
-                #Gamma.LSA.FBL= (sample(combined$Gamma.LSA.FBL)),
+                #Gamma.HSA= (sample(combined$Gamma.HSA)),
+                Gamma.LSA.BLL= (sample(combined$Gamma.LSA.BLL)),
+                #Gamma.LSA.B= (sample(combined$Gamma.LSA.B)),
+                Gamma.LSA.DLBCL= (sample(combined$Gamma.LSA.DLBCL)),
+                Gamma.LSA.FBL= (sample(combined$Gamma.LSA.FBL)),
                 Gamma.LSA.PreT= (sample(combined$Gamma.LSA.PreT)),
                 Gamma.MammACA= (sample(combined$Gamma.MammACA)),
-                Gamma.OSA= (sample(combined$Gamma.OSA)),
+                #Gamma.OSA= (sample(combined$Gamma.OSA)),
                 Gamma.Pit= (sample(combined$Gamma.Pit)),
                 Gamma.PulACA = (sample(combined$Gamma.PulACA)),
                 #Gamma.STS= (sample(combined$Gamma.STS)),
@@ -790,10 +806,10 @@ for(p in 1:perms) {
                 Unirradiated.HCC= (sample(combined$Unirradiated.HCC)),
                 #Unirradiated.HS= (sample(combined$Unirradiated.HS)),
                 #Unirradiated.HSA= (sample(combined$Unirradiated.HSA)),
-                #Unirradiated.LSA.BLL= (sample(combined$Unirradiated.LSA.BLL)),
-                Unirradiated.LSA.B= (sample(combined$Unirradiated.LSA.B)),
-                #Unirradiated.LSA.DLBCL= (sample(combined$Unirradiated.LSA.DLBCL)),
-                #Unirradiated.LSA.FBL= (sample(combined$Unirradiated.LSA.FBL)),
+                Unirradiated.LSA.BLL= (sample(combined$Unirradiated.LSA.BLL)),
+                #Unirradiated.LSA.B= (sample(combined$Unirradiated.LSA.B)),
+                Unirradiated.LSA.DLBCL= (sample(combined$Unirradiated.LSA.DLBCL)),
+                Unirradiated.LSA.FBL= (sample(combined$Unirradiated.LSA.FBL)),
                 Unirradiated.LSA.PreT= (sample(combined$Unirradiated.LSA.PreT)),
                 #Unirradiated.MammACA= (sample(combined$Unirradiated.MammACA)),
                 #Unirradiated.OSA= (sample(combined$Unirradiated.OSA)),
@@ -809,15 +825,14 @@ for(p in 1:perms) {
 }
 
 
-hist(cluster.height[,1], breaks = 100, main = "Distribution of Minimum Heights for Null Distribution")
+hist(cluster.height[,1], breaks = 75, main = "Distribution of Minimum Heights for Null Distribution")
 quantile(cluster.height[,1],c(0.025,0.975))
 quantile(cluster.height[,1],c(0.01,0.99))
+abline(v=0.2505452, col = "green")
 
 
 
-
-
-
+SFfigure(data = combined, locusname = 3)
 
 
 
@@ -944,13 +959,28 @@ colSums(combined.max.divide)
 ##################################### made4 #####################################
 require(made4)
 
-combined1 = combined[1:93,]
-combined2 = combined[94:168,]
-combined3 = combined[169:234,]
-combined4 = combined[235:298,]
-combined5 = combined[299:349,]
-combined6 = combined[350:419,]
-combined7 = combined[419:484,]
+combined1 = combined[1:933,]
+combined2 = combined[934:1616,]
+combined3 = combined[1617:2273,]
+combined4 = combined[2274:2923,]
+combined5 = combined[2924:3428,]
+combined6 = combined[3429:4023,]
+combined7 = combined[4024:4681,]
+combined8 = combined[4682:5250,]
+combined9 = combined[5251:5846,]
+combined10 = combined[5847:6189,]
+combined11 = combined[6190:6756,]
+combined12 = combined[6757:7207,]
+combined13 = combined[7208:7766,]
+combined14 = combined[,]
+combined15 = combined[,]
+combined16 = combined[,]
+combined17 = combined[,]
+combined18 = combined[,]
+combined19 = combined[,]
+
+Gamma.AML@seqnames
+
 
 combined = combined[, colSums(combined) > 0.5]
 combined1 = combined1[, colSums(combined1) > 0.5]
