@@ -69,9 +69,19 @@ GRSD.coxph(Unirradiated, pheno.col = "allones", days.col = "days", probs, K, add
 GRSD.coxph(Gamma, pheno.col = "allones", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Gamma", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 
-perms <- GRSDcoxph.perms(perms = 5, pheno = HZE, chr = 19, pheno.col = "", days.col = "days2",
+perms <- GRSDcoxph.perms(perms = 5, pheno = HZE, chr = 19, pheno.col = "Thyroid", days.col = "days",
                          probs = probs, K = K, addcovar = addcovar, markers = markers, snp.file = snp.file,
                          outdir = "~/Desktop/files/", tx = "HZE", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+
+
+
+
+bootstrap = HS.cox.bootstrap(perms = 2, chr = 15, pheno = Unirradiated, pheno.col = "LSA.Bmerge", days.col = "days", probs, K, addcovar,
+                            markers, snp.file, outdir = "~/Desktop/", peakMB = 98097859, window = 8000000,
+                            tx = "test", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+
+
+
 
 
 
