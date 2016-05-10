@@ -53,6 +53,9 @@ pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M
                    OSA = as.numeric(Total$Osteosarcoma),
                    PitAd = as.numeric(Total$Pituitary.Adenoma))
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
+
+pheno["allones"] = rep(1, 1820)
+
 #pheno = pheno[complete.cases(pheno$cat2),]
 
 HZE = subset(pheno, group == "HZE")
@@ -61,11 +64,12 @@ Unirradiated = subset(pheno, group == "Unirradiated")
 Allirr = subset(pheno, Unirradiated == 0)
 
 
-GRSD.coxph(HZE, pheno.col = "MammACA", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "HZE", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Unirradiated, pheno.col = "LSA.PreT", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Allirr, pheno.col = "allones", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "HZE", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Unirradiated, pheno.col = "allones", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Gamma, pheno.col = "allones", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Gamma", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 
-perms <- GRSDcoxph.perms(perms = 5, pheno = HZE, chr = 19, pheno.col = "cat2", days.col = "days2",
+perms <- GRSDcoxph.perms(perms = 5, pheno = HZE, chr = 19, pheno.col = "", days.col = "days2",
                          probs = probs, K = K, addcovar = addcovar, markers = markers, snp.file = snp.file,
                          outdir = "~/Desktop/files/", tx = "HZE", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
