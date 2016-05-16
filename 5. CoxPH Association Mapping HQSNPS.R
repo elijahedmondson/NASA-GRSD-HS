@@ -64,9 +64,12 @@ Unirradiated = subset(pheno, group == "Unirradiated")
 Allirr = subset(pheno, Unirradiated == 0)
 
 
-GRSD.coxph(Allirr, pheno.col = "allones", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "HZE", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Unirradiated, pheno.col = "allones", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Gamma, pheno.col = "allones", days.col = "days", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", tx = "Gamma", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Un, pheno.col = "PSC", days.col = "days", probs, K, addcovar, markers, snp.file,
+           outdir = "~/Desktop/files/", tx = "HZE", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(HZE, pheno.col = "PSC", days.col = "days", probs, K, addcovar, markers, snp.file,
+           outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(Gamma, pheno.col = "PSC", days.col = "days", probs, K, addcovar, markers, snp.file,
+           outdir = "~/Desktop/files/", tx = "Gamma", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 
 perms <- GRSDcoxph.perms(perms = 5, pheno = HZE, chr = 19, pheno.col = "Thyroid", days.col = "days",

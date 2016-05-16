@@ -6,29 +6,30 @@
 library(GenomicRanges)
 library(BSgenome.Mmusculus.UCSC.mm10)
 library(DOQTL)
+library(HZE)
 
 
-par(mfrow = c(5,1), mar=c(1, 4, 1, 1) + 0.5)
+par(mfrow = c(4,1), mar=c(1, 4, 1, 1) + 0.5)
 #layout(matrix(4:1, 4, 1))
-HZE:::plot.hs.color.qtl(qtl, bin.width = 100, color = "red", main = "HZE ion", ylim = c(0, 10))
+plot.hs.color.qtl(hze, bin.width = 100, color = "red", main = "HZE ion", ylim = c(0, 11.5))
 abline(a = 5.73, b = 0, col = "grey")
 abline(a = 4.48, b = 0, col = "lightgrey")
-HZE:::plot.hs.color.qtl(gamma[13], bin.width = 100, color = "blue", main = "Gamma-ray", ylim = c(0, 10))
+plot.hs.color.qtl(gamma, bin.width = 100, color = "blue", main = "Gamma-ray", ylim = c(0, 11.5))
 abline(a = 5.73, b = 0, col = "grey")
 abline(a = 4.48, b = 0, col = "lightgrey")
-HZE:::plot.hs.color.qtl(allirr[13], bin.width = 100, color = "purple", main = "All Irradiated", ylim = c(0, 10))
+plot.hs.color.qtl(allirr, bin.width = 100, color = "purple", main = "All Irradiated", ylim = c(0, 11.5))
 abline(a = 5.73, b = 0, col = "grey")
 abline(a = 4.48, b = 0, col = "lightgrey")
-HZE:::plot.hs.color.qtl(un[13], bin.width = 100, color = "green", main = "Unirradiated", ylim = c(0, 10))
+plot.hs.color.qtl(un, bin.width = 100, color = "green", main = "Unirradiated", ylim = c(0, 11.5))
 abline(a = 5.73, b = 0, col = "grey")
 abline(a = 4.48, b = 0, col = "lightgrey")
-HZE:::plot.hs.color.qtl(all[13], bin.width = 100, color = "black", main = "All Mice", ylim = c(0, 10))
+plot.hs.color.qtl(all[2], bin.width = 100, color = "black", main = "All Mice", ylim = c(0, 11))
 abline(a = 5.73, b = 0, col = "grey")
 abline(a = 4.48, b = 0, col = "lightgrey")
 
 
 
-
+#, ylim = c(0, 10)
 
 plot.hs.color.qtl = function(qtl, bin.width = 1000, color = "black", ...) {
 
@@ -139,9 +140,6 @@ library(HZE)
 
 
 
-
-
-library(qqman)
 HZE <- data.frame(CHR = hze@unlistData@seqnames,
                   BP = hze@unlistData@ranges@start,
                   P = hze@unlistData@elementMetadata@listData$p.value)
@@ -154,15 +152,21 @@ All_Irradiated <- data.frame(CHR = allirr@unlistData@seqnames,
                              BP = allirr@unlistData@ranges@start,
                              P = allirr@unlistData@elementMetadata@listData$p.value)
 
-HZE = HZE[which(HZE$CHR == 13), ]
-Gamma = Gamma[which(Gamma$CHR == 13), ]
-All_Irradiated = All_Irradiated[which(All_Irradiated$CHR == 13), ]
+Unirradiated <- data.frame(CHR = un@unlistData@seqnames,
+                           BP = un@unlistData@ranges@start,
+                           P = un@unlistData@elementMetadata@listData$p.value)
+
+HZE = HZE[which(HZE$CHR == 2), ]
+Gamma = Gamma[which(Gamma$CHR == 2), ]
+All_Irradiated = All_Irradiated[which(All_Irradiated$CHR == 2), ]
+Unirradiated = Unirradiated[which(Unirradiated$CHR == 2), ]
 
 HZE$groups = c("HZE")
 Gamma$groups = c("Gamma")
 All_Irradiated$groups = c("All_Irradiated")
+Unirradiated$groups = c("Unirradiated")
 
-new = rbind(All_Irradiated, HZE, Gamma)
+new = rbind(All_Irradiated, HZE, Unirradiated, Gamma)
 pv = new$P
 bp = new$BP
 chr = as.numeric(new$CHR)

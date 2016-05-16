@@ -57,8 +57,8 @@ All.irr <- subset(pheno, unirradiated == "0")
 
 
 
-qlt <- GRSD.assoc(pheno = Un, pheno.col = "LG", probs, K, addcovar = addcovar, markers, snp.file = "snp.file",
-                  outdir = "~/Desktop/files", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.assoc(pheno = pheno, pheno.col = "PSC", probs, K, addcovar = addcovar, markers, snp.file = "snp.file",
+                  outdir = "~/Desktop/files", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 perms <- GRSDassoc.perms(perms = 2, chr = 19, pheno = HZE, Xchr = F, addcovar = addcovar,
                          pheno.col = "HCC", probs = probs, K = K, markers = markers,

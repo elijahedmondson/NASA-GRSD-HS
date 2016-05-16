@@ -16,7 +16,7 @@ for(i in 1:19) {
 
 
 
-chr = 2
+chr = 4
 
 #Max LOD score
 top <- max(-log10(qtl[[chr]]$p.value))
@@ -42,7 +42,7 @@ print(mgi$Name)
 
 layout(matrix(3:1, 3, 1))
 par(mfrow = c(2,2), mar=c(1, 4, 1, 1) + 0.1)
-DOQTL:::plot.scanone.assoc(HZE.days, chr=17, bin.size = 100, main = "HZE Ion", ylim=c(0,15))
+DOQTL:::plot.scanone.assoc(allirr, chr=4, bin.size = 100, main = "HZE Ion", ylim=c(0,15))
 DOQTL:::plot.scanone.assoc(Gamma.days, chr=17, bin.size = 100, main = "Gamma ray", ylim=c(0,15))
 DOQTL:::plot.scanone.assoc(Unirradiated.days, chr=17, bin.size = 100, main = "Unirradiated", ylim=c(0,15))
 DOQTL:::plot.scanone.assoc(qtl, chr=17, bin.size = 100, main = "Total Cases", ylim=c(0,15))

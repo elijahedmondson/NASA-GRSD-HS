@@ -47,9 +47,9 @@ pheno = data.frame(row.names = Total$row.names, rownames = Total$row.names,
                    NN = as.numeric(Total$non.neoplastic),
                    ectoderm = as.numeric(Total$Ectoderm),
                    endoderm = as.numeric(Total$Endoderm),
-                   mesoderm = as.numeric(Total$Mesoderm))
+                   mesoderm = as.numeric(Total$Mesoderm),
+                   PSC = as.numeric(Total$Pulmonary.Sarcomatoid.Carcinoma))
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
-
 HZE <- subset(pheno, group == "HZE")
 Gamma <- subset(pheno, group == "Gamma")
 Un <- subset(pheno, group == "Unirradiated")
@@ -57,10 +57,10 @@ All.irr <- subset(pheno, unirradiated == "0")
 
 
 
-bootstrap <- HS.assoc.bootstrap(perms = 10, chr = 18, pheno = Gamma, pheno.col = "LSA.DLBCL",
+bootstrap <- HS.assoc.bootstrap(perms = 200, chr = 4, pheno = Gamma, pheno.col = "LSA.PreT",
                                 probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files",
                                 tx = "Gamma", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/",
-                                peakMB = 82809869, window = 8000000)
+                                peakMB = 82878119, window = 8000000)
 
 
 quant = quantile(thy1$average, c(0.025,0.975))

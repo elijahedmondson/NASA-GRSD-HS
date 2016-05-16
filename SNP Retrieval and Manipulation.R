@@ -6,7 +6,7 @@ snp.file = "/Users/elijah/Desktop/R/QTL/WD/mgp.v5.merged.snps_all.dbSNP142.vcf.g
 
 DOQTL:::plot.scanone.assoc(qtl, bin.size = 100)
 
-chr = 11
+chr = 9
 
 
 #Max LOD score
@@ -43,7 +43,7 @@ newqtl = data.frame(Chromosome = chr,
 
 variant.plot(var.file = "http://cgd.jax.org/tools/SNPtools/Build38/sanger.snps.NCBI38.txt.gz",
         mgi.file = "http://cgd.jax.org/tools/SNPtools/MGI/MGI.20130305.sorted.txt.gz",
-        chr = chr, start = 99948460, end = 102948460, type = "snp", pattern = c("CBA/J"),
+        chr = chr, start = 82622922, end = 85884363, type = "snp", pattern = c("CBA/J"),
         strains = strains, ref = "CBA/J", qtl = newqtl)
 
 snps = get.variants(chr = chr, start = start, end = end,
