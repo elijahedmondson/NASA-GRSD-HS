@@ -64,12 +64,8 @@ Unirradiated = subset(pheno, group == "Unirradiated")
 Allirr = subset(pheno, Unirradiated == 0)
 
 
-GRSD.coxph(Un, pheno.col = "PSC", days.col = "days", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files/", tx = "HZE", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(HZE, pheno.col = "PSC", days.col = "days", probs, K, addcovar, markers, snp.file,
+GRSD.coxph(Unirradiated, pheno.col = "PitAd", days.col = "days", probs, K, addcovar, markers, snp.file,
            outdir = "~/Desktop/files/", tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(Gamma, pheno.col = "PSC", days.col = "days", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files/", tx = "Gamma", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 
 perms <- GRSDcoxph.perms(perms = 5, pheno = HZE, chr = 19, pheno.col = "Thyroid", days.col = "days",
@@ -79,11 +75,11 @@ perms <- GRSDcoxph.perms(perms = 5, pheno = HZE, chr = 19, pheno.col = "Thyroid"
 
 
 
-bootstrap = HS.cox.bootstrap(perms = 2, chr = 15, pheno = Unirradiated, pheno.col = "LSA.Bmerge", days.col = "days", probs, K, addcovar,
-                            markers, snp.file, outdir = "~/Desktop/", peakMB = 98097859, window = 8000000,
-                            tx = "test", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-
-
+cox.bstrap = HS.cox.bootstrap(perms = 200, days.col = "days", tx = "", probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files/", window = 8e+06, sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/",
+                              chr = 4,
+                              peakMB = 96173703,
+                              pheno = Gamma,
+                              pheno.col = "LSA.PreT")
 
 
 

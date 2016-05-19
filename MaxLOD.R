@@ -16,13 +16,13 @@ for(i in 1:19) {
 
 
 
-chr = 4
+chr = 1
 
 #Max LOD score
 top <- max(-log10(qtl[[chr]]$p.value))
 top
 LOD.drop.int = top - 1.5
-max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) > LOD.drop.int)]
+max.LOD.position <- qtl[[chr]]@ranges[which(-log10(qtl[[chr]]$p.value) == top)]
 max.LOD.position
 
 #Position of Max LOD
