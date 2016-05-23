@@ -64,41 +64,8 @@ Unirradiated = subset(pheno, group == "Unirradiated")
 Allirr = subset(pheno, Unirradiated == 0)
 
 
-GRSD.coxph(pheno = pheno, pheno.col = "HCC", days.col = "days", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files/", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(pheno = pheno, pheno.col = "AML", days.col = "days", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files/", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(pheno = pheno, pheno.col = "LSA.PreT", days.col = "days", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files/", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(pheno = pheno, pheno.col = "Harderian", days.col = "days", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files/", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(pheno = pheno, pheno.col = "HardACA", days.col = "days", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files/", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(pheno = pheno, pheno.col = "HardAD", days.col = "days", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files/", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(pheno = pheno, pheno.col = "LSA.Bmerge", days.col = "days", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files/", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(pheno = pheno, pheno.col = "OSA", days.col = "days", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files/", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(pheno = pheno, pheno.col = "PitAd", days.col = "days", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files/", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(pheno = pheno, pheno.col = "MammACA", days.col = "days", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files/", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(pheno = pheno, pheno.col = "STS", days.col = "days", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files/", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(pheno = pheno, pheno.col = "LSA.BLL", days.col = "days", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files/", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(pheno = pheno, pheno.col = "LSA.DLBCL", days.col = "days", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files/", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(pheno = pheno, pheno.col = "LSA.FBL", days.col = "days", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files/", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(pheno = pheno, pheno.col = "PulACA", days.col = "days", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files/", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-GRSD.coxph(pheno = pheno, pheno.col = "Thyroid", days.col = "days", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files/", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
-
-
-
+GRSD.coxph(pheno = pheno, pheno.col = "cat2", days.col = "days2", probs, K, addcovar, markers, snp.file,
+           outdir = "~/Desktop/files/", tx = "All", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 
 perms <- GRSDcoxph.perms(perms = 5, pheno = HZE, chr = 19, pheno.col = "Thyroid", days.col = "days",

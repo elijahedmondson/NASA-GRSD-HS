@@ -1,17 +1,40 @@
 
+define.QTL(dir = "~/Desktop/files/", threshold = 5.05)
 
-
-LODmat = matrix(0, nrow = 20, ncol = 3, dimnames = list(1:20, c("min", "max", "top")))
-#10
-for(i in 1:19) {
-        top = max(-log10(qtl[[i]]$p.value))
-        if(top > 6) {
-                LOD.drop.int = top - .5
-                max.LOD.position <- qtl[[i]]@ranges[which(-log10(qtl[[i]]$p.value) > LOD.drop.int)]
-                print(paste(i, max.LOD.position@start[1], max(max.LOD.position@start), top))
-                LODmat[i,] = c(max.LOD.position@start[1], max(max.LOD.position@start), top)
+define.QTL = function(dir = "~/Desktop/files/completed/", threshold = 5.05) {
+        
+        files <- (Sys.glob(paste0(dir,"*.Rdata")))
+        
+        for(j in 1:length(files)){
+                LODmat = matrix(0, nrow = 20, ncol = 5, dimnames = list(1:20, c("LOD", "peak", "1.5 min", "1.5 max", "interval range")))
+                
+                load(file = files[j])
+                print(files[j])
+                
+                for(i in 1:19) {
+                        tryCatch({
+                                top = max(-log10(result[[i]]$pv))
+                                if(top > threshold) {
+                                        
+                                        max.LOD.peak = result[[i]]$POS[which(-log10(result[[i]]$pv) == top)]
+                                        
+                                        LOD.drop.int = top - 1.5
+                                        max.LOD.position = result[[i]]$POS[which(-log10(result[[i]]$pv) > max(LOD.drop.int))]
+                                        
+                                        print(paste(i, max.LOD.position[1], max(max.LOD.position), top))
+                                        
+                                        LODmat[i,] = c(top, ((min(max.LOD.peak) + max(max.LOD.peak))/2), 
+                                                       max.LOD.position[1], max(max.LOD.position), 
+                                                       (max(max.LOD.position) - max.LOD.position[1]))
+                                }
+                                }, error=function(e){})
+                        
+                        
+                } 
+                write.csv(LODmat, file = paste0(files[j], "QTL", ".csv"))
+                rm(result)
         }
-} # for(i)
+}
 
 
 

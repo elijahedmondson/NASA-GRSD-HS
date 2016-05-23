@@ -23,7 +23,7 @@ abline(a = 4.48, b = 0, col = "lightgrey")
 plot.hs.color.qtl(un, bin.width = 100, color = "green", main = "Unirradiated", ylim = c(0, 11.5))
 abline(a = 5.73, b = 0, col = "grey")
 abline(a = 4.48, b = 0, col = "lightgrey")
-plot.hs.color.qtl(all[2], bin.width = 100, color = "black", main = "All Mice", ylim = c(0, 11))
+plot.hs.color.qtl(all, bin.width = 100, color = "black", main = "All Mice", ylim = c(0, 11))
 abline(a = 5.73, b = 0, col = "grey")
 abline(a = 4.48, b = 0, col = "lightgrey")
 
