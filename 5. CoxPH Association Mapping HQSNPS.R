@@ -51,7 +51,8 @@ pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M
                    LSA.FBL= as.numeric(Total$FBL),
                    LSA.PreT = as.numeric(Total$PreT),
                    OSA = as.numeric(Total$Osteosarcoma),
-                   PitAd = as.numeric(Total$Pituitary.Adenoma))
+                   PitAd = as.numeric(Total$Pituitary.Adenoma),
+                   THB.merge = as.numeric(Total$Thyroid.HCC.Bmerge))
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 pheno["allones"] = rep(1, 1820)
@@ -61,10 +62,10 @@ pheno["allones"] = rep(1, 1820)
 HZE = subset(pheno, group == "HZE")
 Gamma = subset(pheno, group == "Gamma")
 Unirradiated = subset(pheno, group == "Unirradiated")
-Allirr = subset(pheno, Unirradiated == 0)
+All.irr = subset(pheno, Unirradiated == 0)
 
 
-GRSD.coxph(pheno = pheno, pheno.col = "cat2", days.col = "days2", probs, K, addcovar, markers, snp.file,
+GRSD.coxph(pheno = All.irr, pheno.col = "THB.merge", days.col = "days", probs, K, addcovar, markers, snp.file,
            outdir = "~/Desktop/files/", tx = "All", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 
