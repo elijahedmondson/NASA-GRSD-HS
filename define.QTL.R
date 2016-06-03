@@ -1,4 +1,5 @@
 # Function to pull all files from a directory folder and determine QTL of a given LOD score
+
 define.QTL(dir = "/Users/elijah/Desktop/R/QTL/WD/3.\ CoxPH\ Mapping/", threshold = 5.05)
 
 define.QTL = function(dir = "~/Desktop/files/completed/", threshold = 5.05) {

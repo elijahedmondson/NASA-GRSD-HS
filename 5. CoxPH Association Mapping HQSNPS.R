@@ -55,7 +55,7 @@ pheno = data.frame(row.names = Total$row.names, sex = as.numeric(Total$sex == "M
                    THB.merge = as.numeric(Total$Thyroid.HCC.Bmerge))
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
-pheno["allones"] = rep(1, 1820)
+pheno["survival"] = rep(1, 1820)
 
 #pheno = pheno[complete.cases(pheno$cat2),]
 
@@ -65,8 +65,8 @@ Unirradiated = subset(pheno, group == "Unirradiated")
 All.irr = subset(pheno, Unirradiated == 0)
 
 
-GRSD.coxph(pheno = All.irr, pheno.col = "THB.merge", days.col = "days", probs, K, addcovar, markers, snp.file,
-           outdir = "~/Desktop/files/", tx = "All", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.coxph(pheno = pheno, pheno.col = "survival", days.col = "days", probs, K, addcovar, markers, snp.file,
+           outdir = "~/Desktop/files/", tx = "", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 
 perms <- GRSDcoxph.perms(perms = 5, pheno = HZE, chr = 19, pheno.col = "Thyroid", days.col = "days",
