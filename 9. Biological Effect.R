@@ -10,6 +10,7 @@ library(GenomicRanges)
 library(survival)
 library(regress)
 library(HZE)
+library(modEvA)
 outdir = "~/Desktop/files/"
 options(stringsAsFactors = F)
 setwd("~/Desktop/files/")
@@ -63,9 +64,8 @@ Unirradiated = subset(pheno, group == "Unirradiated")
 All.irr = subset(pheno, Unirradiated == 0)
 
 
-get.effect.size(pheno, pheno.col = "Thyroid", chr = 2, qtl, probs, , markers,
-                sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz",
-                dir = "/Users/elijah/Desktop/R/QTL/WD/3.\ CoxPH\ Mapping/"")
+get.effect.size(pheno = pheno, pheno.col, chr, probs = probs, sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz",
+                markers, threshold = 5.05, dir = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binomial\ Mapping/")
 
 
 
