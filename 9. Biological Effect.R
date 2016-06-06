@@ -64,7 +64,7 @@ Unirradiated = subset(pheno, group == "Unirradiated")
 All.irr = subset(pheno, Unirradiated == 0)
 
 
-get.effect.size(pheno = pheno, pheno.col, chr, probs = probs, sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz",
+get.effect.size(pheno = pheno, pheno.col = "AML", probs = probs, sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz",
                 markers, threshold = 5.05, dir = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binomial\ Mapping/")
 
 
