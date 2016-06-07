@@ -57,8 +57,12 @@ All.irr <- subset(pheno, unirradiated == "0")
 
 
 
-GRSD.assoc(pheno = All.irr, pheno.col = "THB.merge", probs, K, addcovar = addcovar, markers, snp.file = "snp.file",
-                  outdir = "~/Desktop/files", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.assoc(pheno = pheno, pheno.col = "LSA.BLL", probs, K, addcovar = addcovar, markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.assoc(pheno = pheno, pheno.col = "LSA.DLBCL", probs, K, addcovar = addcovar, markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.assoc(pheno = pheno, pheno.col = "LSA.FBL", probs, K, addcovar = addcovar, markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+GRSD.assoc(pheno = pheno, pheno.col = "Amyloid", probs, K, addcovar = addcovar, markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "All mice", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+
+
 
 perms <- GRSDassoc.perms(perms = 2, chr = 19, pheno = HZE, Xchr = F, addcovar = addcovar,
                          pheno.col = "HCC", probs = probs, K = K, markers = markers,
