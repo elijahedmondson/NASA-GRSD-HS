@@ -57,8 +57,8 @@ All.irr <- subset(pheno, unirradiated == "0")
 
 
 
-GRSD.assoc(pheno = Gamma, pheno.col = "LSA.BLL", probs, K, addcovar = addcovar, 
-           markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "Gamma", 
+GRSD.assoc(pheno = Gamma, pheno.col = "LSA.BLL", probs, K, addcovar = addcovar,
+           markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "Gamma",
            sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 
@@ -74,27 +74,4 @@ bootstrap <- HS.assoc.bootstrap(perms = 2, chr = 2, pheno = HZE, pheno.col = "Th
                                 peakMB = 122584526)
 
 
-addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
-
-sdp.mat = matrix(as.numeric(intToBits(1:2^8)), nrow = 32)
-sdp.mat = sdp.mat[8:1,]
-dimnames(sdp.mat) = list(LETTERS[1:8], 1:2^8)
-
-SNP = qtl[[i]]@ranges@start[which.min(qtl[[i]]@elementMetadata@listData$p.value)]
-LOD = -log10(qtl[[i]]@elementMetadata@listData$p.value[which(qtl[[i]]@ranges@start == SNP)])
-
-
-tf = TabixFile(file = sdp.file)
-sdps = scanTabix(file = sdp.file, param = GRanges(seqnames = i, ranges = SNP))[[1]]
-sdps = strsplit(sdps, split = "\t")
-sdps = matrix(unlist(sdps), ncol = 3, byrow = T)
-chr  = sdps[1,1]
-pos  = as.numeric(sdps[,2])
-sdps = as.numeric(sdps[,3])
-
-geno = get.genotype(chr = chr,
-                    pos = pos,
-                    snp = sdp.mat[,sdps],
-                    markers = markers,
-                    probs = probs)
