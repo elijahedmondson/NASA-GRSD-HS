@@ -75,23 +75,22 @@ All.irr = subset(pheno, Unirradiated == 0)
 
 
 
-get.effect.size.coxPH(pheno = Unirradiated, pheno.col = "LSA.FBL", days.col = "days", probs = probs, sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz", markers, threshold = 5.05, dir = "/Users/elijah/Desktop/R/QTL/WD/3.\ CoxPH\ Mapping/")
-
-
-#
-
-#
-
-#
+get.effect.size.coxPH(pheno = Gamma, pheno.col = "LSA.DLBCL", days.col = "days", probs = probs, sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz", markers, threshold = 5.05, dir = "/Users/elijah/Desktop/R/QTL/WD/3.\ CoxPH\ Mapping/")
 
 
 
 
 
-get.effect.size(pheno = , pheno.col = "", probs = probs, sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz",
+
+get.effect.size(pheno = All.irr, pheno.col = "Thyroid", probs = probs, sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz",
                 markers, threshold = 5.05, dir = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binomial\ Mapping/")
 
-get.effect.size2 = function(pheno = pheno, pheno.col, probs = probs, sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz",
+
+
+
+#### Alternative SNP method ####
+
+get.effect.size2 = function(pheno = All.irr, pheno.col, probs = probs, sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz",
                            markers, threshold = 5.05, dir = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binomial\ Mapping/")
 {
         library(Rsamtools)

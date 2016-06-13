@@ -57,7 +57,7 @@ All.irr <- subset(pheno, unirradiated == "0")
 
 
 
-GRSD.assoc(pheno = Gamma, pheno.col = "LSA.BLL", probs, K, addcovar = addcovar,
+GRSD.assoc(pheno = Gamma, pheno.col = "LSA.Bmerge", probs, K, addcovar = addcovar,
            markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "Gamma",
            sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
