@@ -11,6 +11,7 @@ library(HZE)
 library(dplyr)
 options(stringsAsFactors = F)
 load(file = "~/Desktop/R/QTL/WD/GRSD.Rdata")
+load("/Users/elijah/Desktop/R/QTL/WD/hs.colors.Rdata")
 setwd("~/Desktop/files")
 outdir = "~/Desktop/files"
 
@@ -43,10 +44,12 @@ pheno = data.frame(row.names = Total$row.names, rownames = Total$row.names,
                    OSA = as.numeric(Total$Osteosarcoma),
                    PitAd = as.numeric(Total$Pituitary.Adenoma),
                    Amyloid = as.numeric(Total$Amyloidosis),
-                   NN = as.numeric(Total$non.neoplastic),
-                   ectoderm = as.numeric(Total$Ectoderm),
-                   endoderm = as.numeric(Total$Endoderm),
-                   mesoderm = as.numeric(Total$Mesoderm))
+                   PulMet.transform = as.numeric(Total$PulMet.transform),
+                   Metastatic.Tumors = as.numeric(Total$Metastatic.Tumors),
+                   Pulmonary.Metastases = as.numeric(Total$Pulmonary.Metastases),
+                   HCC.Metastatic.Density = as.numeric(Total$HCC.Metastatic.Density),
+                   Tumors.that.could.met = as.numeric(Total$Tumors.that.could.met),
+                   Pulmonary.Metastases = as.numeric(Total$Pulmonary.Metastases))
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
 
 HZE <- subset(pheno, group == "HZE")
@@ -54,14 +57,29 @@ Gamma <- subset(pheno, group == "Gamma")
 Un <- subset(pheno, group == "Unirradiated")
 All.irr <- subset(pheno, unirradiated == "0")
 
+HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1" & Total$HCC.Metastatic.Density>0),]
+HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1"), ]
+pheno = data.frame(row.names = HCC.met$row.names, sex = as.numeric(HCC.met$sex == "M"),
+                   HCC.met = as.numeric(HCC.met$HCC.Met),
+                   OSA = as.numeric(HCC.met$Osteosarcoma))
+
+PulMET <- pheno[which(pheno$Tumors.that.could.met=="1"), ]
+
+PSC <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/PSC.csv")
+pheno = data.frame(row.names = PSC$row.names, rownames = PSC$row.names,
+                   sex = as.numeric(PSC$Sex == "M"),
+                   PSC = as.numeric(PSC$Sarcomatoid.Score))
+addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
 
 
 
-GRSD.assoc(pheno = Gamma, pheno.col = "LSA.Bmerge", probs, K, addcovar = addcovar,
-           markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "Gamma",
+GRSD.assoc(pheno = PulMET, pheno.col = "Pulmonary.Metastases", probs, K, addcovar = addcovar,
+           markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "All",
            sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
-
+GRSD.poisson(pheno = pheno, pheno.col = "PSC", probs, K, addcovar = addcovar,
+             markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "All",
+             sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 perms <- GRSDassoc.perms(perms = 2, chr = 19, pheno = HZE, Xchr = F, addcovar = addcovar,
                          pheno.col = "HCC", probs = probs, K = K, markers = markers,

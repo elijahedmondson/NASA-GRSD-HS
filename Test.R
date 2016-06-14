@@ -181,3 +181,28 @@ p + geom_text(aes(label = Frequency), size = 3, hjust = 0.5, vjust = 3, position
 
 
 
+forR <- read.csv("~/Desktop/forR.csv")
+forR[,"Data.Analyzed"] = forR[, "X"]
+
+
+cataract <- forR[which(forR$X=="Cataract"), ]
+tumor <- forR[which(forR$X=="Tumor incidence"), ]
+tumor.latency <- forR[which(forR$X=="Tumor latency"), ]
+survival <- forR[which(forR$X=="Survival"),]
+
+
+attach(qty)
+plot(Percent.Variance.Explained.2, LOD, main = "", xlab = "QTL Size", ylab = "-log10(p.value)")
+plot(Size..Mb., Effect.Size, main = "", xlab = "QTL Size", ylab = "Effect Size")
+plot(Percent.Variance.Explained, LOD, main = "", xlab = "Effect Size", ylab = "Percent.Variance.Explained")
+abline(lm(LOD~Percent.Variance.Explained.2), col="red") # regression line (y~x) 
+lines(lowess(LOD,Percent.Variance.Explained), col="blue") # lowess line (x,y)
+
+
+scatterplot(Size..Mb.~Effect.Size | Data.Analyzed, data = forR, xlab = "Percent Variance Explained", 
+            ylab = "QTL Confidence Interval (Mb)")
+
+scatterplot3d(QTL.size,Percent.Variance.Explained,LOD, highlight.3d=TRUE,
+              type="h",main="3D Scatterplot")
+
+

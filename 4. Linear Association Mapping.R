@@ -76,6 +76,13 @@ pheno = data.frame(row.names = HCC.met$row.names, sex = as.numeric(HCC.met$sex =
                    HCC.met = as.numeric(HCC.met$HCC.Met),
                    OSA = as.numeric(HCC.met$Osteosarcoma))
 
+PSC <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/PSC.csv")
+pheno = data.frame(row.names = PSC$row.names, rownames = PSC$row.names,
+                   sex = as.numeric(PSC$Sex == "M"),
+                   PSC.graded = as.numeric(PSC$Sarcomatoid.Score),
+                   PSC = as.numeric(PSC$PSC == "yes"))
+addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
+
 
 # 3. COVARIATES #
 
@@ -85,14 +92,10 @@ addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 # 4. ASSOCIATION MAPPING #
 
-qtl = scanone.assoc(pheno = Allirr, pheno.col = "pu.1", probs = model.probs, K = K, addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
+qtl = scanone.assoc(pheno = pheno, pheno.col = "PSC", probs = model.probs, K = K, 
+                    addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
 
 DOQTL:::plot.scanone.assoc(qtl, bin.size = 100, main = "PU.1 Deletion Transform")
-
-
-
-
-
 
 
 perms <- Scanone.assoc.perms(perms = 200, pheno = Gamma, pheno.col = "AML.t", probs = model.probs, 
