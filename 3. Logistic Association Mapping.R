@@ -49,7 +49,8 @@ pheno = data.frame(row.names = Total$row.names, rownames = Total$row.names,
                    Pulmonary.Metastases = as.numeric(Total$Pulmonary.Metastases),
                    HCC.Metastatic.Density = as.numeric(Total$HCC.Metastatic.Density),
                    Tumors.that.could.met = as.numeric(Total$Tumors.that.could.met),
-                   Pulmonary.Metastases = as.numeric(Total$Pulmonary.Metastases))
+                   Pulmonary.Metastases = as.numeric(Total$Pulmonary.Metastases),
+                   HCC.translocation = as.numeric(Total$HCC.translocation))
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
 
 HZE <- subset(pheno, group == "HZE")
@@ -73,7 +74,7 @@ addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
 
 
 
-GRSD.assoc(pheno = PulMET, pheno.col = "Pulmonary.Metastases", probs, K, addcovar = addcovar,
+GRSD.assoc(pheno = pheno, pheno.col = "HCC.translocation", probs, K, addcovar = addcovar,
            markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "All",
            sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 

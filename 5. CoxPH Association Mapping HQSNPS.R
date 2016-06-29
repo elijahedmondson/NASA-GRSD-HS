@@ -65,7 +65,7 @@ Unirradiated = subset(pheno, group == "Unirradiated")
 All.irr = subset(pheno, Unirradiated == 0)
 
 
-GRSD.coxph(pheno = PulMET, pheno.col = "Pulmonary.Metastases", days.col = "days", probs, K, addcovar, markers, snp.file,
+GRSD.coxph(pheno = HZE, pheno.col = "HCC.translocation", days.col = "days", probs, K, addcovar, markers, snp.file,
            outdir = "~/Desktop/files/", tx = "", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 
