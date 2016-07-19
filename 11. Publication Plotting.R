@@ -27,7 +27,8 @@ plot.hs.color.qtl(all, bin.width = 100, color = "black", main = "All Mice", ylim
 abline(a = 5.73, b = 0, col = "grey")
 abline(a = 4.48, b = 0, col = "lightgrey")
 
-
+plot.hs.color.qtl(qtl3, bin.width = 1, color = "black", main = "All Mice: HCC (semi-quantitative PCR results for fusion gene)", ylim = c(0, 9))
+abline(a = 5.73, b = 0, col = "grey")
 
 #, ylim = c(0, 10)
 
