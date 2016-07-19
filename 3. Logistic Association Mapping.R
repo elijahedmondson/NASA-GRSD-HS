@@ -49,7 +49,7 @@ pheno = data.frame(row.names = Total$row.names, rownames = Total$row.names,
                    Pulmonary.Metastases = as.numeric(Total$Pulmonary.Metastases),
                    HCC.Metastatic.Density = as.numeric(Total$HCC.Metastatic.Density),
                    Tumors.that.could.met = as.numeric(Total$Tumors.that.could.met),
-                   Pulmonary.Metastases = as.numeric(Total$Pulmonary.Metastases),
+                   HCC...translocation = as.numeric(Total$HCC...translocation),
                    HCC.translocation = as.numeric(Total$HCC.translocation))
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
 
@@ -57,6 +57,14 @@ HZE <- subset(pheno, group == "HZE")
 Gamma <- subset(pheno, group == "Gamma")
 Un <- subset(pheno, group == "Unirradiated")
 All.irr <- subset(pheno, unirradiated == "0")
+
+Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
+pheno = data.frame(row.names = Total$row.names, rownames = Total$row.names,
+                   sex = as.numeric(Total$sex == "M"),
+                   HCC...translocation = as.numeric(Total$HCC...translocation),
+                   HCC.translocation = as.numeric(Total$HCC.translocation))
+pheno1 = pheno[complete.cases(pheno),]
+addcovar = matrix(pheno1$sex, ncol = 1, dimnames = list(row.names(pheno1), "sex"))
 
 HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1" & Total$HCC.Metastatic.Density>0),]
 HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1"), ]
@@ -78,9 +86,10 @@ GRSD.assoc(pheno = pheno, pheno.col = "HCC.translocation", probs, K, addcovar = 
            markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "All",
            sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
-GRSD.poisson(pheno = pheno, pheno.col = "PSC", probs, K, addcovar = addcovar,
+GRSD.poisson(pheno = pheno1, pheno.col = "HCC...translocation", probs, K, addcovar = addcovar,
              markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "All",
              sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+
 
 perms <- GRSDassoc.perms(perms = 2, chr = 19, pheno = HZE, Xchr = F, addcovar = addcovar,
                          pheno.col = "HCC", probs = probs, K = K, markers = markers,
