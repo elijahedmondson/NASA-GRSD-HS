@@ -86,7 +86,7 @@ GRSD.assoc(pheno = pheno, pheno.col = "HCC.translocation", probs, K, addcovar = 
            markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "All",
            sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
-GRSD.poisson(pheno = pheno1, pheno.col = "HCC...translocation", probs, K, addcovar = addcovar,
+GRSD.poisson(pheno = pheno, pheno.col = "PSC", probs, K, addcovar = addcovar,
              markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "All",
              sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
