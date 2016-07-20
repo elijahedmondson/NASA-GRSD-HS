@@ -61,9 +61,12 @@ All.irr <- subset(pheno, unirradiated == "0")
 Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
 pheno = data.frame(row.names = Total$row.names, rownames = Total$row.names,
                    sex = as.numeric(Total$sex == "M"),
+                   days = as.numeric(Total$days),
                    HCC...translocation = as.numeric(Total$HCC...translocation),
-                   HCC.translocation = as.numeric(Total$HCC.translocation))
+                   HCC.translocation = as.numeric(Total$HCC.translocation),
+                   HCC = as.numeric(Total$Hepatocellular.Carcinoma))
 pheno1 = pheno[complete.cases(pheno),]
+pheno2 = pheno1[which(Total$Hepatocellular.Carcinoma=="1"),]
 addcovar = matrix(pheno1$sex, ncol = 1, dimnames = list(row.names(pheno1), "sex"))
 
 HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1" & Total$HCC.Metastatic.Density>0),]

@@ -4,6 +4,14 @@ library(survival)
 library(KMsurv)
 library(OIsurv)
 library(rms)
+library(ggplot2)
+
+
+require(ggplot2)
+require(survival)
+lung.surv <- survfit(Surv(pheno2$days, pheno2$HCC) ~ pheno2$HCC...translocation, data = pheno2)
+ggsurv(lung.surv)
+
 
 Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Total-Table 1.csv")
 pheno = data.frame(row.names = Total$corrected, original = Total$original,
@@ -13,10 +21,38 @@ pheno = data.frame(row.names = Total$corrected, original = Total$original,
                    OSA = as.numeric(Total$Osteosarcoma),
                    Mets = as.numeric(Total$Metastatic.Tumors))
 
+Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
+pheno = data.frame(row.names = Total$row.names, rownames = Total$row.names,
+                   sex = as.numeric(Total$sex == "M"),
+                   days = as.numeric(Total$days),
+                   HCC...translocation = as.numeric(Total$HCC...translocation),
+                   HCC.translocation = as.numeric(Total$HCC.translocation),
+                   HCC = as.numeric(Total$Hepatocellular.Carcinoma))
+pheno1 = pheno[complete.cases(pheno),]
+pheno2 = pheno1[which(Total$Hepatocellular.Carcinoma=="1"),]
+addcovar = matrix(pheno1$sex, ncol = 1, dimnames = list(row.names(pheno1), "sex"))
+
+head(pheno2)
+
+
+time <- pheno2$days
+event <- pheno2$HCC
+pheno2$SurvObj <- Surv(time, event)
+
+km.as.one <- npsurv(pheno2$SurvObj ~ 1, conf.type = "log-log")
+survplot(km.as.one, title = "All Cases")
+km.by.sex <- npsurv(pheno2$SurvObj ~ pheno2$sex, conf.type = "log-log")
+survplot(km.by.sex)
+km.by.pcr <- npsurv(pheno2$SurvObj ~ pheno2$HCC.translocation, conf.type = "log-log")
+survplot(km.by.pcr)
+km.by.pcr.amount <- npsurv(pheno2$SurvObj ~ pheno2$HCC...translocation, conf.type = "log-log")
+survplot(km.by.pcr.amount)
+
+survplot(Surv(pheno2$days, pheno2$HCC) ~ pheno2$HCC...translocation, data = pheno2)
+
 OSA <- pheno[which(pheno$OSA == 1), ]
 head(OSA)
 OSA
-
 allele <- c(1,0,1,2,2,1,0,1,1,1,1,2,1,1,1,1,2,1,2)
 
 OSA <- cbind(OSA, allele)
