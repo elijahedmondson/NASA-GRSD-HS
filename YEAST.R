@@ -1,3 +1,13 @@
+require(made4)
+heat.geno <- read.csv("~/Desktop/heat.genot.csv")
+row.names(heat.geno) = heat.geno$X
+heat.geno = na.omit(heat.geno)
+heat.geno = as.data.frame(heat.geno)
+
+drops <- c("X")
+heat.geno = heat.geno[ , !(names(heat.geno) %in% drops)]
+rm(drops)
+
 heat.geno <- lapply(heat.geno, function(x) {
         gsub("0.0", 5, x)
         })
@@ -5,7 +15,7 @@ heat.geno <- lapply(heat.geno, function(x) {
         gsub("0.5", 2.5, x)
 })
 heat.geno <- lapply(heat.geno, function(x) {
-        gsub("1.0", 0, x)
+        gsub("1.0", 1, x)
 })
 heat.geno = as.data.frame(heat.geno)
 
@@ -14,6 +24,17 @@ library(qtl)
 library(devtools)
 library(qtlyeast)
 library(qtlhot, quietly = TRUE)
+library(GenomicRanges)
+library(ggplot2)
+library(gplots)
+library(RColorBrewer)
+library(made4)
+library(BSgenome.Mmusculus.UCSC.mm10)
+library(DOQTL)
+library(HZE)
+library(amap)
+library(sigclust)
+setwd("~/Desktop/")
 
 ### READ IN Nadia DATA ###
 ###    P = "A" = AA    ###
@@ -26,10 +47,7 @@ plot.map(moms.pops)
 geno.image(moms.pops, reorder = 2, main = "Genotype Data: Strains ordered by phenotype severity")
 
 strains = geno.table(moms.pops, scanone.output = F)
-plot(strains, lod = 2)
-
-groupclusteredheatmap(strains)
-
+plot(strains)
 plotPheno(moms.pops, "pheno")
 
 heat.geno <- read.csv("~/Desktop/heat.genot.csv")
@@ -43,21 +61,36 @@ combined <- cbind(heat.geno$V1,
 combined <- cbind(heat.geno[1:77,])
 combined = as.matrix(combined)
 
-drops <- c("X")
-heat.geno = heat.geno[ , !(names(heat.geno) %in% drops)]
-rm(drops)
 
 require(made4)
 heatplot(combined, margins = c(5, 13), dend="col", method = "ave", main = "", key = F, labCol=NA)
 
+heat.geno1 = heat.geno[,1:100]
+heat.geno2 = data.matrix(heat.geno1)
+heat.geno2 = na.omit(heat.geno2)
+heat.geno2 = data.matrix(heat.geno2)
+require(made4)
+heatplot(heat.geno2)
 
-heat.geno1 = data.matrix(heat.geno)
-heatplot(heat.geno[1:70,],dend="row")
 
-
-
+my_palette <- colorRampPalette(c("red", "blue", "green"))(n = 299)
 library(gplots)
-heatmap.2(t(combined), Colv=NA)
+
+heat.geno1 = heat.geno
+heat.geno2 = data.matrix(heat.geno1)
+heat.geno2 = na.omit(heat.geno2)
+heat.geno2 = data.matrix(heat.geno2)
+
+heatmap.2(heat.geno2, Colv=FALSE, trace="none", col = my_palette, main = "Clustering strains based on genotype")
+
+
+
+hc <- hcluster(heat.geno2)
+plot(hc)
+
+
+
+
 
 
 ### EXAMPLE DATA SET ###
