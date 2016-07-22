@@ -50,7 +50,8 @@ pheno = data.frame(row.names = Total$row.names, rownames = Total$row.names,
                    HCC.Metastatic.Density = as.numeric(Total$HCC.Metastatic.Density),
                    Tumors.that.could.met = as.numeric(Total$Tumors.that.could.met),
                    HCC...translocation = as.numeric(Total$HCC...translocation),
-                   HCC.translocation = as.numeric(Total$HCC.translocation))
+                   HCC.translocation = as.numeric(Total$HCC.translocation),
+                   HCC.gel = as.numeric(Total$Gel.PCR))
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
 
 HZE <- subset(pheno, group == "HZE")
@@ -61,13 +62,20 @@ All.irr <- subset(pheno, unirradiated == "0")
 Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
 pheno = data.frame(row.names = Total$row.names, rownames = Total$row.names,
                    sex = as.numeric(Total$sex == "M"),
+                   group = Total$groups,
+                   unirradiated = as.numeric(Total$Unirradiated),
                    days = as.numeric(Total$days),
                    HCC...translocation = as.numeric(Total$HCC...translocation),
                    HCC.translocation = as.numeric(Total$HCC.translocation),
-                   HCC = as.numeric(Total$Hepatocellular.Carcinoma))
-pheno1 = pheno[complete.cases(pheno),]
-pheno2 = pheno1[which(Total$Hepatocellular.Carcinoma=="1"),]
-addcovar = matrix(pheno1$sex, ncol = 1, dimnames = list(row.names(pheno1), "sex"))
+                   HCC = as.numeric(Total$Hepatocellular.Carcinoma),
+                   HCC.gel = as.numeric(Total$Gel.PCR))
+pheno = pheno[which(Total$Hepatocellular.Carcinoma=="1"),]
+pheno = na.omit(pheno)
+addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
+HZE <- subset(pheno, group == "HZE")
+Gamma <- subset(pheno, group == "Gamma")
+Un <- subset(pheno, group == "Unirradiated")
+All.irr <- subset(pheno, unirradiated == "0")
 
 HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1" & Total$HCC.Metastatic.Density>0),]
 HCC.met <- Total[which(Total$Hepatocellular.Carcinoma=="1"), ]
@@ -86,11 +94,11 @@ addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
 
 
 GRSD.assoc(pheno = pheno, pheno.col = "HCC.translocation", probs, K, addcovar = addcovar,
-           markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "All",
+           markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "",
            sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
-GRSD.poisson(pheno = pheno, pheno.col = "PSC", probs, K, addcovar = addcovar,
-             markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "All",
+GRSD.poisson(pheno = Un, pheno.col = "HCC...translocation", probs, K, addcovar = addcovar,
+             markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "Unirradiated",
              sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 

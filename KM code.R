@@ -5,12 +5,13 @@ library(KMsurv)
 library(OIsurv)
 library(rms)
 library(ggplot2)
+library(GGally)
 
 
 require(ggplot2)
 require(survival)
-lung.surv <- survfit(Surv(pheno2$days, pheno2$HCC) ~ pheno2$HCC...translocation, data = pheno2)
-ggsurv(lung.surv)
+HCC.surv <- survfit(Surv(pheno1$days, pheno1$HCC) ~ pheno1$HCC.translocation)
+ggsurv(HCC.surv)
 
 
 Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/Total-Table 1.csv")
@@ -28,25 +29,26 @@ pheno = data.frame(row.names = Total$row.names, rownames = Total$row.names,
                    HCC...translocation = as.numeric(Total$HCC...translocation),
                    HCC.translocation = as.numeric(Total$HCC.translocation),
                    HCC = as.numeric(Total$Hepatocellular.Carcinoma))
-pheno1 = pheno[complete.cases(pheno),]
-pheno2 = pheno1[which(Total$Hepatocellular.Carcinoma=="1"),]
-addcovar = matrix(pheno1$sex, ncol = 1, dimnames = list(row.names(pheno1), "sex"))
 
-head(pheno2)
+pheno1 = pheno[which(Total$Hepatocellular.Carcinoma=="1"),]
+pheno1 = na.omit(pheno1)
 
 
-time <- pheno2$days
-event <- pheno2$HCC
-pheno2$SurvObj <- Surv(time, event)
+head(pheno1)
 
-km.as.one <- npsurv(pheno2$SurvObj ~ 1, conf.type = "log-log")
+
+time <- pheno1$days
+event <- pheno1$HCC
+pheno1$SurvObj <- Surv(time, event)
+
+km.as.one <- npsurv(pheno1$SurvObj ~ 1, conf.type = "log-log")
 survplot(km.as.one, title = "All Cases")
-km.by.sex <- npsurv(pheno2$SurvObj ~ pheno2$sex, conf.type = "log-log")
+km.by.sex <- npsurv(pheno1$SurvObj ~ pheno1$sex, conf.type = "log-log")
 survplot(km.by.sex)
-km.by.pcr <- npsurv(pheno2$SurvObj ~ pheno2$HCC.translocation, conf.type = "log-log")
+km.by.pcr <- npsurv(pheno1$SurvObj ~ pheno1$HCC.translocation, conf.type = "log-log")
 survplot(km.by.pcr)
-km.by.pcr.amount <- npsurv(pheno2$SurvObj ~ pheno2$HCC...translocation, conf.type = "log-log")
-survplot(km.by.pcr.amount)
+km.by.pcr.amount <- npsurv(pheno1$SurvObj ~ pheno1$HCC...translocation, conf.type = "log-log")
+ggsurv(km.by.pcr.amount)
 
 survplot(Surv(pheno2$days, pheno2$HCC) ~ pheno2$HCC...translocation, data = pheno2)
 

@@ -92,10 +92,10 @@ addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(rownames(pheno), "sex"))
 
 # 4. ASSOCIATION MAPPING #
 
-qtl = scanone.assoc(pheno = pheno, pheno.col = "PSC", probs = model.probs, K = K, 
+qtl = scanone.assoc(pheno = pheno, pheno.col = "HCC.gel", probs = model.probs, K = K, 
                     addcovar = addcovar, markers = MM_snps, sdp.file = sdp.file, ncl = 4)
 
-DOQTL:::plot.scanone.assoc(qtl, bin.size = 100, main = "PU.1 Deletion Transform")
+DOQTL:::plot.scanone.assoc(qtl, bin.size = 100, main = "")
 
 
 perms <- Scanone.assoc.perms(perms = 200, pheno = Gamma, pheno.col = "AML.t", probs = model.probs, 

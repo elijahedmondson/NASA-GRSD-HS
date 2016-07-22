@@ -171,7 +171,7 @@ combine <- cbind(seqnames=as.character(result[[1:2]]$ID), -log10(result[[1]]$pv)
 #Combining the columns
 combined <- cbind(seqnames=as.character(seqnames))
 
-combined <- cbind(seqnames=as.character(seqnames(Gamma.AML)),
+combined <- cbind(seqnames = as.character(seqnames(Gamma.AML)),
                   -log10(Gamma.AML$p.value),
                   -log10(Gamma.HardACA$p.value),
                   -log10(Gamma.HCC$p.value),
