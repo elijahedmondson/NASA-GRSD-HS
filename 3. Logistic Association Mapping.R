@@ -23,6 +23,10 @@ pheno = data.frame(row.names = Total$row.names, rownames = Total$row.names,
                    group = as.character(Total$groups),
                    unirradiated = as.numeric(Total$Unirradiated),
                    days = as.numeric(Total$days),
+                   AML = as.numeric(Total$Myeloid.Leukemia),
+                   AML.ASXLdel = as.numeric(Total$Asxl1.Deletion),
+                   AML.PU.1del = as.numeric(Total$Pu.1.Deletion))
+                   
                    PulACA = as.numeric(Total$Pulmonary.Adenocarcinoma),
                    HCC = as.numeric(Total$Hepatocellular.Carcinoma),
                    HSA = as.numeric(Total$Hemangiosarcoma),
@@ -51,7 +55,8 @@ pheno = data.frame(row.names = Total$row.names, rownames = Total$row.names,
                    Tumors.that.could.met = as.numeric(Total$Tumors.that.could.met),
                    HCC...translocation = as.numeric(Total$HCC...translocation),
                    HCC.translocation = as.numeric(Total$HCC.translocation),
-                   HCC.gel = as.numeric(Total$Gel.PCR))
+                   HCC.gel = as.numeric(Total$Gel.PCR),
+                   cataract = as.numeric(Total$Cataract.2.0.Score.Event))
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
 
 HZE <- subset(pheno, group == "HZE")
@@ -69,7 +74,7 @@ pheno = data.frame(row.names = Total$row.names, rownames = Total$row.names,
                    HCC.translocation = as.numeric(Total$HCC.translocation),
                    HCC = as.numeric(Total$Hepatocellular.Carcinoma),
                    HCC.gel = as.numeric(Total$Gel.PCR))
-pheno = pheno[which(Total$Hepatocellular.Carcinoma=="1"),]
+#pheno = pheno[which(Total$Hepatocellular.Carcinoma=="1"),]
 pheno = na.omit(pheno)
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
 HZE <- subset(pheno, group == "HZE")
@@ -93,8 +98,8 @@ addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
 
 
 
-GRSD.assoc(pheno = pheno, pheno.col = "HCC.translocation", probs, K, addcovar = addcovar,
-           markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "",
+GRSD.assoc(pheno = Un, pheno.col = "cataract", probs, K, addcovar = addcovar,
+           markers, snp.file = "snp.file", outdir = "~/Desktop/files", tx = "Unirradiated",
            sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 GRSD.poisson(pheno = Un, pheno.col = "HCC...translocation", probs, K, addcovar = addcovar,
@@ -107,10 +112,10 @@ perms <- GRSDassoc.perms(perms = 2, chr = 19, pheno = HZE, Xchr = F, addcovar = 
                          snp.file = snp.file, outdir = "~/Desktop/files", tx = "Test",
                          sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
-bootstrap <- HS.assoc.bootstrap(perms = 2, chr = 2, pheno = HZE, pheno.col = "Thyroid",
+bootstrap <- HS.assoc.bootstrap(perms = 200, chr = 3, pheno = pheno, pheno.col = "HCC...translocation",
                                 probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/files",
-                                tx = "HZE", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/",
-                                peakMB = 122584526)
+                                tx = "ALL", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/",
+                                peakMB = 55139932)
 
 
 

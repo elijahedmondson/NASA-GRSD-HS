@@ -11,26 +11,45 @@ library(HZE)
 
 par(mfrow = c(5,1), mar=c(1, 4, 1, 1) + 0.5)
 #layout(matrix(4:1, 4, 1))
-plot.hs.color.qtl(hze, bin.width = 100, color = "red", main = "", ylim = c(0, 9))
+plot.hs.color.qtl(hze, bin.width = 100, color = "red", main = "HZE ion irradiated", ylim = c(0, 9.5))
 abline(a = 5.73, b = 0, col = "grey")
-abline(a = 4.48, b = 0, col = "lightgrey")
-plot.hs.color.qtl(gamma, bin.width = 100, color = "blue", main = "", ylim = c(0, 9))
+#abline(a = 4.48, b = 0, col = "lightgrey")
+plot.hs.color.qtl(gamma, bin.width = 100, color = "blue", main = "Gamma-ray irradiated", ylim = c(0, 9.5))
 abline(a = 5.73, b = 0, col = "grey")
-abline(a = 4.48, b = 0, col = "lightgrey")
-plot.hs.color.qtl(allirr, bin.width = 100, color = "purple", main = "", ylim = c(0, 9))
+#abline(a = 4.48, b = 0, col = "lightgrey")
+plot.hs.color.qtl(allirr, bin.width = 100, color = "purple", main = "All Irradiated", ylim = c(0, 9.5))
 abline(a = 5.73, b = 0, col = "grey")
-abline(a = 4.48, b = 0, col = "lightgrey")
-plot.hs.color.qtl(un, bin.width = 100, color = "green", main = "", ylim = c(0, 9))
+#abline(a = 4.48, b = 0, col = "lightgrey")
+plot.hs.color.qtl(un, bin.width = 100, color = "green", main = "Unirradiated", ylim = c(0, 9.5))
 abline(a = 5.73, b = 0, col = "grey")
-abline(a = 4.48, b = 0, col = "lightgrey")
-plot.hs.color.qtl(all, bin.width = 100, color = "black", main = "", ylim = c(0, 9))
+#abline(a = 4.48, b = 0, col = "lightgrey")
+plot.hs.color.qtl(all, bin.width = 100, color = "black", main = "All mice", ylim = c(0, 9.5))
 abline(a = 5.73, b = 0, col = "grey")
-abline(a = 4.48, b = 0, col = "lightgrey")
+#abline(a = 4.48, b = 0, col = "lightgrey")
 
-plot.hs.color.qtl(qtl3, bin.width = 1, color = "black", main = "All Mice: HCC (semi-quantitative PCR results for fusion gene)", ylim = c(0, 9))
-abline(a = 5.73, b = 0, col = "grey")
 
-#, ylim = c(0, 10)
+
+par(mfrow = c(5,1), mar=c(1, 4, 1, 1) + 0.5)
+#layout(matrix(4:1, 4, 1))
+plot.hs.color.qtl(hze[15], bin.width = 10, color = "red", main = "HZE ion irradiated", ylim = c(0, 9.5))
+abline(a = 5.73, b = 0, col = "grey")
+#abline(a = 4.48, b = 0, col = "lightgrey")
+plot.hs.color.qtl(gamma[15], bin.width = 10, color = "blue", main = "Gamma-ray irradiated", ylim = c(0, 9.5))
+abline(a = 5.73, b = 0, col = "grey")
+#abline(a = 4.48, b = 0, col = "lightgrey")
+plot.hs.color.qtl(allirr[15], bin.width = 10, color = "purple", main = "All Irradiated", ylim = c(0, 9.5))
+abline(a = 5.73, b = 0, col = "grey")
+#abline(a = 4.48, b = 0, col = "lightgrey")
+plot.hs.color.qtl(un[15], bin.width = 10, color = "green", main = "Unirradiated", ylim = c(0, 9.5))
+abline(a = 5.73, b = 0, col = "grey")
+#abline(a = 4.48, b = 0, col = "lightgrey")
+plot.hs.color.qtl(all[15], bin.width = 10, color = "black", main = "All mice", ylim = c(0, 9.5))
+abline(a = 5.73, b = 0, col = "grey")
+#abline(a = 4.48, b = 0, col = "lightgrey")
+
+
+
+
 
 plot.hs.color.qtl = function(qtl, bin.width = 1000, color = "black", ...) {
 

@@ -71,19 +71,23 @@ All.irr = subset(pheno, Unirradiated == 0)
 
 
 
+options(error=recover)
+options(error=utils::recover) 
+reach_full_in <- reachability(krack_full, 'in')
+
+
+
+get.effect.size.coxPH(pheno = All.irr, pheno.col = "cat2", days.col = "days2", probs = probs, 
+                      sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz", markers, 
+                      threshold = 5.73, dir = "")
 
 
 
 
-get.effect.size.coxPH(pheno = Gamma, pheno.col = "LSA.DLBCL", days.col = "days", probs = probs, sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz", markers, threshold = 5.05, dir = "/Users/elijah/Desktop/R/QTL/WD/3.\ CoxPH\ Mapping/")
 
 
-
-
-
-
-get.effect.size(pheno = All.irr, pheno.col = "Thyroid", probs = probs, sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz",
-                markers, threshold = 5.05, dir = "/Users/elijah/Desktop/R/QTL/WD/2.\ Binomial\ Mapping/")
+get.effect.size(pheno = Unirradiated, pheno.col = "cat2", probs = probs, sdp.file = "~/Desktop/R/QTL/WD/HS_Sanger_SDPs.txt.bgz",
+                markers, threshold = 5.73, dir = "~/Desktop/R/QTL/WD/7.\ Cataract/Logistic\ 2.0/BE/")
 
 
 

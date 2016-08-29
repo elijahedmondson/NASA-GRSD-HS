@@ -1,8 +1,8 @@
 # Function to pull all files from a directory folder and determine QTL of a given LOD score
 
-define.QTL(dir = "/Users/elijah/Desktop/files/", threshold = 5.05)
+define.QTL(dir = "~/Desktop/R/QTL/WD/7.\ Cataract/Logistic\ 2.0/", threshold = 5.73)
 
-define.QTL = function(dir = "~/Desktop/files/completed/", threshold = 5.05) {
+define.QTL = function(dir = "/Users/elijah/Desktop/files/", threshold = 5.73) {
         
         files <- (Sys.glob(paste0(dir,"*.Rdata")))
         
@@ -33,7 +33,10 @@ define.QTL = function(dir = "~/Desktop/files/completed/", threshold = 5.05) {
         }
 }
 
-define.QTL = function(dir = "~/Desktop/R/QTL/WD/2.\ Binomial\ Mapping/Rdata/", threshold = 5.05) {
+
+
+
+xdefine.QTL = function(dir = "~/Desktop/R/QTL/WD/7.\ Cataract/Logistic\ 2.0/", threshold = 5.05) {
         
         files <- (Sys.glob(paste0(dir,"*.Rdata")))
         
