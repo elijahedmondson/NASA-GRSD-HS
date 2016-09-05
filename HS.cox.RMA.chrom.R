@@ -72,7 +72,7 @@ HS.cox.RMA.chrom = function(perms, chr, pheno, pheno.col, days.col, probs, K, ad
                         ### WORK HORSE ###
                         ### RETURN ANY POS FOR ENRIRE CHROMOSOME ###
                         
-                        
+                        load("/Users/elijah/Desktop/R/QTL/WD/hs.colors.Rdata")
                         result = GRSD.coxph4perms(data, chr = chr, pheno = phenoperm, pheno.col, days.col, addcovar, tx, sanger.dir)
                         
                         top = max(-log10(result$pv))
@@ -88,7 +88,7 @@ HS.cox.RMA.chrom = function(perms, chr, pheno, pheno.col, days.col, probs, K, ad
                 
                 
                 
-                print(paste0("Accepted locus: ", MegaBase, " Mb"))
+                #print(paste0("Accepted locus: ", MegaBase, " Mb"))
                 
                 
                 

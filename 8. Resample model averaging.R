@@ -3,6 +3,7 @@
 library(BSgenome.Mmusculus.UCSC.mm10)
 library(doParallel)
 library(VariantAnnotation)
+library(survival)
 library(GenomicRanges)
 library(regress)
 library(MASS)
@@ -13,6 +14,7 @@ library(dplyr)
 library(sm)
 options(stringsAsFactors = F)
 load(file = "~/Desktop/R/QTL/WD/GRSD.Rdata")
+load("/Users/elijah/Desktop/R/QTL/WD/hs.colors.Rdata")
 setwd("~/Desktop/files")
 outdir = "~/Desktop/files"
 Total <- read.csv("~/Desktop/R/GRSD.phenotype/CSV/GRSD.pheno.csv")
@@ -49,7 +51,7 @@ pheno = data.frame(row.names = Total$row.names, rownames = Total$row.names,
                    endoderm = as.numeric(Total$Endoderm),
                    mesoderm = as.numeric(Total$Mesoderm),
                    PSC = as.numeric(Total$Pulmonary.Sarcomatoid.Carcinoma),
-                   Cat2 = as.numeric(Total$Cataract.2.0.Score.Date),
+                   Cat2 = as.numeric(Total$Cataract.2.0.Score.Event),
                    days2 = as.numeric(Total$Cataract.2.0.Score.Days))
 addcovar = matrix(pheno$sex, ncol = 1, dimnames = list(row.names(pheno), "sex"))
 HZE <- subset(pheno, group == "HZE")
