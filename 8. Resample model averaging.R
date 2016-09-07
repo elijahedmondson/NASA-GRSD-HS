@@ -68,7 +68,7 @@ bootstrap <- HS.assoc.bootstrap(perms = 200, chr = 4, pheno = Gamma, pheno.col =
 
 
 
-Cat2.AI.18 <- HS.cox.RMA.chrom(perms = 200, chr = 18, pheno = All.irr, pheno.col = "Cat2", days.col = "days2",
+Cat.Allirr.13 <- HS.cox.RMA.chrom(perms = 200, chr = 13, pheno = All.irr, pheno.col = "Cat2", days.col = "days2",
                            probs, K, addcovar, markers, snp.file, outdir = "~/Desktop/",
                            tx = "All Irradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
@@ -84,7 +84,7 @@ MammaACA.Un <- HS.RMA.chrom(perms = 200, chr = 11, pheno = Un, pheno.col = "Mamm
                                tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 MammaACA.AI <- HS.RMA.chrom(perms = 200, chr = 11, pheno = All.irr, pheno.col = "MammACA", probs, K, addcovar,
                             markers, snp.file, outdir = "~/Desktop/",
-                            tx = "Unirradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
+                            tx = "All Irradiated", sanger.dir = "~/Desktop/R/QTL/WD/HS.sanger.files/")
 
 ### PLOTTING BOOTSTRAP RESULTS (HISTOGRAM) ###
 ### PLOTTING BOOTSTRAP RESULTS (HISTOGRAM) ###
@@ -108,22 +108,22 @@ allirr = Thy.boot[which(Thy.boot$TX == "All.irradiated" & Thy.boot$AML.LOD > 5),
 
 #HISTOGRAM
 layout(matrix(3:1, 3, 1))
-hist(un$average, breaks=150, col="blue", main = "Unirradiated", xlab="Chromosome 2", prob = T, xlim = c(0, 182113224))
+hist(un$average, breaks=150, col="blue", main = "Unirradiated", xlab="Chromosome 1", prob = T, xlim = c(0, 125000000))
 lines(density(un$average), col="black")
-hist(gamma$average, breaks=150, col="green", main = "Gamma", xlab="Chromosome 2", prob = T, xlim = c(0, 182113224))
+hist(gamma$average, breaks=150, col="green", main = "Gamma", xlab="Chromosome 1", prob = T, xlim = c(0, 125000000))
 lines(density(gamma$average), col="black")
-hist(hze$average, breaks=150, col="red", main = "HZE", xlab="Chromosome 2", prob = T, xlim = c(0, 182113224))
+hist(hze$average, breaks=150, col="red", main = "HZE", xlab="Chromosome 1", prob = T, xlim = c(0, 125000000))
 lines(density(hze$average), col="black", lwd = 1)
 
 layout(matrix(4:1, 4, 1))
-hist(un$AML.Locus, breaks=150, col="blue", main = "Unirradiated", xlab="Chromosome 2", prob = T, xlim = c(0, 182113224))
-lines(density(un$AML.Locus), col="black")
-hist(gamma$AML.Locus, breaks=150, col="green", main = "Gamma", xlab="", prob = T, xlim = c(0, 182113224))
-lines(density(gamma$AML.Locus), col="black")
-hist(hze$AML.Locus, breaks=150, col="red", main = "HZE", xlab="", prob = T, xlim = c(0, 182113224))
-lines(density(hze$AML.Locus), col="black", lwd = 1)
-hist(allirr$AML.Locus, breaks=150, col="black", main = "All Irradiated", xlab="", prob = T, xlim = c(0, 182113224))
-lines(density(All.irradiated$AML.Locus), col="black", lwd = 1)
+hist(un$average, breaks=150, col="blue", main = "Unirradiated", xlab="Chromosome 2", prob = T, xlim = c(0, 182113224))
+lines(density(un$average), col="black")
+hist(gamma$average, breaks=150, col="green", main = "Gamma", xlab="", prob = T, xlim = c(0, 182113224))
+lines(density(gamma$average), col="black")
+hist(hze$average, breaks=150, col="red", main = "HZE", xlab="", prob = T, xlim = c(0, 182113224))
+lines(density(hze$average), col="black", lwd = 1)
+hist(allirr$average, breaks=150, col="black", main = "All Irradiated", xlab="", prob = T, xlim = c(0, 182113224))
+lines(density(All.irradiated$average), col="black", lwd = 1)
 
 #HISTOGRAM WITHOUT DENSITY
 layout(matrix(3:1, 3, 1))
@@ -171,41 +171,57 @@ title(main = "Nonparametric Bootstrap Resampling with Replacement: Distribution 
 
 
 
+boot <- read.csv("~/Desktop/Whole Chr Resample/Raw Data-MammACA 11.csv")
 
-boot <- read.csv("~/Desktop/Whole Chr Resample/Raw Data-Cataract Chr 17.csv")
 gamma = boot[which(boot$X == "gamma"),]
 hze = boot[which(boot$X == "HZE"),]
 un = boot[which(boot$X == "unirradiated"),]
 
-
 merge.boot <- factor(boot$X, levels = c("gamma", "HZE", "unirradiated"),
                      labels = c("Gamma", "HZE", "Unirradiated"))
 par(mfrow=c(1,1))
-sm.density.compare(boot$average, boot$X, xlab = "Chromosome 17", lwd = 2.5)
-title(main = "Resample Model Averaging: Cataract Chromosome 17")
+sm.density.compare(boot$average, boot$X, xlab = "Chromosome 11", lwd = 2.5)
+title(main = "Resample Model Averaging: Mammary Adenocarcinoma")
+colfill = c(2:(2+length(levels(merge.boot))))
+legend("topleft", levels(merge.boot), fill = colfill)
+
+layout(matrix(3:1, 3, 1))
+hist(un$average, breaks=150, col="blue", main = "Unirradiated", xlab="Chromosome 11", prob = T, xlim = c(0, 125000000))
+lines(density(un$average), col="black")
+hist(gamma$average, breaks=150, col="green", main = "Gamma", xlab="", prob = T, xlim = c(0, 125000000))
+lines(density(gamma$average), col="black")
+hist(hze$average, breaks=150, col="red", main = "HZE", xlab="", prob = T, xlim = c(0, 125000000))
+lines(density(hze$average), col="black", lwd = 1)
+
+
+
+
+boot <- read.csv("~/Desktop/Whole Chr Resample/Raw Data-Cataract Chr 13.csv")
+gamma = boot[which(boot$X == "gamma"),]
+hze = boot[which(boot$X == "HZE"),]
+un = boot[which(boot$X == "unirradiated"),]
+allirr = boot[which(boot$X == "allirr"),]
+
+
+merge.boot <- factor(boot$X, levels = c("allirr", "gamma", "HZE", "Unirradiated"),
+                       labels = c("All Irradiated", "Gamma", "HZE", "Unirradiated"))
+par(mfrow=c(1,1))
+sm.density.compare(boot$average, boot$X, xlab = "Chromosome 13", lwd = 2.5)
+title(main = "Resample Model Averaging: Cataractogenesis")
 colfill = c(2:(2+length(levels(merge.boot))))
 legend("topleft", levels(merge.boot), fill = colfill)
 
 
 
+layout(matrix(4:1, 4, 1))
+hist(un$average, breaks=150, col="blue", main = "Unirradiated", xlab="Chromosome 13", prob = T, xlim = c(0, 125000000))
+lines(density(un$average), col="black")
+hist(gamma$average, breaks=150, col="green", main = "Gamma", xlab="", prob = T, xlim = c(0, 125000000))
+lines(density(gamma$average), col="black")
+hist(hze$average, breaks=150, col="red", main = "HZE", xlab="", prob = T, xlim = c(0, 125000000))
+lines(density(hze$average), col="black", lwd = 1)
+hist(allirr$average, breaks=150, col="black", main = "All Irradiated", xlim = c(0, 125000000))
+lines(density(allirr$average), col="black", lwd = 1)
 
 
 
-
-merge.boot <- factor(boot$X, levels = c("All.irradiated", "gamma", "HZE", "Unirradiated"),
-                       labels = c("All Irradiated", "Gamma", "HZE", "Unirradiated"))
-par(mfrow=c(1,1))
-sm.density.compare(boot$average, boot$X, xlab = "Chromosome ", lwd = 2.5)
-title(main = "AML Adenoma: Resample Model Averaging")
-colfill = c(2:(2+length(levels(merge.boot))))
-legend("topleft", levels(merge.boot), fill = colfill)
-
-
-AML.boot <- factor(Thy.boot2$X, levels = c("All.irradiated", "gamma", "HZE", "Unirradiated"),
-                       labels = c("All Irradiated", "Gamma", "HZE", "Unirradiated"))
-par(mfrow=c(1,1))
-sm.density.compare(boot$average, boot$X, xlab = "Chromosome 2", lwd = 2.5)
-title(main = "Resample Model Averaging")
-colfill = c(2:(2+length(levels(boot))))
-legend("topright", levels(boot), fill = colfill)
-#sm.binomial.bootstrap()
